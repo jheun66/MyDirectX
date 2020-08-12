@@ -13,5 +13,5 @@ public:
 	void PostRender();
 
 private:
-	Scene* scene;
+	Scene* scene = nullptr;
 };

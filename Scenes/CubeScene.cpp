@@ -45,5 +45,5 @@ void CubeScene::Render()
 
 void CubeScene::PostRender()
 {
-    //ImGui::Text("test");
+    ImGui::Text("test");
 }

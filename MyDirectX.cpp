@@ -18,6 +18,9 @@ BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 
+// ImGui WndProc(message 처리) 전방선언 
+IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
                      _In_ LPWSTR    lpCmdLine,
@@ -45,6 +48,14 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     MSG msg = {};
 
     Device::Create();
+
+    // ImGui Setting
+    ImGui::CreateContext();
+    ImGui::StyleColorsDark();
+
+    ImGui_ImplWin32_Init(hWnd);
+    ImGui_ImplDX11_Init(DEVICE, DC);
+
     Camera::Create();
 
     Program* program = new Program();
@@ -71,8 +82,17 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             {
                 Device::Get()->Clear();
 
+                // ImGui Frame
+                ImGui_ImplDX11_NewFrame();
+                ImGui_ImplWin32_NewFrame();
+                ImGui::NewFrame();
+
                 program->Render();
                 program->PostRender();
+
+                // ImGui Render
+                ImGui::Render();
+                ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 
                 Device::Get()->Present();
             }
@@ -81,6 +101,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     Camera::Delete();
 
+    // ImGui Delete
+    ImGui_ImplDX11_Shutdown();
+    ImGui_ImplWin32_Shutdown();
+    ImGui::DestroyContext();
 
     Device::Delete();
 
@@ -167,6 +191,10 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+    // ImGui 메시지 처리
+    if (ImGui_ImplWin32_WndProcHandler(hWnd, message, wParam, lParam))
+        return true;
+
     switch (message)
     {
     case WM_COMMAND:

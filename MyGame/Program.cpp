@@ -4,7 +4,7 @@
 
 Program::Program()
 {
-	scene = new CubeScene();
+	//scene = new CubeScene();
 }
 
 Program::~Program()
