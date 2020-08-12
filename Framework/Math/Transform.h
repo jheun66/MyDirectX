@@ -28,4 +28,7 @@ public:
 	XMMATRIX* GetWorld() { return &world; }
 	void SetParent(XMMATRIX* value) { parent = value; }
 
+	void SetPivot(XMFLOAT3 pivot);
+
+
 };

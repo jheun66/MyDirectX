@@ -21,9 +21,6 @@ Cube::~Cube()
 
 void Cube::Update()
 {
-    static float angle = 0.0f;
-
-    rotation.y += 0.001f;
 
     UpdateWorld();
 }
@@ -46,15 +43,15 @@ void Cube::Render()
 void Cube::Create()
 {
     Vertex vertices[8];
-    vertices[0].position = { 0, 0, 0 };
-    vertices[1].position = { 0, 1, 0 };
-    vertices[2].position = { 1, 1, 0 };
-    vertices[3].position = { 1, 0, 0 };
+    vertices[0].position = { -1, -1, -1 };
+    vertices[1].position = { -1, 1, -1 };
+    vertices[2].position = { 1, 1, -1 };
+    vertices[3].position = { 1, -1, -1 };
 
-    vertices[4].position = { 0, 0, 1 };
-    vertices[5].position = { 0, 1, 1 };
+    vertices[4].position = { -1, -1, 1 };
+    vertices[5].position = { -1, 1, 1 };
     vertices[6].position = { 1, 1, 1 };
-    vertices[7].position = { 1, 0, 1 };
+    vertices[7].position = { 1, -1, 1 };
 
 
     vertexBuffer = new VertexBuffer(vertices, sizeof(Vertex), 8);

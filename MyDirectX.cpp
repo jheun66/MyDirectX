@@ -57,6 +57,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     ImGui_ImplDX11_Init(DEVICE, DC);
 
     Camera::Create();
+    Keyboard::Create();
 
     Program* program = new Program();
 
@@ -75,6 +76,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         {
             // Update 진행
             program->Update();
+            Keyboard::Get()->Update();
+
 
             program->PreRender();
 
@@ -99,6 +102,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         }
     }
 
+    Keyboard::Delete();
     Camera::Delete();
 
     // ImGui Delete

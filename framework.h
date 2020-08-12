@@ -67,6 +67,9 @@ using namespace std;
 // System Object Header
 #include "Framework/System/Camera.h"
 
+// 키보드
+#include "Framework/System/Keyboard.h"
+
 // 게임 씬과 게임 프로세스
 #include "Scenes/Scene.h"
 #include "MyGame/Program.h"

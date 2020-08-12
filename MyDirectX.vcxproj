@@ -156,10 +156,13 @@
     <ClInclude Include="Framework\Device\Device.h" />
     <ClInclude Include="Framework\Math\Transform.h" />
     <ClInclude Include="Framework\System\Camera.h" />
+    <ClInclude Include="Framework\System\Keyboard.h" />
     <ClInclude Include="GameObject\Cube.h" />
+    <ClInclude Include="GameObject\Robot.h" />
     <ClInclude Include="GameObject\Sphere.h" />
     <ClInclude Include="MyGame\Program.h" />
     <ClInclude Include="Scenes\CubeScene.h" />
+    <ClInclude Include="Scenes\RobotScene.h" />
     <ClInclude Include="Scenes\Scene.h" />
     <ClInclude Include="Framework\Shaders\PixelShader.h" />
     <ClInclude Include="Framework\Shaders\VertexShader.h" />
@@ -180,11 +183,14 @@
     <ClCompile Include="Framework\Shaders\PixelShader.cpp" />
     <ClCompile Include="Framework\Shaders\VertexShader.cpp" />
     <ClCompile Include="Framework\System\Camera.cpp" />
+    <ClCompile Include="Framework\System\Keyboard.cpp" />
     <ClCompile Include="GameObject\Cube.cpp" />
+    <ClCompile Include="GameObject\Robot.cpp" />
     <ClCompile Include="GameObject\Sphere.cpp" />
     <ClCompile Include="MyDirectX.cpp" />
     <ClCompile Include="MyGame\Program.cpp" />
     <ClCompile Include="Scenes\CubeScene.cpp" />
+    <ClCompile Include="Scenes\RobotScene.cpp" />
     <ClCompile Include="Scenes\SphereScene.cpp" />
   </ItemGroup>
   <ItemGroup>

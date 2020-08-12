@@ -7,7 +7,8 @@
 Program::Program()
 {
 	//scene = new CubeScene();
-	scene = new SphereScene();
+	//scene = new SphereScene();
+	scene = new RobotScene();
 }
 
 Program::~Program()

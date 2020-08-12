@@ -33,3 +33,8 @@ void Transform::SetWorldBuffer(UINT slot)
 {
 	worldBuffer->SetBufferToVS(slot);
 }
+
+void Transform::SetPivot(XMFLOAT3 pivot)
+{
+	this->pivot = pivot;
+}
