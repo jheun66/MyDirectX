@@ -8,6 +8,7 @@
 
 // 전역 변수:
 HINSTANCE hInst;                                // 현재 인스턴스입니다.
+HWND hWnd;                                      // 전역 변수로 이동
 WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.
 WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
 
@@ -40,17 +41,50 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_MYDIRECTX));
 
-    MSG msg;
+    // PeekMessage로 변경
+    MSG msg = {};
 
-    // 기본 메시지 루프입니다:
-    while (GetMessage(&msg, nullptr, 0, 0))
+    Device::Create();
+    Camera::Create();
+
+    Program* program = new Program();
+
+    while (msg.message != WM_QUIT)
     {
-        if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
+        if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
         {
-            TranslateMessage(&msg);
-            DispatchMessage(&msg);
+            // 프로시저로 메시지 넘김
+            if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
+            {
+                TranslateMessage(&msg);
+                DispatchMessage(&msg);
+            }
+        }
+        else
+        {
+            // Update 진행
+            program->Update();
+
+            program->PreRender();
+
+            // Render 진행
+            {
+                Device::Get()->Clear();
+
+                program->Render();
+                program->PostRender();
+
+                Device::Get()->Present();
+            }
         }
     }
+
+    Camera::Delete();
+
+
+    Device::Delete();
+
+
 
     return (int) msg.wParam;
 }
@@ -97,8 +131,18 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
    hInst = hInstance; // 인스턴스 핸들을 전역 변수에 저장합니다.
 
-   HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-      CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
+   // device 크기를 요거로
+   RECT rc = { 0,0,WIN_WIDTH,WIN_HEIGHT };
+   AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, false);
+
+   // 화면 크기 위치 지정하기
+   hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
+       WIN_START_X, WIN_START_Y,
+       rc.right - rc.left, rc.bottom - rc.top,
+       nullptr, nullptr, hInstance, nullptr);
+
+   // 메뉴창 지우기
+   SetMenu(hWnd, nullptr);
 
    if (!hWnd)
    {
