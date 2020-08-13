@@ -57,6 +57,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     ImGui_ImplDX11_Init(DEVICE, DC);
 
     Camera::Create();
+    Time::Create();
 
     Program* program = new Program();
 
@@ -99,6 +100,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         }
     }
 
+    Time::Delete();
     Camera::Delete();
 
     // ImGui Delete

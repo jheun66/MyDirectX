@@ -8,7 +8,8 @@
 
 Program::Program()
 {
-	scene = new PlaneScene();
+	Time::Get()->Start();
+	scene = new SphereScene();
 }
 
 Program::~Program()
@@ -18,6 +19,7 @@ Program::~Program()
 
 void Program::Update()
 {
+	Time::Get()->Update();
 	scene->Update();
 }
 

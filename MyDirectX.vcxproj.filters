@@ -90,6 +90,9 @@
     <ClInclude Include="GameObject\Plane.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Framework\System\Time.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MyDirectX.cpp">
@@ -153,6 +156,9 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="GameObject\Plane.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\System\Time.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

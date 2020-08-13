@@ -73,6 +73,7 @@ using namespace std;
 
 // System Object Header
 #include "Framework/System/Camera.h"
+#include "Framework/System/Time.h"
 
 // GameObject Header
 #include "GameObject/Quad.h"

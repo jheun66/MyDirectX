@@ -21,6 +21,7 @@ Sphere::~Sphere()
 
 void Sphere::Update()
 {
+    rotation.y += Time::Delta();
     UpdateWorld();
 }
 

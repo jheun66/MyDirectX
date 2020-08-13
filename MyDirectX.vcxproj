@@ -158,6 +158,7 @@
     <ClInclude Include="Framework\State\RasterizerState.h" />
     <ClInclude Include="Framework\State\SamplerState.h" />
     <ClInclude Include="Framework\System\Camera.h" />
+    <ClInclude Include="Framework\System\Time.h" />
     <ClInclude Include="GameObject\Cube.h" />
     <ClInclude Include="GameObject\Plane.h" />
     <ClInclude Include="GameObject\Quad.h" />
@@ -188,6 +189,7 @@
     <ClCompile Include="Framework\State\RasterizerState.cpp" />
     <ClCompile Include="Framework\State\SamplerState.cpp" />
     <ClCompile Include="Framework\System\Camera.cpp" />
+    <ClCompile Include="Framework\System\Time.cpp" />
     <ClCompile Include="GameObject\Cube.cpp" />
     <ClCompile Include="GameObject\Plane.cpp" />
     <ClCompile Include="GameObject\Quad.cpp" />

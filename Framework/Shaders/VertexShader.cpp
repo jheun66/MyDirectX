@@ -41,7 +41,7 @@ void VertexShader::CreateInputLayout()
     D3D11_SHADER_DESC shaderDesc;
     reflection->GetDesc(&shaderDesc);
 
-    vector<D3D11_INPUT_ELEMENT_DESC> inputLayouts;
+    vector<D3D11_INPUT_ELEMENT_DESC> inputDescs;
 
     for (UINT i = 0; i < shaderDesc.InputParameters; i++)
     {
@@ -98,11 +98,11 @@ void VertexShader::CreateInputLayout()
         if (temp == "Position")
             elementDesc.Format = DXGI_FORMAT_R32G32B32_FLOAT;
 
-        inputLayouts.emplace_back(elementDesc);
+        inputDescs.emplace_back(elementDesc);
     }
 
     //                        vector 첫번째 주소값
-    HRESULT hr = DEVICE->CreateInputLayout(inputLayouts.data(), inputLayouts.size(),
+    HRESULT hr = DEVICE->CreateInputLayout(inputDescs.data(), inputDescs.size(),
         vertexBlob->GetBufferPointer(), vertexBlob->GetBufferSize(),
         &inputLayout);
     assert(SUCCEEDED(hr));
