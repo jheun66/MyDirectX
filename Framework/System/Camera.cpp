@@ -7,12 +7,14 @@ Camera::Camera()
 {
 	CreateViewort();
 	CreatePerspective();
+    CreateSamplerState();
 }
 
 Camera::~Camera()
 {
 	delete viewBuffer;
 	delete projectionBuffer;
+    delete samplerState;
 }
 
 void Camera::CreateViewort()
@@ -44,4 +46,11 @@ void Camera::CreatePerspective()
         WIN_WIDTH / (float)WIN_HEIGHT, 0.1f, 1000.0f);
 
     projectionBuffer->Set(projection);
+}
+
+void Camera::CreateSamplerState()
+{
+    samplerState = new SamplerState();
+    //samplerState->Address(D3D11_TEXTURE_ADDRESS_CLAMP);
+    samplerState->SetState();
 }

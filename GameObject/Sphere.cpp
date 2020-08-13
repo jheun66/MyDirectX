@@ -3,8 +3,8 @@
 
 Sphere::Sphere()
 {
-    vertexShader = new VertexShader(L"Shaders/VertexShader.hlsl");
-    pixelShader = new PixelShader(L"Shaders/PixelShader.hlsl");
+    vertexShader = new VertexShader(L"Shaders/VertexShaders/VertexShader.hlsl");
+    pixelShader = new PixelShader(L"Shaders/PixelShaders/PixelShader.hlsl");
 
     Create();
     colorBuffer = new ColorBuffer();

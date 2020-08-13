@@ -45,6 +45,9 @@
 #include "../ImGui/imgui_impl_dx11.h"
 #include "../ImGui/imgui_impl_win32.h"
 
+// DirectXTex
+#include "../DirectXTex/DirectXTex.h"
+
 using namespace DirectX;
 using namespace std;
 
@@ -63,6 +66,10 @@ using namespace std;
 
 // 계산 자료형
 #include "Framework/Math/Transform.h"
+
+#include "Framework/State/SamplerState.h"
+#include "Framework/State/RasterizerState.h"
+
 
 // System Object Header
 #include "Framework/System/Camera.h"

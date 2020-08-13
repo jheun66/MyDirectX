@@ -72,6 +72,12 @@
     <ClInclude Include="GameObject\Sphere.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Framework\State\SamplerState.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\State\RasterizerState.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MyDirectX.cpp">
@@ -119,6 +125,12 @@
     <ClCompile Include="GameObject\Sphere.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Framework\State\SamplerState.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\State\RasterizerState.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MyDirectX.rc">
@@ -134,9 +146,11 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Shaders\VertexColorShader.hlsl" />
-    <FxCompile Include="Shaders\PixelColorShader.hlsl" />
-    <FxCompile Include="Shaders\VertexShader.hlsl" />
-    <FxCompile Include="Shaders\PixelShader.hlsl" />
+    <FxCompile Include="Shaders\PixelShaders\PixelShader.hlsl" />
+    <FxCompile Include="Shaders\PixelShaders\PixelColorShader.hlsl" />
+    <FxCompile Include="Shaders\VertexShaders\VertexShader.hlsl" />
+    <FxCompile Include="Shaders\VertexShaders\VertexColorShader.hlsl" />
+    <FxCompile Include="Shaders\PixelShaders\PixelUV.hlsl" />
+    <FxCompile Include="Shaders\VertexShaders\VertexUV.hlsl" />
   </ItemGroup>
 </Project>

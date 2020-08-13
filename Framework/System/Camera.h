@@ -13,6 +13,7 @@ private:
 
 	void CreateViewort();
 	void CreatePerspective();
+	void CreateSamplerState();
 
 public:
 	static Camera* Get() { return instance; }
@@ -25,6 +26,8 @@ public:
 private:
 	MatrixBuffer* viewBuffer;
 	MatrixBuffer* projectionBuffer;
+
+	SamplerState* samplerState;
 
 	static Camera* instance;
 };
