@@ -34,7 +34,7 @@ void Camera::CreatePerspective()
     viewBuffer = new MatrixBuffer();
     projectionBuffer = new MatrixBuffer();
 
-    XMVECTOR eye = XMVectorSet(3, 13, -30, 0);
+    XMVECTOR eye = XMVectorSet(0, 0, -3, 0);
     XMVECTOR focus = XMVectorSet(0, 0, 0, 0);
     XMVECTOR up = XMVectorSet(0, 1, 0, 0);
 

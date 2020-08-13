@@ -159,6 +159,7 @@
     <ClInclude Include="Framework\State\SamplerState.h" />
     <ClInclude Include="Framework\System\Camera.h" />
     <ClInclude Include="GameObject\Cube.h" />
+    <ClInclude Include="GameObject\Quad.h" />
     <ClInclude Include="GameObject\Sphere.h" />
     <ClInclude Include="MyGame\Program.h" />
     <ClInclude Include="Scenes\CubeScene.h" />
@@ -168,6 +169,7 @@
     <ClInclude Include="MyDirectX.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Scenes\SphereScene.h" />
+    <ClInclude Include="Scenes\TextureScene.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
@@ -185,11 +187,13 @@
     <ClCompile Include="Framework\State\SamplerState.cpp" />
     <ClCompile Include="Framework\System\Camera.cpp" />
     <ClCompile Include="GameObject\Cube.cpp" />
+    <ClCompile Include="GameObject\Quad.cpp" />
     <ClCompile Include="GameObject\Sphere.cpp" />
     <ClCompile Include="MyDirectX.cpp" />
     <ClCompile Include="MyGame\Program.cpp" />
     <ClCompile Include="Scenes\CubeScene.cpp" />
     <ClCompile Include="Scenes\SphereScene.cpp" />
+    <ClCompile Include="Scenes\TextureScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MyDirectX.rc" />
