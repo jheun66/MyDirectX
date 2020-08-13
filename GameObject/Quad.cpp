@@ -8,7 +8,7 @@ Quad::Quad()
 	Create();
 
 	ScratchImage image;
-	LoadFromWICFile(L"Texures/sana.jpeg", WIC_FLAGS_NONE, nullptr, image);
+	LoadFromWICFile(L"Textures/sana.jpeg", WIC_FLAGS_NONE, nullptr, image);
 
 	CreateShaderResourceView(DEVICE, image.GetImages(), image.GetImageCount(),
 		image.GetMetadata(), &srv);

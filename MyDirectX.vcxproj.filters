@@ -84,6 +84,12 @@
     <ClInclude Include="Scenes\TextureScene.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Scenes\PlaneScene.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject\Plane.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MyDirectX.cpp">
@@ -141,6 +147,12 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Scenes\TextureScene.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenes\PlaneScene.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject\Plane.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

@@ -4,10 +4,11 @@
 #include "Scenes/SphereScene.h"
 //#include "Scenes/RobotScene.h"
 #include "Scenes/TextureScene.h"
+#include "Scenes/PlaneScene.h"
 
 Program::Program()
 {
-	scene = new TextureScene();
+	scene = new PlaneScene();
 }
 
 Program::~Program()

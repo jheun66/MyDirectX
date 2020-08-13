@@ -77,6 +77,7 @@ using namespace std;
 // GameObject Header
 #include "GameObject/Quad.h"
 #include "GameObject/Cube.h"
+#include "GameObject/Plane.h"
 
 // 게임 씬과 게임 프로세스
 #include "Scenes/Scene.h"
