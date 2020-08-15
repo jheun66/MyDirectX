@@ -64,6 +64,12 @@ using namespace std;
 #include "Framework/Shaders/VertexShader.h"
 #include "Framework/Shaders/PixelShader.h"
 
+
+#include "Framework/VertexLayout/VertexLayout.h"
+
+// Texture
+#include "Framework/Texture/Texture.h"
+
 // 계산 자료형
 #include "Framework/Math/Transform.h"
 
@@ -79,6 +85,7 @@ using namespace std;
 #include "GameObject/Quad.h"
 #include "GameObject/Cube.h"
 #include "GameObject/Plane.h"
+#include "GameObject/Grid.h"
 
 // 게임 씬과 게임 프로세스
 #include "Scenes/Scene.h"

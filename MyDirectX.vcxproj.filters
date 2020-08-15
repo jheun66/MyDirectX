@@ -93,6 +93,18 @@
     <ClInclude Include="Framework\System\Time.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="GameObject\Grid.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Texture\Texture.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\VertexLayout\VertexLayout.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\GridScene.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MyDirectX.cpp">
@@ -161,6 +173,15 @@
     <ClCompile Include="Framework\System\Time.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="GameObject\Grid.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Texture\Texture.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenes\GridScene.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MyDirectX.rc">
@@ -182,5 +203,7 @@
     <FxCompile Include="Shaders\VertexShaders\VertexColorShader.hlsl" />
     <FxCompile Include="Shaders\PixelShaders\PixelUV.hlsl" />
     <FxCompile Include="Shaders\VertexShaders\VertexUV.hlsl" />
+    <FxCompile Include="Shaders\PixelShaders\PixelDiffuse.hlsl" />
+    <FxCompile Include="Shaders\VertexShaders\VertexDiffuse.hlsl" />
   </ItemGroup>
 </Project>

@@ -5,11 +5,12 @@
 //#include "Scenes/RobotScene.h"
 #include "Scenes/TextureScene.h"
 #include "Scenes/PlaneScene.h"
+#include "Scenes/GridScene.h"
 
 Program::Program()
 {
 	Time::Get()->Start();
-	scene = new SphereScene();
+	scene = new GridScene();
 }
 
 Program::~Program()
