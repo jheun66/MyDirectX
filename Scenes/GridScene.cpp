@@ -3,7 +3,7 @@
 
 GridScene::GridScene()
 {
-	grid = new Grid();
+	grid = new Grid(L"Landscape/Dirt3.png", L"HeightMaps/HeightMap.png");
 }
 
 GridScene::~GridScene()

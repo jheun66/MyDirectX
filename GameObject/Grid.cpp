@@ -1,15 +1,34 @@
 #include "framework.h"
 
-Grid::Grid()
+Grid::Grid(wstring texturePath, wstring heightMapPath)
+	:width(10), height(10), texture(nullptr), heightMap(nullptr)
 {
 	vertexShader = new VertexShader(L"Shaders/VertexShaders/VertexDiffuse.hlsl");
 	pixelShader = new PixelShader(L"Shaders/PixelShaders/PixelDiffuse.hlsl");
+	
+	vertexShader2 = new VertexShader(L"Shaders/VertexShaders/VertexColorShader.hlsl");
+	pixelShader2 = new PixelShader(L"Shaders/PixelShaders/PixelColorShader.hlsl");
 
-	texture = Texture::Add(L"Landscape/Dirt2.png");
-	heightMap = Texture::Add(L"HeightMaps/ColorMap256.png");
 
-	width = heightMap->GetWidth() - 1;
-	height = heightMap->GetHeight() - 1;
+	if (texturePath != L"")
+	{
+		texture = Texture::Add(texturePath);
+	}
+	if (heightMapPath != L"")
+	{
+		heightMap = Texture::Add(heightMapPath);
+	}
+
+	if (heightMap != nullptr)
+	{
+		width = heightMap->GetWidth() - 1;
+		height = heightMap->GetHeight() - 1;
+	}
+	else if (texture != nullptr)
+	{
+		width = texture->GetWidth() - 1;
+		height = texture->GetHeight() - 1;
+	}
 
 	CreateData();
 
@@ -37,21 +56,36 @@ Grid::~Grid()
 
 void Grid::CreateData()
 {
-	vector<XMFLOAT4> pixels = heightMap->ReadPixels();
-
-
-	for (UINT z = 0; z <= height; z++)
+	if (heightMap == nullptr)
 	{
-		for (UINT x = 0; x <= width; x++)
+		for (UINT z = 0; z <= height; z++)
 		{
-			VertexUVNormal vertex;
-			vertex.position = XMFLOAT3(x, 0, z);
-			vertex.uv = XMFLOAT2(x / (float)width, 1.0f - (z / (float)height));
+			for (UINT x = 0; x <= width; x++)
+			{
+				VertexUVNormal vertex;
+				vertex.position = XMFLOAT3(x, 0, z);
+				vertex.uv = XMFLOAT2(x / (float)width, 1.0f - (z / (float)height));
 
-			UINT index = width * z + x;
-			vertex.position.y = pixels[index].x * 20.0f;
+				vertices.emplace_back(vertex);
+			}
+		}
+	}
+	else
+	{
+		vector<XMFLOAT4> pixels = heightMap->ReadPixels();
+		for (UINT z = 0; z <= height; z++)
+		{
+			for (UINT x = 0; x <= width; x++)
+			{
+				VertexUVNormal vertex;
+				vertex.position = XMFLOAT3(x, 0, z);
+				vertex.uv = XMFLOAT2(x / (float)width, 1.0f - (z / (float)height));
 
-			vertices.emplace_back(vertex);
+				UINT index = width * z + x;
+				vertex.position.y = pixels[index].x * 20.0f;
+
+				vertices.emplace_back(vertex);
+			}
 		}
 	}
 
@@ -73,6 +107,7 @@ void Grid::CreateData()
 	vertexBuffer = new VertexBuffer(vertices.data(), sizeof(VertexUVNormal), vertices.size());
 	indexBuffer = new IndexBuffer(indices.data(), indices.size());
 
+	vertexBuffer2 = new VertexBuffer(pivotVertices.data(), sizeof(VertexColor), pivotVertices.size());
 }
 
 void Grid::CreateNormal()
@@ -95,12 +130,30 @@ void Grid::CreateNormal()
 		XMStoreFloat3(&vertices[index0].normal, normal);
 		XMStoreFloat3(&vertices[index1].normal, normal);
 		XMStoreFloat3(&vertices[index2].normal, normal);
+
+		VertexColor vc, vc2;
+		vc.position.x = (vertices[index0].position.x + vertices[index1].position.x + vertices[index2].position.x) / 3;
+		vc.position.y = (vertices[index0].position.y + vertices[index1].position.y + vertices[index2].position.y) / 3;
+		vc.position.z = (vertices[index0].position.z + vertices[index1].position.z + vertices[index2].position.z) / 3;
+		vc.color = { 1,0,0,1 };
+
+		vc2.position.x = vc.position.x + XMVectorGetX(normal);
+		vc2.position.y = vc.position.y + XMVectorGetY(normal);
+		vc2.position.z = vc.position.z + XMVectorGetZ(normal);
+		vc2.color = vc.color;
+
+		pivotVertices.emplace_back(vc);
+		pivotVertices.emplace_back(vc2);
 	}
+	
 }
 
 void Grid::Render()
 {
-	//rasterizerState[1]->SetState();
+	if(viewFrame)
+		rasterizerState[1]->SetState();
+	else
+		rasterizerState[0]->SetState();
 
 	vertexBuffer->Set();
 	indexBuffer->Set();
@@ -109,17 +162,33 @@ void Grid::Render()
 	worldBuffer->SetBufferToVS(0);
 	lightBuffer->SetBufferToVS(3);
 
-	texture->PSSet(0);
+	if(texture != nullptr)
+		texture->PSSet(0);
 
 	vertexShader->Set();
 	pixelShader->Set();
 
 	DC->DrawIndexed(indices.size(), 0, 0);
 
-	rasterizerState[0]->SetState();
+	if (viewNormal)
+	{
+		vertexBuffer2->Set();
+		IASetPT(D3D_PRIMITIVE_TOPOLOGY_LINELIST);
+
+		vertexShader2->Set();
+		pixelShader2->Set();
+
+		DC->Draw(pivotVertices.size(), 0);
+	}
 }
 
 void Grid::PostRender()
 {
-	ImGui::SliderFloat3("LightDir", (float*)&lightBuffer->data.direction, -1, 1);
+	ImGui::Begin("Grid", 0, ImGuiWindowFlags_AlwaysAutoResize);
+	{		
+		ImGui::SliderFloat3("LightDir", (float*)&lightBuffer->data.direction, -1, 1);
+		ImGui::Checkbox("Frame", &viewFrame);
+		ImGui::Checkbox("Normal", &viewNormal);
+	}
+	ImGui::End();
 }

@@ -70,18 +70,21 @@ using namespace std;
 // Texture
 #include "Framework/Texture/Texture.h"
 
-// 계산 자료형
-#include "Framework/Math/Transform.h"
-
+// State
 #include "Framework/State/SamplerState.h"
 #include "Framework/State/RasterizerState.h"
 
+// Enviroment
+#include "Framework/Enviroment/Enviroment.h"
 
-// System Object Header
-#include "Framework/System/Camera.h"
+// System
 #include "Framework/System/Time.h"
+#include "Framework/System/Keyboard.h"
+#include "Framework/System/Mouse.h"
 
 // GameObject Header
+#include "GameObject/Transform.h"
+#include "GameObject/Camera.h"
 #include "GameObject/Quad.h"
 #include "GameObject/Cube.h"
 #include "GameObject/Plane.h"

@@ -54,13 +54,7 @@
     <ClInclude Include="MyGame\Program.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Framework\System\Camera.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="GameObject\Cube.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Framework\Math\Transform.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Scenes\CubeScene.h">
@@ -105,6 +99,21 @@
     <ClInclude Include="Scenes\GridScene.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Framework\Enviroment\Enviroment.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject\Transform.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject\Camera.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\System\Keyboard.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\System\Mouse.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MyDirectX.cpp">
@@ -129,12 +138,6 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Framework\Shaders\PixelShader.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Framework\System\Camera.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Framework\Math\Transform.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="GameObject\Cube.cpp">
@@ -180,6 +183,21 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Scenes\GridScene.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Enviroment\Enviroment.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject\Transform.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject\Camera.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\System\Keyboard.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\System\Mouse.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

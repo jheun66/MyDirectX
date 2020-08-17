@@ -56,9 +56,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     ImGui_ImplWin32_Init(hWnd);
     ImGui_ImplDX11_Init(DEVICE, DC);
 
-    Camera::Create();
-    Time::Create();
-
     Program* program = new Program();
 
     while (msg.message != WM_QUIT)
@@ -100,8 +97,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         }
     }
 
-    Time::Delete();
-    Camera::Delete();
+    delete program;
 
     // ImGui Delete
     ImGui_ImplDX11_Shutdown();
@@ -196,6 +192,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     // ImGui 메시지 처리
     if (ImGui_ImplWin32_WndProcHandler(hWnd, message, wParam, lParam))
         return true;
+
+    // 마우스 메시지 처리
+    Mouse::Get()->InputProc(message, wParam, lParam);
 
     switch (message)
     {

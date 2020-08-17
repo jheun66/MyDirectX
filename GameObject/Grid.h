@@ -4,7 +4,7 @@ class Grid : public Transform
 {
 
 public:
-	Grid();
+	Grid(wstring texturePath = L"", wstring heightMapPath = L"");
 	~Grid();
 
 	void CreateData();
@@ -31,4 +31,12 @@ private:
 	Texture* texture;
 	Texture* heightMap;
 
+	//중심점 버퍼
+	vector<VertexColor> pivotVertices;
+	VertexBuffer* vertexBuffer2;
+	VertexShader* vertexShader2;
+	PixelShader* pixelShader2;
+
+	bool viewFrame = false;
+	bool viewNormal = false;
 };
