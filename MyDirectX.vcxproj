@@ -157,6 +157,8 @@
     <ClInclude Include="Framework\Enviroment\Enviroment.h" />
     <ClInclude Include="Framework\System\Keyboard.h" />
     <ClInclude Include="Framework\System\Mouse.h" />
+    <ClInclude Include="GameObject\Planet.h" />
+    <ClInclude Include="GameObject\Star.h" />
     <ClInclude Include="GameObject\Transform.h" />
     <ClInclude Include="Framework\State\RasterizerState.h" />
     <ClInclude Include="Framework\State\SamplerState.h" />
@@ -178,6 +180,7 @@
     <ClInclude Include="Framework\Shaders\VertexShader.h" />
     <ClInclude Include="MyDirectX.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="Scenes\SolarSystemScene.h" />
     <ClInclude Include="Scenes\SphereScene.h" />
     <ClInclude Include="Scenes\TextureScene.h" />
     <ClInclude Include="targetver.h" />
@@ -193,6 +196,8 @@
     <ClCompile Include="Framework\Enviroment\Enviroment.cpp" />
     <ClCompile Include="Framework\System\Keyboard.cpp" />
     <ClCompile Include="Framework\System\Mouse.cpp" />
+    <ClCompile Include="GameObject\Planet.cpp" />
+    <ClCompile Include="GameObject\Star.cpp" />
     <ClCompile Include="GameObject\Transform.cpp" />
     <ClCompile Include="Framework\Shaders\PixelShader.cpp" />
     <ClCompile Include="Framework\Shaders\VertexShader.cpp" />
@@ -211,6 +216,7 @@
     <ClCompile Include="Scenes\CubeScene.cpp" />
     <ClCompile Include="Scenes\GridScene.cpp" />
     <ClCompile Include="Scenes\PlaneScene.cpp" />
+    <ClCompile Include="Scenes\SolarSystemScene.cpp" />
     <ClCompile Include="Scenes\SphereScene.cpp" />
     <ClCompile Include="Scenes\TextureScene.cpp" />
   </ItemGroup>

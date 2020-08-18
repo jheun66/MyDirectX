@@ -17,7 +17,7 @@ public:
 	void SetRenderTarget(ID3D11RenderTargetView* rtv = nullptr,
 		ID3D11DepthStencilView* dsv = nullptr);
 
-	void Clear(XMFLOAT4 color = XMFLOAT4(0.0f, 0.125f, 0.3f, 1.0f),
+	void Clear(XMFLOAT4 color = XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f),
 		ID3D11RenderTargetView* rtv = nullptr,
 		ID3D11DepthStencilView* dsv = nullptr);
 

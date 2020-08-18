@@ -3,9 +3,9 @@
 
 SphereScene::SphereScene()
 {
-    sun = new Sphere();
-    earth = new Sphere();
-    moon = new Sphere();
+    sun = new Star();
+    earth = new Star();
+    moon = new Star();
 
     sun->SetColor({ 1,0,0,1 });
     earth->SetColor({ 0,1,0,1 });

@@ -45,6 +45,9 @@ Grid::~Grid()
 	delete vertexShader;
 	delete pixelShader;
 
+	delete vertexShader2;
+	delete pixelShader2;
+
 	delete vertexBuffer;
 	delete indexBuffer;
 
@@ -186,7 +189,7 @@ void Grid::PostRender()
 {
 	ImGui::Begin("Grid", 0, ImGuiWindowFlags_AlwaysAutoResize);
 	{		
-		ImGui::SliderFloat3("LightDir", (float*)&lightBuffer->data.direction, -1, 1);
+		ImGui::SliderFloat3("LightPos", (float*)&lightBuffer->data.position, -100, 100);
 		ImGui::Checkbox("Frame", &viewFrame);
 		ImGui::Checkbox("Normal", &viewNormal);
 	}

@@ -3,25 +3,25 @@
 
 Sphere::Sphere()
 {
-    vertexShader = new VertexShader(L"Shaders/VertexShaders/VertexShader.hlsl");
-    pixelShader = new PixelShader(L"Shaders/PixelShaders/PixelShader.hlsl");
+    //vertexShader = new VertexShader(L"Shaders/VertexShaders/VertexShader.hlsl");
+    //pixelShader = new PixelShader(L"Shaders/PixelShaders/PixelShader.hlsl");
 
     Create();
-    colorBuffer = new ColorBuffer();
+    //colorBuffer = new ColorBuffer();
 }
 
 Sphere::~Sphere()
 {
-    delete vertexShader;
-    delete pixelShader;
-    delete colorBuffer;
+    //delete vertexShader;
+    //delete pixelShader;
+    //delete colorBuffer;
     delete vertexBuffer;
     delete indexBuffer;
 }
 
 void Sphere::Update()
 {
-    rotation.y += Time::Delta();
+    rotation.y += rotSpeed * Time::Delta();
     UpdateWorld();
 }
 
@@ -32,18 +32,21 @@ void Sphere::Render()
     IASetPT();
 
     SetWorldBuffer();
-    colorBuffer->SetBufferToPS(0);
+    //colorBuffer->SetBufferToPS(0);
 
-    vertexShader->Set();
-    pixelShader->Set();
+    //vertexShader->Set();
+    //pixelShader->Set();
 
     DC->DrawIndexed(indexCnt, 0, 0);
 }
 
+void Sphere::PostRender()
+{
+
+}
+
 void Sphere::Create()
 {
-    vector<Vertex> vertices;
-
     int stack = 50;
     int sector = 50;
 
@@ -72,7 +75,7 @@ void Sphere::Create()
 
     vertexBuffer = new VertexBuffer(vertices.data(), sizeof(Vertex), vertices.size());
 
-    vector<UINT> indices;
+    
     for (int i = 0; i < stack; i++)
     {
         int k1 = i * (sector + 1);

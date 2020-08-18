@@ -5,6 +5,7 @@
 #include "Scenes/TextureScene.h"
 #include "Scenes/PlaneScene.h"
 #include "Scenes/GridScene.h"
+#include "Scenes/SolarSystemScene.h"
 
 Program::Program()
 {
@@ -17,11 +18,12 @@ Program::Program()
 	Time::Get()->Start();
 
 	camera = new Camera("mainCamera");
-	camera->position = { 128, 50, -2 };
-	camera->rotation = { -30, 0, 0 };
+	camera->position = { 32, 39, -10 };
+	// 단위 맞춰주기
+	camera->rotation = { -30.5, -1.4, 0 };
 	SetCursorPos((int)(WIN_WIDTH / 2), (int)(WIN_HEIGHT / 2));
 
-	scene = new GridScene();
+	scene = new SolarSystemScene();
 }
 
 Program::~Program()

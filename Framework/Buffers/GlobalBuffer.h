@@ -47,13 +47,13 @@ class LightBuffer : public ConstBuffer
 public:
 	struct Data
 	{
-		XMFLOAT3 direction;
+		XMFLOAT3 position;
 		float padding;
 	}data;
 
 	LightBuffer() : ConstBuffer(&data, sizeof(Data))
 	{
-		data.direction = { 0,-1,0 };
+		data.position = { 0,-1,0 };
 
 	}
 };

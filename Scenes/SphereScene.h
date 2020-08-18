@@ -1,13 +1,14 @@
 #pragma once
 
 #include "GameObject/Sphere.h"
+#include "GameObject/Star.h"
 
 class SphereScene : public Scene
 {
 private:
-	Sphere* sun;
-	Sphere* earth;
-	Sphere* moon;
+	Star* sun;
+	Star* earth;
+	Star* moon;
 
 public:
 	SphereScene();

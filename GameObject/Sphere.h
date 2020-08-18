@@ -6,31 +6,26 @@ public:
 	Sphere();
 	~Sphere();
 
-	void Update();
-	void Render();
+	virtual void Update();
+	virtual void Render();
+	virtual void PostRender();
 
 	void Create();
 
-	void SetColor(XMFLOAT4 color) { colorBuffer->data.color = color; }
+	//void SetColor(XMFLOAT4 color) { colorBuffer->data.color = color; }
 
-	struct Vertex
-	{
-		XMFLOAT3 position;
+protected:
+	vector<Vertex> vertices;
+	vector<UINT> indices;
 
-		Vertex() : position(0, 0, 0)
-		{
-
-		}
-
-	};
-
-private:
 	VertexShader* vertexShader;
 	PixelShader* pixelShader;
 	VertexBuffer* vertexBuffer;
 	IndexBuffer* indexBuffer;
 
-	ColorBuffer* colorBuffer;
+	//ColorBuffer* colorBuffer;
 
 	UINT indexCnt;
+
+	float rotSpeed = 10.0f;
 };
