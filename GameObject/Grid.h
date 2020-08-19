@@ -21,14 +21,13 @@ private:
 	UINT width;
 	UINT height;
 
-	VertexShader* vertexShader;
-	PixelShader* pixelShader;
+	
 
 	MatrixBuffer* worldBuffer;
-	LightBuffer* lightBuffer;
 
 	RasterizerState* rasterizerState[2];
-	Texture* texture;
+
+	Material* material;
 	Texture* heightMap;
 
 	//중심점 버퍼

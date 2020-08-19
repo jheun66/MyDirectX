@@ -3,8 +3,8 @@
 
 Cube::Cube()
 {
-    vertexShader = new VertexShader(L"Shaders/VertexShaders/VertexShader.hlsl");
-    pixelShader = new PixelShader(L"Shaders/PixelShaders/PixelShader.hlsl");
+    vertexShader = Shader::AddVS(L"VertexShader");
+    pixelShader = Shader::AddPS(L"PixelShader");
 
     Create();
     colorBuffer = new ColorBuffer();
@@ -12,8 +12,6 @@ Cube::Cube()
 
 Cube::~Cube()
 {
-    delete vertexShader;
-    delete pixelShader;
     delete colorBuffer;
     delete vertexBuffer;
     delete indexBuffer;

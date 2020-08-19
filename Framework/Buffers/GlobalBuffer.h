@@ -42,7 +42,7 @@ public:
 	Data data;
 };
 
-class LightBuffer : public ConstBuffer
+class PointLightBuffer : public ConstBuffer
 {
 public:
 	struct Data
@@ -51,9 +51,53 @@ public:
 		float padding;
 	}data;
 
-	LightBuffer() : ConstBuffer(&data, sizeof(Data))
+	PointLightBuffer() : ConstBuffer(&data, sizeof(Data))
 	{
-		data.position = { 0,-1,0 };
-
+		data.position = { 0,0,0 };
 	}
+};
+
+class DirLightBuffer : public ConstBuffer
+{
+public:
+	struct Data
+	{
+		XMFLOAT3 direction;
+
+		// Exp Áö¼ö
+		float specularExp;
+	}data;
+
+	DirLightBuffer() : ConstBuffer(&data, sizeof(Data))
+	{
+		data.direction = { 0, -1, 0 };
+		data.specularExp = 8;
+	}
+
+};
+
+
+class ViewBuffer : public ConstBuffer
+{
+private:
+	struct Data
+	{
+		XMMATRIX view;
+		XMMATRIX invView;
+	}data;
+
+public:
+	ViewBuffer() : ConstBuffer(&data, sizeof(Data))
+	{
+		data.view = XMMatrixIdentity();
+		data.invView = XMMatrixIdentity();
+	}
+
+	void Set(XMMATRIX value)
+	{
+		data.view = XMMatrixTranspose(value);
+		XMMATRIX tmp = XMMatrixInverse(nullptr, value);
+		data.invView = XMMatrixTranspose(tmp);
+	}
+
 };

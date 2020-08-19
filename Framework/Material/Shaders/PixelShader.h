@@ -1,7 +1,8 @@
 #pragma once
 
-class PixelShader
+class PixelShader : public Shader
 {
+	friend class Shader;
 public:
 	PixelShader(wstring file, string psName = "PS");
 	~PixelShader();

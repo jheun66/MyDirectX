@@ -10,6 +10,7 @@ Enviroment::Enviroment()
 
 Enviroment::~Enviroment()
 {
+    delete samplerState;
 }
 
 void Enviroment::CreateViewort()

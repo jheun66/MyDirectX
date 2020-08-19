@@ -18,12 +18,13 @@ Program::Program()
 	Time::Get()->Start();
 
 	camera = new Camera("mainCamera");
-	camera->position = { 32, 39, -10 };
-	// 단위 맞춰주기
-	camera->rotation = { -30.5, -1.4, 0 };
+	camera->position = Vector3(32, 39, -10);
+	// 현제 라디안 단위
+	camera->rotation = Vector3(0, 0, 0);
+
 	SetCursorPos((int)(WIN_WIDTH / 2), (int)(WIN_HEIGHT / 2));
 
-	scene = new SolarSystemScene();
+	scene = new GridScene();
 }
 
 Program::~Program()
@@ -34,6 +35,9 @@ Program::~Program()
 	Keyboard::Delete();
 	Mouse::Delete();
 	Enviroment::Delete();
+
+	Texture::Delete();
+	Shader::Delete();
 }
 
 void Program::Update()

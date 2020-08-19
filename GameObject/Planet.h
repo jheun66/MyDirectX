@@ -8,14 +8,18 @@ public:
 
 	void Update() override;
 	void Render() override;
+
+	void Rotation() override;
+	void Revolution();
+
 	void PostRender();
 
 	void CreateUVNormal();
 
-	void SetPivot(XMFLOAT3 *value);
+	void SetPivot(Vector3* value);
 
 
-	XMFLOAT3 *pivot;
+	Vector3 *pivot;
 	UINT distance;
 	float revSpeed = 20.0f;
 	float degree = 0;

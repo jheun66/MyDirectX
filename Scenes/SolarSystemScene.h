@@ -16,7 +16,7 @@ private:
 	Planet* mars;
 	Planet* jupiter;
 
-	LightBuffer* lightBuffer;
+	PointLightBuffer* lightBuffer;
 
 public:
 	SolarSystemScene();

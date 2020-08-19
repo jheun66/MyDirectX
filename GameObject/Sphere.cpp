@@ -3,25 +3,17 @@
 
 Sphere::Sphere()
 {
-    //vertexShader = new VertexShader(L"Shaders/VertexShaders/VertexShader.hlsl");
-    //pixelShader = new PixelShader(L"Shaders/PixelShaders/PixelShader.hlsl");
-
     Create();
-    //colorBuffer = new ColorBuffer();
 }
 
 Sphere::~Sphere()
 {
-    //delete vertexShader;
-    //delete pixelShader;
-    //delete colorBuffer;
     delete vertexBuffer;
     delete indexBuffer;
 }
 
 void Sphere::Update()
 {
-    rotation.y += rotSpeed * Time::Delta();
     UpdateWorld();
 }
 
@@ -43,6 +35,11 @@ void Sphere::Render()
 void Sphere::PostRender()
 {
 
+}
+
+void Sphere::Rotation()
+{
+    rotation.y += rotSpeed * Time::Delta();
 }
 
 void Sphere::Create()

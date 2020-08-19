@@ -4,8 +4,8 @@
 Plane::Plane(UINT _row, UINT _col)
 	:row(_row), col(_col)
 {
-	vertexShader = new VertexShader(L"Shaders/VertexShaders/VertexUV.hlsl");
-	pixelShader = new PixelShader(L"Shaders/PixelShaders/PixelUV.hlsl");
+	vertexShader = Shader::AddVS(L"VertexUV");
+	pixelShader = Shader::AddPS(L"PixelUV");
 
 	Create();
 
@@ -23,9 +23,6 @@ Plane::Plane(UINT _row, UINT _col)
 
 Plane::~Plane()
 {
-	delete vertexShader;
-	delete pixelShader;
-
 	delete vertexBuffer;
 	delete indexBuffer;
 

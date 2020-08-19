@@ -17,12 +17,12 @@ public:
 public:
 	string tag;
 
-	XMFLOAT3 position;
-	XMFLOAT3 rotation;
-	XMFLOAT3 scale;
+	Vector3 position;
+	Vector3 rotation;
+	Vector3 scale;
 
 protected:
-	XMFLOAT3 pivot;
+	Vector3 pivot;
 
 	XMMATRIX world;
 	XMMATRIX* parent;

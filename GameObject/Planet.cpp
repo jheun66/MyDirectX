@@ -5,8 +5,8 @@
 Planet::Planet(wstring texturePath, string tag)
 	:tag(tag)
 {
-	vertexShader = new VertexShader(L"Shaders/VertexShaders/VertexDiffuse.hlsl");
-	pixelShader = new PixelShader(L"Shaders/PixelShaders/PixelDiffuse.hlsl");
+	vertexShader = Shader::AddVS(L"VertexSpecular");
+	pixelShader = Shader::AddPS(L"PixelSpecular");
 
 	if (texturePath != L"")
 	{
@@ -26,19 +26,14 @@ Planet::Planet(wstring texturePath, string tag)
 
 Planet::~Planet()
 {
-	delete vertexShader;
-	delete pixelShader;
 }
 
 void Planet::Update()
 {
-	degree += Time::Delta() * revSpeed;
-	float theta = XMConvertToRadians(degree);
-	position.x = pivot->x + distance * XMScalarCos(theta);
-	position.y = pivot->y;
-	position.z = pivot->z + distance * XMScalarSin(theta);
+	Rotation();
+	Revolution();
 
-	Sphere::Update();
+	UpdateWorld();
 }
 
 void Planet::Render()
@@ -56,6 +51,23 @@ void Planet::Render()
 	pixelShader->Set();
 
 	DC->DrawIndexed(indices.size(), 0, 0);
+}
+
+void Planet::Rotation()
+{
+	__super::Rotation();
+}
+
+void Planet::Revolution()
+{
+	if (pivot != nullptr)
+	{
+		degree += Time::Delta() * revSpeed;
+		float theta = XMConvertToRadians(degree);
+		position.x = pivot->x + distance * XMScalarCos(theta);
+		position.y = pivot->y;
+		position.z = pivot->z + distance * XMScalarSin(theta);
+	}
 }
 
 void Planet::PostRender()
@@ -86,9 +98,11 @@ void Planet::CreateUVNormal()
 
 			VertexUVNormal vt;
 
-			vt.position.x = (radius * XMScalarCos(pi)) * XMScalarCos(theta);
-			vt.position.y = (radius * XMScalarSin(pi));
-			vt.position.z = (radius * XMScalarCos(pi)) * XMScalarSin(theta);
+			vt.normal.x = (radius * XMScalarCos(pi)) * XMScalarCos(theta);
+			vt.normal.y = (radius * XMScalarSin(pi));
+			vt.normal.z = (radius * XMScalarCos(pi)) * XMScalarSin(theta);
+
+			vt.position = Vector3(vt.normal) * radius;
 
 			vt.uv = XMFLOAT2(j / (float)sector, (i / (float)stack));
 			UVVertices.push_back(vt);
@@ -121,36 +135,14 @@ void Planet::CreateUVNormal()
 	indexCnt = indices.size();
 	indexBuffer = new IndexBuffer(indices.data(), indexCnt);
 
-	// normal vector 구해주기
-	for (UINT i = 0; i < indices.size() / 3; i++)
-	{
-		UINT index0 = indices[i * 3 + 0];
-		UINT index1 = indices[i * 3 + 1];
-		UINT index2 = indices[i * 3 + 2];
-
-		XMVECTOR v0 = XMLoadFloat3(&UVVertices[index0].position);
-		XMVECTOR v1 = XMLoadFloat3(&UVVertices[index1].position);
-		XMVECTOR v2 = XMLoadFloat3(&UVVertices[index2].position);
-
-		XMVECTOR A = v1 - v0;
-		XMVECTOR B = v2 - v0;
-
-		XMVECTOR normal = XMVector3Normalize(XMVector3Cross(A, B));
-
-		XMStoreFloat3(&UVVertices[index0].normal, normal);
-		XMStoreFloat3(&UVVertices[index1].normal, normal);
-		XMStoreFloat3(&UVVertices[index2].normal, normal);
-	}
-
 	vertexBuffer = new VertexBuffer(UVVertices.data(), sizeof(VertexUVNormal), UVVertices.size());
 	
 }
 
-void Planet::SetPivot(XMFLOAT3 *value)
+void Planet::SetPivot(Vector3* value)
 {
 	pivot = value;
-	XMVECTOR pivotVec = XMLoadFloat3(pivot);
-	XMVECTOR posVec = XMLoadFloat3(&position);
 
-	distance = XMVectorGetX(XMVector3Length(pivotVec - posVec));
+	Vector3 tmp = *pivot - position;
+	distance = tmp.Length();
 }

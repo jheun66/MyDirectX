@@ -4,16 +4,14 @@
 
 Star::Star()
 {    
-    vertexShader = new VertexShader(L"Shaders/VertexShaders/VertexShader.hlsl");
-    pixelShader = new PixelShader(L"Shaders/PixelShaders/PixelShader.hlsl");
+    vertexShader = Shader::AddVS(L"VertexShader");
+    pixelShader = Shader::AddPS(L"PixelShader");
 
     colorBuffer = new ColorBuffer();
 }
 
 Star::~Star()
 {   
-    delete vertexShader;
-    delete pixelShader;
     delete colorBuffer;
 }
 

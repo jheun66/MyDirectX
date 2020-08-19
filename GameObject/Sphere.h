@@ -10,6 +10,9 @@ public:
 	virtual void Render();
 	virtual void PostRender();
 
+	// ÀÚÀü
+	virtual void Rotation();
+
 	void Create();
 
 	//void SetColor(XMFLOAT4 color) { colorBuffer->data.color = color; }

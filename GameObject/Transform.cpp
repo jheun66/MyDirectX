@@ -15,13 +15,9 @@ Transform::~Transform()
 
 void Transform::UpdateWorld()
 {
-	XMVECTOR v_pivot = XMLoadFloat3(&pivot);
-	XMVECTOR v_position = XMLoadFloat3(&position);
-	XMVECTOR v_sclae = XMLoadFloat3(&scale);
-
-	world = XMMatrixTransformation(v_pivot, XMQuaternionIdentity(),
-		v_sclae, v_pivot, XMQuaternionRotationRollPitchYaw(rotation.x, rotation.y, rotation.z)
-		, v_position);
+	world = XMMatrixTransformation(pivot, XMQuaternionIdentity(),
+		scale, pivot, XMQuaternionRotationRollPitchYaw(rotation.x, rotation.y, rotation.z)
+		, position);
 
 	if (parent != nullptr)
 		world *= *parent;

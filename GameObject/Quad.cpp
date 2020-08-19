@@ -2,8 +2,8 @@
 
 Quad::Quad()
 {
-	vertexShader = new VertexShader(L"Shaders/VertexShaders/VertexUV.hlsl");
-	pixelShader = new PixelShader(L"Shaders/PixelShaders/PixelUV.hlsl");
+	vertexShader = Shader::AddVS(L"VertexUV");
+	pixelShader = Shader::AddPS(L"PixelUV");
 
 	Create();
 

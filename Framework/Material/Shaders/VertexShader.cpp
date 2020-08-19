@@ -2,11 +2,13 @@
 
 VertexShader::VertexShader(wstring file, string vsName)
 {
+    wstring path = L"Shaders/VertexShaders/" + file + L".hlsl";
+
     // 컴파일 관련 기본 옵션
     DWORD flags = D3DCOMPILE_ENABLE_STRICTNESS | D3DCOMPILE_DEBUG;
 
     HRESULT hr;
-    hr = D3DCompileFromFile(file.c_str(), nullptr, nullptr,
+    hr = D3DCompileFromFile(path.c_str(), nullptr, nullptr,
         vsName.c_str(), "vs_5_0", flags, 0, &vertexBlob, nullptr);
     assert(SUCCEEDED(hr));
 

@@ -18,6 +18,10 @@
 #define DEVICE Device::Get()->GetDevice()
 #define DC Device::Get()->GetDeviceContext()
 
+#define KEY_DOWN(k) Keyboard::Get()->Down(k)
+#define KEY_PRESS(k) Keyboard::Get()->Press(k)
+#define KEY_UP(k) Keyboard::Get()->Up(k)
+
 // C/C++
 #include <windows.h>
 #include <stdlib.h>
@@ -60,15 +64,20 @@ using namespace std;
 #include "Framework/Buffers/ConstantBuffer.h"
 #include "Framework/Buffers/GlobalBuffer.h"
 
-// Shaders
-#include "Framework/Shaders/VertexShader.h"
-#include "Framework/Shaders/PixelShader.h"
+// Material Shaders + Texture
+#include "Framework/Material/Texture/Texture.h"
+#include "Framework/Material/Shaders/Shader.h"
+#include "Framework/Material/Shaders/VertexShader.h"
+#include "Framework/Material/Shaders/PixelShader.h"
+#include "Framework/Material/Material.h"
 
 
 #include "Framework/VertexLayout/VertexLayout.h"
 
-// Texture
-#include "Framework/Texture/Texture.h"
+
+
+// Math
+#include "Framework/Math/Vector3.h"
 
 // State
 #include "Framework/State/SamplerState.h"

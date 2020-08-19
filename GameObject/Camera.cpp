@@ -1,8 +1,19 @@
 #include "Framework.h"
 
 Camera::Camera(string tag)
-    :Transform(tag)
+    :Transform(tag), FOV(XM_PIDIV2), 
+    forward(0, 0, 1), right(1, 0, 0), up(0, 1, 0),
+    moveSpeed(20.0f), rotSpeed(1.0f)
 {
+    // 초기화
+    GetCursorPos(&oldPos);
+
+    matRotation = XMMatrixIdentity();
+    matView = XMMatrixIdentity();
+    
+    viewBuffer = new ViewBuffer();
+
+    CreateView();
 	CreatePerspective();
 }
 
@@ -12,122 +23,70 @@ Camera::~Camera()
 	delete projectionBuffer;
 }
 
-
-void Camera::Update()
+void Camera::Rotation()
 {
-    XMFLOAT3 tmpPos = { 0, 0, 0 };
+    // 모니터의 좌표를 구함(마우스가 화면 밖으로 나가도 상관 x)
+    GetCursorPos(&curPos);
+    Vector3 curVec = { (float)curPos.x, (float)curPos.y, 0 };
+    Vector3 oldVec = { (float)oldPos.x, (float)oldPos.y, 0 };
 
-    GetCursorPos(&cursorPos);
-    // 마우스 왼쪽 시점의 위치 저장
-    if (Mouse::Get()->Down(1))
+    Vector3 dif = curVec - oldVec;
+
+    if (Mouse::Get()->Press(1))
     {
-        isDrag = true;
-        // 이 경우 마우스가 화면 밖을 벗어갈때 문제
-        //dragedPosition = Mouse::Get()->GetPosition();
-        
-        dragedPosition.x = cursorPos.x;
-        dragedPosition.y = cursorPos.y;
-    
+        rotation.x += dif.y * rotSpeed * Time::Delta();
+        rotation.y += dif.x * rotSpeed * Time::Delta();
+
+        XMMATRIX rotX = XMMatrixRotationX(rotation.x);
+        XMMATRIX rotY = XMMatrixRotationY(rotation.y);
+
+        matRotation = rotX * rotY;
+
+        right = XMVector3TransformNormal({ 1, 0, 0 }, matRotation);
+        up = XMVector3TransformNormal({ 0, 1, 0 }, matRotation);
+        forward = XMVector3TransformNormal({ 0, 0, 1 }, matRotation);
     }
 
-    if (Mouse::Get()->Up(1))
+    oldPos = curPos;
+}
+
+void Camera::Move()
+{
+    if (KEY_PRESS(VK_RBUTTON))
     {
-        isDrag = false;
-    }
-
-    if (isDrag)
-    {
-        // 이 경우 마우스가 화면 밖을 벗어갈때 문제
-        //XMVECTOR tmp = Mouse::Get()->GetPosition();
-        //XMVECTOR diff = tmp - dragedPosition;
-        //float x = XMVectorGetX(diff);
-        //float y = XMVectorGetY(diff);
-
-        float x = cursorPos.x - dragedPosition.x;
-        float y = cursorPos.y - dragedPosition.y;
-
-        rotation.y += x * Time::Delta();
-        rotation.x += y * Time::Delta();
-
-        //dragedPosition = tmp;
-        dragedPosition.x = cursorPos.x;
-        dragedPosition.y = cursorPos.y;
-
-        if (Keyboard::Get()->Press(VK_LSHIFT))
+        if (KEY_PRESS(VK_LSHIFT))
         {
-            if (Keyboard::Get()->Press('W'))
-            {
-                tmpPos.z += 20 * Time::Delta();
-            }
-            else if (Keyboard::Get()->Press('S'))
-            {
-                tmpPos.z -= 20 * Time::Delta();
-            }
-
-            if (Keyboard::Get()->Press('A'))
-            {
-                tmpPos.x -= 20 * Time::Delta();
-            }
-            else if (Keyboard::Get()->Press('D'))
-            {
-                tmpPos.x += 20 * Time::Delta();
-            }
-
-            if (Keyboard::Get()->Press('Q'))
-            {
-                tmpPos.y -= 20 * Time::Delta();
-            }
-            else if (Keyboard::Get()->Press('E'))
-            {
-                tmpPos.y += 20 * Time::Delta();
-            }
+            moveSpeed = 40.0f;
         }
         else
         {
-            if (Keyboard::Get()->Press('W'))
-            {
-                tmpPos.z += 10 * Time::Delta();
-            }
-            else if (Keyboard::Get()->Press('S'))
-            {
-                tmpPos.z -= 10 * Time::Delta();
-            }
-
-            if (Keyboard::Get()->Press('A'))
-            {
-                tmpPos.x -= 10 * Time::Delta();
-            }
-            else if (Keyboard::Get()->Press('D'))
-            {
-                tmpPos.x += 10 * Time::Delta();
-            }
-
-            if (Keyboard::Get()->Press('Q'))
-            {
-                tmpPos.y -= 10 * Time::Delta();
-            }
-            else if (Keyboard::Get()->Press('E'))
-            {
-                tmpPos.y += 10 * Time::Delta();
-            }
+            moveSpeed = 20.0f;
         }
+
+        if (KEY_PRESS('W'))
+            position += forward * moveSpeed * Time::Delta();
+        if (KEY_PRESS('S'))
+            position -= forward * moveSpeed * Time::Delta();
+        if (KEY_PRESS('A'))
+            position -= right * moveSpeed * Time::Delta();
+        if (KEY_PRESS('D'))
+            position += right * moveSpeed * Time::Delta();
+        if (KEY_PRESS('Q'))
+            position -= up * moveSpeed * Time::Delta();
+        if (KEY_PRESS('E'))
+            position += up * moveSpeed * Time::Delta();
     }
+}
 
-    XMVECTOR tmpVec = XMVectorSet(tmpPos.x, tmpPos.y, tmpPos.z, 0);
-    XMMATRIX R = XMMatrixRotationRollPitchYaw(rotation.x, rotation.y, rotation.z);
-    tmpVec = XMVector4Transform(tmpVec, R);
 
-    tmpPos.x = XMVectorGetX(tmpVec);
-    tmpPos.y = XMVectorGetY(tmpVec);
-    tmpPos.z = XMVectorGetZ(tmpVec);
+void Camera::Update()
+{
+    Rotation();
+    Move();
 
-    position.x += tmpPos.x;
-    position.y += tmpPos.y;
-    position.z += tmpPos.z;
-
-    // Transform Update
     UpdateWorld();
 
+    CreateView();
     CreatePerspective();
 }
 
@@ -136,32 +95,32 @@ void Camera::PostRender()
     ImGui::Begin("Camera", 0, ImGuiWindowFlags_AlwaysAutoResize);
     {
         ImGui::SliderFloat3("CameraPosition", (float*)&position, -50, 50);
-        ImGui::SliderFloat3("CameraRotation", (float*)&rotation, -50, 50);
-        ImGui::Text("CursorPos :%f, %f", (float)cursorPos.x, (float)cursorPos.y);
+        ImGui::SliderFloat3("CameraRotation", (float*)&rotation, -XM_2PI, XM_2PI);
+        ImGui::Text("CursorPos :%f, %f", (float)curPos.x, (float)curPos.y);
         ImGui::Text("CursorPos With Window : %f, %f", XMVectorGetX(Mouse::Get()->GetPosition()), XMVectorGetY(Mouse::Get()->GetPosition()));
     }
     ImGui::End();
 }
 
 
+void Camera::CreateView()
+{
+    //// eye, focus, up 벡터를 이용한 방법
+    //Vector3 focus = position + forward;
+	//matView = XMMatrixLookAtLH(position, focus, up);
+	
+    // 월드의 역행렬을 이용해서도 구할 수 있다.
+    matView = XMMatrixInverse(nullptr, world);
+
+    viewBuffer->Set(matView);
+}
+
+
 void Camera::CreatePerspective()
 {
-    viewBuffer = new MatrixBuffer();
     projectionBuffer = new MatrixBuffer();
-    
-    //// eye, focus, up 벡터를 이용한 방법
-    //XMVECTOR eye = XMVectorSet(128, 50, -2, 0);
-    //XMVECTOR focus = XMVectorSet(128, 0, 128, 0);
-    //XMVECTOR up = XMVectorSet(0, 1, 0, 0);
-
-    //XMMATRIX view = XMMatrixLookAtLH(eye, focus, up);
-
-
-    XMMATRIX view = XMMatrixInverse(nullptr, world);
-
-    viewBuffer->Set(view);
-
-    XMMATRIX projection = XMMatrixPerspectiveFovLH(XM_PIDIV2,
+ 
+    XMMATRIX projection = XMMatrixPerspectiveFovLH(FOV,
         WIN_WIDTH / (float)WIN_HEIGHT, 0.1f, 1000.0f);
 
     projectionBuffer->Set(projection);

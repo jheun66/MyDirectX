@@ -43,7 +43,7 @@ SolarSystemScene::SolarSystemScene()
     jupiter->revSpeed = 80.0f;
     jupiter->scale = XMFLOAT3(2.5f, 2.5f, 2.5f);
 
-    lightBuffer = new LightBuffer();
+    lightBuffer = new PointLightBuffer();
 }
 
 SolarSystemScene::~SolarSystemScene()

@@ -1,19 +1,15 @@
 #include "framework.h"
 
 Grid::Grid(wstring texturePath, wstring heightMapPath)
-	:width(10), height(10), texture(nullptr), heightMap(nullptr)
+	:width(10), height(10), heightMap(nullptr)
 {
-	vertexShader = new VertexShader(L"Shaders/VertexShaders/VertexDiffuse.hlsl");
-	pixelShader = new PixelShader(L"Shaders/PixelShaders/PixelDiffuse.hlsl");
-	
-	vertexShader2 = new VertexShader(L"Shaders/VertexShaders/VertexColorShader.hlsl");
-	pixelShader2 = new PixelShader(L"Shaders/PixelShaders/PixelColorShader.hlsl");
+	material = new Material();
+	material->Add(L"VertexSpecular", L"PixelSpecular", texturePath);
+
+	vertexShader2 = Shader::AddVS(L"VertexColorShader");
+	pixelShader2 = Shader::AddPS(L"PixelColorShader");
 
 
-	if (texturePath != L"")
-	{
-		texture = Texture::Add(texturePath);
-	}
 	if (heightMapPath != L"")
 	{
 		heightMap = Texture::Add(heightMapPath);
@@ -24,11 +20,6 @@ Grid::Grid(wstring texturePath, wstring heightMapPath)
 		width = heightMap->GetWidth() - 1;
 		height = heightMap->GetHeight() - 1;
 	}
-	else if (texture != nullptr)
-	{
-		width = texture->GetWidth() - 1;
-		height = texture->GetHeight() - 1;
-	}
 
 	CreateData();
 
@@ -37,16 +28,11 @@ Grid::Grid(wstring texturePath, wstring heightMapPath)
 	rasterizerState[1]->FillMode(D3D11_FILL_WIREFRAME);
 
 	worldBuffer = new MatrixBuffer();
-	lightBuffer = new LightBuffer();
 }
 
 Grid::~Grid()
 {
-	delete vertexShader;
-	delete pixelShader;
-
-	delete vertexShader2;
-	delete pixelShader2;
+	delete material;
 
 	delete vertexBuffer;
 	delete indexBuffer;
@@ -54,7 +40,6 @@ Grid::~Grid()
 	delete rasterizerState[0];
 	delete rasterizerState[1];
 
-	delete lightBuffer;
 }
 
 void Grid::CreateData()
@@ -163,13 +148,8 @@ void Grid::Render()
 	IASetPT();
 
 	worldBuffer->SetBufferToVS(0);
-	lightBuffer->SetBufferToVS(3);
 
-	if(texture != nullptr)
-		texture->PSSet(0);
-
-	vertexShader->Set();
-	pixelShader->Set();
+	material->Set(0);
 
 	DC->DrawIndexed(indices.size(), 0, 0);
 
@@ -189,7 +169,6 @@ void Grid::PostRender()
 {
 	ImGui::Begin("Grid", 0, ImGuiWindowFlags_AlwaysAutoResize);
 	{		
-		ImGui::SliderFloat3("LightPos", (float*)&lightBuffer->data.position, -100, 100);
 		ImGui::Checkbox("Frame", &viewFrame);
 		ImGui::Checkbox("Normal", &viewNormal);
 	}

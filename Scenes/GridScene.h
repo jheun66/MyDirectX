@@ -1,5 +1,9 @@
 #pragma once
 
+#include "GameObject/Grid.h"
+#include "GameObject/Sphere.h"
+#include "GameObject/Planet.h"
+
 class GridScene : public Scene
 {
 public:
@@ -15,5 +19,7 @@ public:
 
 private:
 	Grid* grid = nullptr;
+	Planet* planet = nullptr;
 
+	DirLightBuffer* dirLBuffer;
 };
