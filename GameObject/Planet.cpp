@@ -13,7 +13,6 @@ Planet::Planet(wstring texturePath, string tag)
 		texture = Texture::Add(texturePath);
 	}
 
-	lightBuffer = new LightBuffer();
 
 	if (texture != nullptr)
 	{
@@ -29,7 +28,6 @@ Planet::~Planet()
 {
 	delete vertexShader;
 	delete pixelShader;
-	delete lightBuffer;
 }
 
 void Planet::Update()
@@ -50,7 +48,6 @@ void Planet::Render()
 	IASetPT();
 
 	worldBuffer->SetBufferToVS(0);
-	lightBuffer->SetBufferToVS(3);
 
 	if (texture != nullptr)
 		texture->PSSet(0);
@@ -66,7 +63,6 @@ void Planet::PostRender()
 	ImGui::Begin(("Planet " + tag).c_str(), 0, ImGuiWindowFlags_AlwaysAutoResize);
 	{
 		ImGui::SliderFloat3("position",(float*)&position, -100, 100);
-		ImGui::SliderFloat3("LightPos", (float*)&lightBuffer->data.position, -100, 100);
 		ImGui::SliderFloat("Rotation Speed", &rotSpeed, -2, 2);
 	}
 	ImGui::End();

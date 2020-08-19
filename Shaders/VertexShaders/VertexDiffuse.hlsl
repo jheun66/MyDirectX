@@ -38,10 +38,9 @@ PixelInput VS(VertexInput input)
 {
     PixelInput output;
     
-    
     output.pos = mul(input.pos, world);
+    float3 light = normalize(output.pos.xyz - lightPosition);
    
-    float3 light = normalize(input.pos.xyz - lightPosition);
     
     output.pos = mul(output.pos, view);
     output.pos = mul(output.pos, projection);

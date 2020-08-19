@@ -43,6 +43,7 @@ SolarSystemScene::SolarSystemScene()
     jupiter->revSpeed = 80.0f;
     jupiter->scale = XMFLOAT3(2.5f, 2.5f, 2.5f);
 
+    lightBuffer = new LightBuffer();
 }
 
 SolarSystemScene::~SolarSystemScene()
@@ -55,32 +56,12 @@ SolarSystemScene::~SolarSystemScene()
     delete venus;
     delete mars;
     delete jupiter;
+
+    delete lightBuffer;
 }
 
 void SolarSystemScene::Update()
 {
-    XMVECTOR sunPosVec = XMLoadFloat3(&sun->position);
-    XMVECTOR earthPosVec = XMLoadFloat3(&earth->position);
-    XMVECTOR moonPosVec = XMLoadFloat3(&moon->position);
-    XMVECTOR mercuryPosVec = XMLoadFloat3(&mercury->position);
-    XMVECTOR venusPosVec = XMLoadFloat3(&venus->position);
-    XMVECTOR marsPosVec = XMLoadFloat3(&mars->position);
-    XMVECTOR jupiterPosVec = XMLoadFloat3(&jupiter->position);
-
-    XMFLOAT3 dif1, dif2, dif3, dif4, dif5, dif6;
-    XMStoreFloat3(&dif1, sunPosVec - earthPosVec);
-    XMStoreFloat3(&dif2, sunPosVec - moonPosVec);
-    XMStoreFloat3(&dif3, sunPosVec - mercuryPosVec);
-    XMStoreFloat3(&dif4, sunPosVec - venusPosVec);
-    XMStoreFloat3(&dif5, sunPosVec - marsPosVec);
-    XMStoreFloat3(&dif6, sunPosVec - jupiterPosVec);
-
-    earth->SetLight(dif1);
-    moon->SetLight(dif2);
-    mercury->SetLight(dif3);
-    venus->SetLight(dif4);
-    mars->SetLight(dif5);
-    jupiter->SetLight(dif6);
 
     sun->Update();
     earth->Update();
@@ -97,6 +78,8 @@ void SolarSystemScene::PreRender()
 
 void SolarSystemScene::Render()
 {
+    lightBuffer->SetBufferToVS(3);
+
     sun->Render();
     earth->Render();
     moon->Render();
@@ -109,6 +92,9 @@ void SolarSystemScene::Render()
 
 void SolarSystemScene::PostRender()
 {
+    ImGui::SliderFloat3("LightPos", (float*)&lightBuffer->data.position, -100, 100);
+
+
     sun->PostRender();
     earth->PostRender();
     moon->PostRender();

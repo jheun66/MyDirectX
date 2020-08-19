@@ -9,7 +9,6 @@ public:
 	void Update() override;
 	void Render() override;
 	void PostRender();
-	void SetLight(XMFLOAT3 position) { lightBuffer->data.position = position; }
 
 	void CreateUVNormal();
 
@@ -23,7 +22,6 @@ public:
 private:
 	vector<VertexUVNormal> UVVertices;
 
-	LightBuffer* lightBuffer;
 	Texture* texture;
 
 
