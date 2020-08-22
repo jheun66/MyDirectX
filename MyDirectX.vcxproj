@@ -178,6 +178,7 @@
     <ClInclude Include="Framework\Material\Shaders\VertexShader.h" />
     <ClInclude Include="MyDirectX.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="Scenes\GridScene.h" />
     <ClInclude Include="Scenes\Scene.h" />
     <ClInclude Include="Scenes\SolarSystemScene.h" />
     <ClInclude Include="Scenes\TerrainScene.h" />
@@ -214,6 +215,7 @@
     <ClCompile Include="GameObject\Basic\Sphere.cpp" />
     <ClCompile Include="MyDirectX.cpp" />
     <ClCompile Include="MyGame\Program.cpp" />
+    <ClCompile Include="Scenes\GridScene.cpp" />
     <ClCompile Include="Scenes\SolarSystemScene.cpp" />
     <ClCompile Include="Scenes\TerrainScene.cpp" />
     <ClCompile Include="Scenes\TextureScene.cpp" />
