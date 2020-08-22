@@ -93,6 +93,10 @@ public:
 	// 두 벡터를 내적
 	static float Dot(const Vector3& vec1, const Vector3& vec2);
 
+	static bool Approximation(float origin, float target, float approxValue);
+
+	static bool Approximation(Vector3 origin, Vector3 target, float approxValue);
+
 private:
 	XMVECTOR data;
 };

@@ -26,11 +26,6 @@ Terrain::~Terrain()
 
 void Terrain::Update()
 {
-	if (Mouse::Get()->Down(0))
-	{
-		Picking(&pickingPos);
-	}
-
 	UpdateWorld();
 }
 
@@ -47,10 +42,7 @@ void Terrain::Render()
 
 void Terrain::PostRender()
 {
-	ImGui::SliderFloat3("PickingPos", (float*)&pickingPos, 0, 500);
 
-	altitude = GetAltitude(pickingPos);
-	ImGui::Text("Altitude : %f", altitude);
 }
 
 bool Terrain::Picking(OUT Vector3* position)
@@ -139,7 +131,7 @@ void Terrain::CreateData()
 		{
 			VertexType vertex;
 			vertex.position = XMFLOAT3(x, 0, z);
-			vertex.uv = XMFLOAT2(x / (float)width, 1.0f - (z / (float)height));
+			vertex.uv = XMFLOAT2((x / (float)width)*2, (1.0f - (z / (float)height))*2);
 
 			UINT index = width * z + x;
 			vertex.position.y = pixels[index].x * 20.0f;

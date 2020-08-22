@@ -7,6 +7,7 @@
 //#include "Scenes/GridScene.h"
 #include "Scenes/SolarSystemScene.h"
 #include "Scenes/TerrainScene.h"
+#include "Scenes/MousePickingScene.h"
 
 Program::Program()
 {
@@ -20,7 +21,7 @@ Program::Program()
 
 	SetCursorPos((int)(WIN_WIDTH / 2), (int)(WIN_HEIGHT / 2));
 
-	scene = new SolarSystemScene();
+	scene = new MousePickingScene();
 }
 
 Program::~Program()

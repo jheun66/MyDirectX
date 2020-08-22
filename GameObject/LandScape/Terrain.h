@@ -14,6 +14,8 @@ public:
 	bool Picking(OUT Vector3* position);
 	float GetAltitude(Vector3 position);
 
+	Material* GetMaterial() { return material; }
+
 private:
 	void CreateData();
 	void CreateNormal();
@@ -31,7 +33,4 @@ private:
 
 	Texture* heightMap;
 
-	// 마우스 피킹
-	Vector3 pickingPos;
-	float altitude;
 };

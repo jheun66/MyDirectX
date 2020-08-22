@@ -246,3 +246,19 @@ Vector3 operator/(const XMFLOAT3& value1, const Vector3& value2)
 {
 	return (Vector3)value1 / value2;
 }
+
+bool Vector3::Approximation(float origin, float target, float approxValue)
+{
+	return abs(origin - target) <= approxValue;
+}
+
+bool Vector3::Approximation(Vector3 origin, Vector3 target, float approxValue)
+{
+	bool result = true;
+
+	result &= Approximation(origin.x, target.x, approxValue);
+	result &= Approximation(origin.y, target.y, approxValue);
+	result &= Approximation(origin.z, target.z, approxValue);
+
+	return result;
+}
