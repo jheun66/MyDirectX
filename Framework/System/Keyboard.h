@@ -1,7 +1,6 @@
 #pragma once
 
 #define MAX_INPUT_KEY 255
-#define MAX_INPUT_MOUSE 8
 
 #define KeyPress(p) Keyboard::Get()->Press(p)
 #define KeyDown(p) Keyboard::Get()->Down(p)

@@ -1,15 +1,16 @@
 #include "Framework.h"
 
-#include "Scenes/CubeScene.h"
-#include "Scenes/SphereScene.h"
-#include "Scenes/TextureScene.h"
-#include "Scenes/PlaneScene.h"
-#include "Scenes/GridScene.h"
+//#include "Scenes/CubeScene.h"
+//#include "Scenes/SphereScene.h"
+//#include "Scenes/TextureScene.h"
+//#include "Scenes/PlaneScene.h"
+//#include "Scenes/GridScene.h"
 #include "Scenes/SolarSystemScene.h"
+#include "Scenes/TerrainScene.h"
 
 Program::Program()
 {
-	// viewport客 samplerstate 积己
+	// viewport, samplerstate, mainCamera 积己
 	Enviroment::Create();
 	Keyboard::Create();
 	Mouse::Create();
@@ -17,20 +18,15 @@ Program::Program()
 	Time::Create();
 	Time::Get()->Start();
 
-	camera = new Camera("mainCamera");
-	camera->position = Vector3(32, 39, -10);
-	// 泅力 扼叼救 窜困
-	camera->rotation = Vector3(0, 0, 0);
-
 	SetCursorPos((int)(WIN_WIDTH / 2), (int)(WIN_HEIGHT / 2));
 
-	scene = new GridScene();
+	scene = new SolarSystemScene();
 }
 
 Program::~Program()
 {
 	delete scene;
-	delete camera;
+
 	Time::Delete();
 	Keyboard::Delete();
 	Mouse::Delete();
@@ -46,7 +42,7 @@ void Program::Update()
 	Keyboard::Get()->Update();
 	Mouse::Get()->Update();
 	scene->Update();
-	camera->Update();
+	Enviroment::Get()->MainCamera()->Update();
 }
 
 void Program::PreRender()
@@ -56,14 +52,15 @@ void Program::PreRender()
 
 void Program::Render()
 {
-	camera->GetView()->SetBufferToVS(1);
-	camera->GetProjection()->SetBufferToVS(2);
+	Enviroment::Get()->MainCamera()->GetViewBuffer()->SetBufferToVS(1);
+	Enviroment::Get()->MainCamera()->GetProjection()->SetBufferToVS(2);
+	Enviroment::Get()->GetLight()->SetBufferToPS(0);
 
 	scene->Render();
 }
 
 void Program::PostRender()
 {
+	Enviroment::Get()->PostRender();
 	scene->PostRender();
-	camera->PostRender();
 }

@@ -124,10 +124,11 @@ void Mouse::Update()
 // wparam : 하위 워드에는 마우스 버튼, shift, ctrl 키의 상태를 나타내는 플래그 값, 상위 워드는 휠을 얼마나 돌렸는지
 LRESULT Mouse::InputProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
+	// 윈도우 좌측 상단을 (0, 0)으로 한다.
 	if (message == WM_LBUTTONDOWN || message == WM_MOUSEMOVE)
 	{
 		position = XMVectorSetX(position, (float)LOWORD(lParam));
-		position = XMVectorSetY(position, (float)(WIN_HEIGHT - HIWORD(lParam)));
+		position = XMVectorSetY(position, (float)HIWORD(lParam));
 	}
 
 	if (message == WM_MOUSEWHEEL)

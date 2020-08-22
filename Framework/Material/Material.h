@@ -3,16 +3,22 @@
 class Material
 {
 public:
-	Material();
+	Material(wstring file);
+	Material(wstring vsFile, wstring psFile);
+	Material(VertexShader* vertexShader, PixelShader* pixelShader);
 	~Material();
 
-	void Add(wstring vertexShaderPath, wstring pixelShaderPath,
-		wstring texturePath);
+	void Set();
 
-	void Set(UINT textureSlot);
+	void SetDiffuseMap(wstring file) { diffuseMap = Texture::Add(file); }
+	void SetSpecularMap(wstring file) { specularMap = Texture::Add(file); }
+	void SetNormalMap(wstring file) { normalMap = Texture::Add(file); }
 
 private:
 	VertexShader* vertexShader;
 	PixelShader* pixelShader;
-	Texture* texture;
+
+	Texture* diffuseMap;
+	Texture* specularMap;
+	Texture* normalMap;
 };

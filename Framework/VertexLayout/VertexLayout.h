@@ -47,3 +47,16 @@ struct VertexUVNormal
 
 	}
 };
+
+struct VertexUVNormalTangent
+{
+	XMFLOAT3 position;
+	XMFLOAT2 uv;
+	XMFLOAT3 normal;
+	XMFLOAT3 tangent;
+
+	VertexUVNormalTangent() : position(0, 0, 0), uv(0, 0), normal(0, 0, 0), tangent(0, 0, 0)
+	{
+
+	}
+};

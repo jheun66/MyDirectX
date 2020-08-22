@@ -14,5 +14,4 @@ public:
 
 private:
 	Scene* scene = nullptr;
-	Camera* camera = nullptr;
 };

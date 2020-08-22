@@ -37,20 +37,18 @@ Vector3& Vector3::operator=(const Vector3& rhs)
 	return *this;
 }
 
-/*
+
 Vector3::Vector3(Vector3&& src) noexcept
-	:Vector3()
 {
-	swap(*this, src);
+	data = src.data;
 }
 
 Vector3& Vector3::operator=(Vector3&& rhs) noexcept
 {
-	Vector3 tmp(move(rhs));
-	swap(*this, tmp);
+	data = rhs.data;
 	return *this;
 }
-*/
+
 
 Vector3::operator XMFLOAT3()
 {
@@ -227,4 +225,24 @@ Vector3 operator*(const float value1, const Vector3& value2)
 Vector3 operator/(const float value1, const Vector3& value2)
 {
 	return XMVectorReplicate(value1) / value2.data;
+}
+
+Vector3 operator+(const XMFLOAT3& value1, const Vector3& value2)
+{
+	return (Vector3)value1 + value2;
+}
+
+Vector3 operator-(const XMFLOAT3& value1, const Vector3& value2)
+{
+	return (Vector3)value1 - value2;
+}
+
+Vector3 operator*(const XMFLOAT3& value1, const Vector3& value2)
+{
+	return (Vector3)value1 * value2;
+}
+
+Vector3 operator/(const XMFLOAT3& value1, const Vector3& value2)
+{
+	return (Vector3)value1 / value2;
 }

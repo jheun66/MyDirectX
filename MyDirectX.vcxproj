@@ -151,8 +151,9 @@
     <ClInclude Include="Framework.h" />
     <ClInclude Include="Framework\Buffers\ConstantBuffer.h" />
     <ClInclude Include="Framework\Buffers\GlobalBuffer.h" />
-    <ClInclude Include="Framework\Buffers\IndexBuffer.h" />
-    <ClInclude Include="Framework\Buffers\VertexBuffer.h" />
+    <ClInclude Include="Framework\Buffers\Mesh\IndexBuffer.h" />
+    <ClInclude Include="Framework\Buffers\Mesh\Mesh.h" />
+    <ClInclude Include="Framework\Buffers\Mesh\VertexBuffer.h" />
     <ClInclude Include="Framework\Device\Device.h" />
     <ClInclude Include="Framework\Enviroment\Enviroment.h" />
     <ClInclude Include="Framework\Material\Material.h" />
@@ -160,31 +161,26 @@
     <ClInclude Include="Framework\Material\Shaders\Shader.h" />
     <ClInclude Include="Framework\System\Keyboard.h" />
     <ClInclude Include="Framework\System\Mouse.h" />
-    <ClInclude Include="GameObject\Planet.h" />
-    <ClInclude Include="GameObject\Star.h" />
+    <ClInclude Include="GameObject\Custom\Orb.h" />
+    <ClInclude Include="GameObject\LandScape\Terrain.h" />
     <ClInclude Include="GameObject\Transform.h" />
     <ClInclude Include="Framework\State\RasterizerState.h" />
     <ClInclude Include="Framework\State\SamplerState.h" />
-    <ClInclude Include="GameObject\Camera.h" />
+    <ClInclude Include="GameObject\Camera\Camera.h" />
     <ClInclude Include="Framework\System\Time.h" />
     <ClInclude Include="Framework\Material\Texture\Texture.h" />
     <ClInclude Include="Framework\VertexLayout\VertexLayout.h" />
-    <ClInclude Include="GameObject\Cube.h" />
-    <ClInclude Include="GameObject\Grid.h" />
-    <ClInclude Include="GameObject\Plane.h" />
-    <ClInclude Include="GameObject\Quad.h" />
-    <ClInclude Include="GameObject\Sphere.h" />
+    <ClInclude Include="GameObject\Basic\Cube.h" />
+    <ClInclude Include="GameObject\Basic\Quad.h" />
+    <ClInclude Include="GameObject\Basic\Sphere.h" />
     <ClInclude Include="MyGame\Program.h" />
-    <ClInclude Include="Scenes\CubeScene.h" />
-    <ClInclude Include="Scenes\GridScene.h" />
-    <ClInclude Include="Scenes\PlaneScene.h" />
-    <ClInclude Include="Scenes\Scene.h" />
     <ClInclude Include="Framework\Material\Shaders\PixelShader.h" />
     <ClInclude Include="Framework\Material\Shaders\VertexShader.h" />
     <ClInclude Include="MyDirectX.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="Scenes\Scene.h" />
     <ClInclude Include="Scenes\SolarSystemScene.h" />
-    <ClInclude Include="Scenes\SphereScene.h" />
+    <ClInclude Include="Scenes\TerrainScene.h" />
     <ClInclude Include="Scenes\TextureScene.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -193,8 +189,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Framework\Buffers\ConstantBuffer.cpp" />
-    <ClCompile Include="Framework\Buffers\IndexBuffer.cpp" />
-    <ClCompile Include="Framework\Buffers\VertexBuffer.cpp" />
+    <ClCompile Include="Framework\Buffers\Mesh\IndexBuffer.cpp" />
+    <ClCompile Include="Framework\Buffers\Mesh\Mesh.cpp" />
+    <ClCompile Include="Framework\Buffers\Mesh\VertexBuffer.cpp" />
     <ClCompile Include="Framework\Device\Device.cpp" />
     <ClCompile Include="Framework\Enviroment\Enviroment.cpp" />
     <ClCompile Include="Framework\Material\Material.cpp" />
@@ -202,28 +199,23 @@
     <ClCompile Include="Framework\Material\Shaders\Shader.cpp" />
     <ClCompile Include="Framework\System\Keyboard.cpp" />
     <ClCompile Include="Framework\System\Mouse.cpp" />
-    <ClCompile Include="GameObject\Planet.cpp" />
-    <ClCompile Include="GameObject\Star.cpp" />
+    <ClCompile Include="GameObject\Custom\Orb.cpp" />
+    <ClCompile Include="GameObject\LandScape\Terrain.cpp" />
     <ClCompile Include="GameObject\Transform.cpp" />
     <ClCompile Include="Framework\Material\Shaders\PixelShader.cpp" />
     <ClCompile Include="Framework\Material\Shaders\VertexShader.cpp" />
     <ClCompile Include="Framework\State\RasterizerState.cpp" />
     <ClCompile Include="Framework\State\SamplerState.cpp" />
-    <ClCompile Include="GameObject\Camera.cpp" />
+    <ClCompile Include="GameObject\Camera\Camera.cpp" />
     <ClCompile Include="Framework\System\Time.cpp" />
     <ClCompile Include="Framework\Material\Texture\Texture.cpp" />
-    <ClCompile Include="GameObject\Cube.cpp" />
-    <ClCompile Include="GameObject\Grid.cpp" />
-    <ClCompile Include="GameObject\Plane.cpp" />
-    <ClCompile Include="GameObject\Quad.cpp" />
-    <ClCompile Include="GameObject\Sphere.cpp" />
+    <ClCompile Include="GameObject\Basic\Cube.cpp" />
+    <ClCompile Include="GameObject\Basic\Quad.cpp" />
+    <ClCompile Include="GameObject\Basic\Sphere.cpp" />
     <ClCompile Include="MyDirectX.cpp" />
     <ClCompile Include="MyGame\Program.cpp" />
-    <ClCompile Include="Scenes\CubeScene.cpp" />
-    <ClCompile Include="Scenes\GridScene.cpp" />
-    <ClCompile Include="Scenes\PlaneScene.cpp" />
     <ClCompile Include="Scenes\SolarSystemScene.cpp" />
-    <ClCompile Include="Scenes\SphereScene.cpp" />
+    <ClCompile Include="Scenes\TerrainScene.cpp" />
     <ClCompile Include="Scenes\TextureScene.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -242,6 +234,13 @@
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">PS</EntryPointName>
     </FxCompile>
     <FxCompile Include="Shaders\PixelShaders\PixelDiffuse.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">PS</EntryPointName>
+    </FxCompile>
+    <FxCompile Include="Shaders\PixelShaders\PixelNormalMapping.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
@@ -276,6 +275,12 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
     <FxCompile Include="Shaders\VertexShaders\VertexDiffuse.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shaders\VertexShaders\VertexNormalMapping.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>

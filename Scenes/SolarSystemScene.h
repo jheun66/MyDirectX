@@ -1,21 +1,18 @@
 #pragma once
 
-#include "GameObject/Sphere.h"
-#include "GameObject/Star.h"
-#include "GameObject/Planet.h"
-
 class SolarSystemScene : public Scene
 {
 private:
-	Star* sun;
-	Planet* earth;
-	Planet* moon;
+	Orb* sun;
+	Orb* earth;
+	Orb* moon;
 
-	Planet* mercury;
-	Planet* venus;
-	Planet* mars;
-	Planet* jupiter;
+	Orb* mercury;
+	Orb* venus;
+	Orb* mars;
+	Orb* jupiter;
 
+	ColorBuffer* colorBuffer;
 	PointLightBuffer* lightBuffer;
 
 public:

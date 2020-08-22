@@ -37,6 +37,8 @@
 #include <d3d11.h>
 #include <DirectXMath.h>
 #include <d3dcompiler.h>
+// 충돌처리
+#include <DirectXCollision.h>
 
 // 프로젝트 속성 - 링커 - 입력 - 추가 종속성에서 추가해 줘도 된다.
 #pragma comment(lib, "d3d11.lib")
@@ -59,10 +61,11 @@ using namespace std;
 #include "Framework/Device/Device.h"
 
 // Buffers
-#include "Framework/Buffers/VertexBuffer.h"
-#include "Framework/Buffers/IndexBuffer.h"
 #include "Framework/Buffers/ConstantBuffer.h"
 #include "Framework/Buffers/GlobalBuffer.h"
+#include "Framework/Buffers/Mesh/VertexBuffer.h"
+#include "Framework/Buffers/Mesh/IndexBuffer.h"
+#include "Framework/Buffers/Mesh/Mesh.h"
 
 // Material Shaders + Texture
 #include "Framework/Material/Texture/Texture.h"
@@ -93,11 +96,12 @@ using namespace std;
 
 // GameObject Header
 #include "GameObject/Transform.h"
-#include "GameObject/Camera.h"
-#include "GameObject/Quad.h"
-#include "GameObject/Cube.h"
-#include "GameObject/Plane.h"
-#include "GameObject/Grid.h"
+#include "GameObject/Camera/Camera.h"
+#include "GameObject/Basic/Cube.h"
+#include "GameObject/Basic/Quad.h"
+#include "GameObject/Basic/Sphere.h"
+#include "GameObject/LandScape/Terrain.h"
+#include "GameObject/Custom/Orb.h"
 
 // 게임 씬과 게임 프로세스
 #include "Scenes/Scene.h"

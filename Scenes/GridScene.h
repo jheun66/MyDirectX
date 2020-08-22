@@ -1,9 +1,5 @@
 #pragma once
 
-#include "GameObject/Grid.h"
-#include "GameObject/Sphere.h"
-#include "GameObject/Planet.h"
-
 class GridScene : public Scene
 {
 public:
@@ -18,8 +14,10 @@ public:
 	virtual void PostRender() override;
 
 private:
-	Grid* grid = nullptr;
-	Planet* planet = nullptr;
+	Terrain* grid = nullptr;
+	Sphere* planet = nullptr;
 
 	DirLightBuffer* dirLBuffer;
+
+	MSBuffer* useMapBuffer;
 };

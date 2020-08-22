@@ -66,12 +66,15 @@ public:
 
 		// Exp 지수
 		float specularExp;
+		// 주변광 비율
+		XMFLOAT4 ambient;
 	}data;
 
 	DirLightBuffer() : ConstBuffer(&data, sizeof(Data))
 	{
 		data.direction = { 0, -1, 0 };
 		data.specularExp = 8;
+		data.ambient = { 0.1f, 0.1f, 0.1f, 0.0f };
 	}
 
 };
@@ -100,4 +103,22 @@ public:
 		data.invView = XMMatrixTranspose(tmp);
 	}
 
+};
+
+// 여러(specular, normal) 맵 설정 적용
+class MSBuffer : public ConstBuffer
+{
+public:
+	struct Data
+	{
+		int option[16];
+
+		// 현재까지 들어간 맵은 specular, normal, 초기값을 1로 함
+		Data() :option{1,1}
+		{}
+	}data;
+
+	MSBuffer() : ConstBuffer(&data, sizeof(Data))
+	{
+	}
 };

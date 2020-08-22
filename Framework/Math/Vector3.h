@@ -14,13 +14,11 @@ public:
 	// 복사 대입 연산자
 	Vector3& operator=(const Vector3& rhs);
 
-	/*
 	// 이동 생성자
 	Vector3(Vector3&& src) noexcept;
 	// 이동 대입 연산자
 	Vector3& operator=(Vector3&& rhs) noexcept;
-	*/
-
+	
 	~Vector3() = default;
 
 	// XMFLOAT3로 변환
@@ -71,6 +69,11 @@ public:
 	friend Vector3 operator-(const float value1, const Vector3& value2);
 	friend Vector3 operator*(const float value1, const Vector3& value2);
 	friend Vector3 operator/(const float value1, const Vector3& value2);
+
+	friend Vector3 operator+(const XMFLOAT3& value1, const Vector3& value2);
+	friend Vector3 operator-(const XMFLOAT3& value1, const Vector3& value2);
+	friend Vector3 operator*(const XMFLOAT3& value1, const Vector3& value2);
+	friend Vector3 operator/(const XMFLOAT3& value1, const Vector3& value2);
 
 	// 벡터의 길이 반환
 	float Length() const;		

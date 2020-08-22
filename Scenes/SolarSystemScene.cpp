@@ -3,47 +3,55 @@
 
 SolarSystemScene::SolarSystemScene()
 {
-    sun = new Star();
-    earth = new Planet(L"Earth/earthmap1k.jpg", "earth");
-    moon = new Planet(L"Moon/Download-Moon-Texture-Nasa_.jpg", "moon");
+    sun = new Orb();
+    earth = new Orb();
+    moon = new Orb();
+    mercury = new Orb();
+    venus = new Orb();
+    mars = new Orb();
+    jupiter = new Orb();
 
-    mercury = new Planet(L"2k_mercury.jpg", "mercury");
-    venus = new Planet(L"2k_venus_surface.jpg", "venus");
-    mars = new Planet(L"2k_mars.jpg", "mars");
-    jupiter = new Planet(L"2k_jupiter.jpg", "jupiter");
 
+    sun->SetMaterial(L"Shader");
+   
 
-    sun->SetColor({ 1,0,0,1 });
-
-    earth->position.x = 20;
+    earth->GetMaterial()->SetDiffuseMap(L"Earth/earthmap1k.jpg");
     earth->SetPivot(&(sun->position));
-    earth->revSpeed = 20.0f;
+    earth->SetDistance(20);
+    earth->SetRevSpeed(20);
 
-    moon->position.x = 23;
+    moon->GetMaterial()->SetDiffuseMap(L"Moon/Download-Moon-Texture-Nasa_.jpg");
     moon->SetPivot(&(earth->position));
-    moon->revSpeed = 80.0f;
+    moon->SetDistance(3);
+    moon->SetRevSpeed(80);
     moon->scale = XMFLOAT3(0.5f, 0.5f, 0.5f);
 
-    mercury->position.x = 7;
+    mercury->GetMaterial()->SetDiffuseMap(L"2k_mercury.jpg");
     mercury->SetPivot(&(sun->position));
-    mercury->revSpeed = 20.0f;
+    mercury->SetDistance(7);
+    mercury->SetRevSpeed(20);
     mercury->scale = XMFLOAT3(0.5f, 0.5f, 0.5f);
 
-    venus->position.x = 13;
+    venus->GetMaterial()->SetDiffuseMap(L"2k_venus_surface.jpg");
     venus->SetPivot(&(sun->position));
-    venus->revSpeed = 30.0f;
+    venus->SetDistance(13);
+    venus->SetRevSpeed(30);
     venus->scale = XMFLOAT3(0.7f, 0.7f, 0.7f);
 
-    mars->position.x = 40;
+    mars->GetMaterial()->SetDiffuseMap(L"2k_mars.jpg");
     mars->SetPivot(&(sun->position));
-    mars->revSpeed = 40.0f;
+    mars->SetDistance(40);
+    mars->SetRevSpeed(40);
 
-    jupiter->position.x = 53;
+    jupiter->GetMaterial()->SetDiffuseMap(L"2k_jupiter.jpg");
     jupiter->SetPivot(&(sun->position));
-    jupiter->revSpeed = 80.0f;
+    jupiter->SetDistance(53);
+    jupiter->SetRevSpeed(10);
     jupiter->scale = XMFLOAT3(2.5f, 2.5f, 2.5f);
 
     lightBuffer = new PointLightBuffer();
+    colorBuffer = new ColorBuffer();
+    colorBuffer->data.color = { 1,0,0,0 };
 }
 
 SolarSystemScene::~SolarSystemScene()
@@ -58,11 +66,11 @@ SolarSystemScene::~SolarSystemScene()
     delete jupiter;
 
     delete lightBuffer;
+    delete colorBuffer;
 }
 
 void SolarSystemScene::Update()
 {
-
     sun->Update();
     earth->Update();
     moon->Update();
@@ -79,8 +87,10 @@ void SolarSystemScene::PreRender()
 void SolarSystemScene::Render()
 {
     lightBuffer->SetBufferToVS(3);
-
-    sun->Render();
+    {
+        colorBuffer->SetBufferToPS(0);
+        sun->Render();
+    }
     earth->Render();
     moon->Render();
     mercury->Render();
@@ -93,14 +103,4 @@ void SolarSystemScene::Render()
 void SolarSystemScene::PostRender()
 {
     ImGui::SliderFloat3("LightPos", (float*)&lightBuffer->data.position, -100, 100);
-
-
-    sun->PostRender();
-    earth->PostRender();
-    moon->PostRender();
-
-    mercury->PostRender();
-    venus->PostRender();
-    mars->PostRender();
-    jupiter->PostRender();
 }
