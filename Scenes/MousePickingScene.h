@@ -13,7 +13,7 @@ public:
 
 private:
 	void MoveToPickingPos();
-
+	void RotateSphere();
 private:
 	Terrain* terrain;
 	Sphere* sphere;
@@ -24,4 +24,8 @@ private:
 	Vector3 curPos;
 
 	MSBuffer* settingBuffer;
+
+	// 회전을 위해
+	POINT mCurPos;
+	POINT mOldPos;
 };

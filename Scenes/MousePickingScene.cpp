@@ -15,6 +15,8 @@ MousePickingScene::MousePickingScene()
 
 
 	settingBuffer = new MSBuffer();
+
+	GetCursorPos(&mOldPos);
 }
 
 MousePickingScene::~MousePickingScene()
@@ -33,7 +35,7 @@ void MousePickingScene::Update()
 	}
 
 	MoveToPickingPos();
-	
+	RotateSphere();
 
 	terrain->Update();
 	sphere->Update();
@@ -74,4 +76,31 @@ void MousePickingScene::MoveToPickingPos()
 		sphere->position = XMVector3TransformCoord(tmpPos1, mat);
 	}
 	sphere->position.y = terrain->GetAltitude(sphere->position) + 2 + sin(sinWave);
+
+	Vector3 offset = { 0,10,-10 };
+	offset = XMVector3TransformNormal(offset, *sphere->GetWorld());
+	Environment::Get()->MainCamera()->position = Vector3(sphere->position.x, terrain->GetAltitude(sphere->position), sphere->position.z) + offset;
+	Environment::Get()->MainCamera()->rotation = sphere->rotation;
+}
+
+void MousePickingScene::RotateSphere()
+{
+	// 모니터의 좌표를 구함(마우스가 화면 밖으로 나가도 상관 x)
+	GetCursorPos(&mCurPos);
+	Vector3 curVec = { (float)mCurPos.x, (float)mCurPos.y, 0 };
+	Vector3 oldVec = { (float)mOldPos.x, (float)mOldPos.y, 0 };
+
+	Vector3 dif = curVec - oldVec;
+
+	if (Mouse::Get()->Press(1))
+	{
+		sphere->rotation.x += dif.y * 5.0f * Time::Delta();
+		sphere->rotation.y += dif.x * 5.0f * Time::Delta();
+
+		XMMATRIX rotY = XMMatrixRotationY(sphere->rotation.y);
+		XMMATRIX rotX = XMMatrixRotationX(sphere->rotation.x);
+		
+	}
+
+	mOldPos = mCurPos;
 }

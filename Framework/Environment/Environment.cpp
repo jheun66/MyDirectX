@@ -1,8 +1,8 @@
 #include "framework.h"
 
-Enviroment* Enviroment::instance = nullptr;
+Environment* Environment::instance = nullptr;
 
-Enviroment::Enviroment()
+Environment::Environment()
 {
     CreateViewort();
     CreateSamplerState();
@@ -11,7 +11,7 @@ Enviroment::Enviroment()
     lightBuffer = new DirLightBuffer();
 }
 
-Enviroment::~Enviroment()
+Environment::~Environment()
 {
     delete samplerState;
 
@@ -19,7 +19,7 @@ Enviroment::~Enviroment()
     delete lightBuffer;
 }
 
-void Enviroment::CreateViewort()
+void Environment::CreateViewort()
 {
     D3D11_VIEWPORT vp;
     vp.Width = WIN_WIDTH;
@@ -31,14 +31,14 @@ void Enviroment::CreateViewort()
     DC->RSSetViewports(1, &vp);
 }
 
-void Enviroment::CreateSamplerState()
+void Environment::CreateSamplerState()
 {
     samplerState = new SamplerState();
     //samplerState->Address(D3D11_TEXTURE_ADDRESS_CLAMP);
     samplerState->SetState();
 }
 
-void Enviroment::PostRender()
+void Environment::PostRender()
 {
     ImGui::Text("FPS : %d", (int)Time::Get()->FPS());
     mainCamera->PostRender();

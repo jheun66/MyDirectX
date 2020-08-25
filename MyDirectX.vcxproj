@@ -155,7 +155,7 @@
     <ClInclude Include="Framework\Buffers\Mesh\Mesh.h" />
     <ClInclude Include="Framework\Buffers\Mesh\VertexBuffer.h" />
     <ClInclude Include="Framework\Device\Device.h" />
-    <ClInclude Include="Framework\Enviroment\Enviroment.h" />
+    <ClInclude Include="Framework\Environment\Environment.h" />
     <ClInclude Include="Framework\Material\Material.h" />
     <ClInclude Include="Framework\Math\Vector3.h" />
     <ClInclude Include="Framework\Material\Shaders\Shader.h" />
@@ -195,7 +195,7 @@
     <ClCompile Include="Framework\Buffers\Mesh\Mesh.cpp" />
     <ClCompile Include="Framework\Buffers\Mesh\VertexBuffer.cpp" />
     <ClCompile Include="Framework\Device\Device.cpp" />
-    <ClCompile Include="Framework\Enviroment\Enviroment.cpp" />
+    <ClCompile Include="Framework\Environment\Environment.cpp" />
     <ClCompile Include="Framework\Material\Material.cpp" />
     <ClCompile Include="Framework\Math\Vector3.cpp" />
     <ClCompile Include="Framework\Material\Shaders\Shader.cpp" />

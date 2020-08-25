@@ -12,7 +12,7 @@
 Program::Program()
 {
 	// viewport, samplerstate, mainCamera »ý¼º
-	Enviroment::Create();
+	Environment::Create();
 	Keyboard::Create();
 	Mouse::Create();
 
@@ -31,7 +31,7 @@ Program::~Program()
 	Time::Delete();
 	Keyboard::Delete();
 	Mouse::Delete();
-	Enviroment::Delete();
+	Environment::Delete();
 
 	Texture::Delete();
 	Shader::Delete();
@@ -43,7 +43,7 @@ void Program::Update()
 	Keyboard::Get()->Update();
 	Mouse::Get()->Update();
 	scene->Update();
-	Enviroment::Get()->MainCamera()->Update();
+	Environment::Get()->MainCamera()->Update();
 }
 
 void Program::PreRender()
@@ -53,15 +53,15 @@ void Program::PreRender()
 
 void Program::Render()
 {
-	Enviroment::Get()->MainCamera()->GetViewBuffer()->SetBufferToVS(1);
-	Enviroment::Get()->MainCamera()->GetProjection()->SetBufferToVS(2);
-	Enviroment::Get()->GetLight()->SetBufferToPS(0);
+	Environment::Get()->MainCamera()->GetViewBuffer()->SetBufferToVS(1);
+	Environment::Get()->MainCamera()->GetProjection()->SetBufferToVS(2);
+	Environment::Get()->GetLight()->SetBufferToPS(0);
 
 	scene->Render();
 }
 
 void Program::PostRender()
 {
-	Enviroment::Get()->PostRender();
+	Environment::Get()->PostRender();
 	scene->PostRender();
 }

@@ -86,8 +86,8 @@ using namespace std;
 #include "Framework/State/SamplerState.h"
 #include "Framework/State/RasterizerState.h"
 
-// Enviroment
-#include "Framework/Enviroment/Enviroment.h"
+// Environment
+#include "Framework/Environment/Environment.h"
 
 // System
 #include "Framework/System/Time.h"

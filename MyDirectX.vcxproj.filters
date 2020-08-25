@@ -54,9 +54,6 @@
     <ClInclude Include="Framework\VertexLayout\VertexLayout.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Framework\Enviroment\Enviroment.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="GameObject\Transform.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
@@ -126,6 +123,9 @@
     <ClInclude Include="Scenes\MousePickingScene.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Framework\Environment\Environment.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MyDirectX.cpp">
@@ -153,9 +153,6 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Framework\System\Time.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Framework\Enviroment\Enviroment.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="GameObject\Transform.cpp">
@@ -222,6 +219,9 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Scenes\MousePickingScene.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Environment\Environment.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

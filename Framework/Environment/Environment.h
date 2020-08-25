@@ -3,18 +3,18 @@
 // 환경 설정 정보등을 담고 있는 클래스(카메라, 조명 등)
 class Camera;
 
-class Enviroment
+class Environment
 {
 private:
-	Enviroment();
-	~Enviroment();
+	Environment();
+	~Environment();
 
 	void CreateViewort();
 	void CreateSamplerState();
 
 public:
-	static Enviroment* Get() { return instance; }
-	static void Create() { instance = new Enviroment(); }
+	static Environment* Get() { return instance; }
+	static void Create() { instance = new Environment(); }
 	static void Delete() { delete instance; }
 
 	// ImGui로 정보 출력
@@ -31,5 +31,5 @@ private:
 	DirLightBuffer* lightBuffer;
 
 
-	static Enviroment* instance;
+	static Environment* instance;
 };
