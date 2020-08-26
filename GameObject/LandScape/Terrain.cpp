@@ -198,7 +198,7 @@ void Terrain::CreateData()
 			vertex.position = XMFLOAT3(x, 0, z);
 			vertex.uv = XMFLOAT2((x / (float)width), (1.0f - (z / (float)height)));
 
-			UINT index = width * z + x;
+			UINT index = (width + 1) * z + x;
 			vertex.position.y = pixels[index].x * 20.0f;
 
 			vertices.emplace_back(vertex);

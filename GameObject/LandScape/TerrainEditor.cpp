@@ -1,22 +1,30 @@
 #include "Framework.h"
 
 TerrainEditor::TerrainEditor(UINT width, UINT height)
-	:width(width), height(height), isRaise(true), adjustValue(50)
+	:width(width), height(height), isRaise(true), adjustValue(50),
+	isPainting(true), paintValue(5.0f), selectMap(0)
 {
-	material = new Material(L"BrushWithMapping");
+	material = new Material(L"Splatting");
 	material->SetDiffuseMap(L"Terrain/brown_mud_leaves_01_diff_1k.png");
 	material->SetSpecularMap(L"Terrain/brown_mud_leaves_01_spec_1k.png");
 	material->SetNormalMap(L"Terrain/brown_mud_leaves_01_Nor_1k.png");
 
+	heightMap = Texture::Add(L"HeightMaps/TestHeightMap.png");
+	this->width = heightMap->GetWidth() - 1;
+	this->height = heightMap->GetHeight() - 1;
+
 	CreateData();
 	CreateNormal();
-	CreateTangent();
 
 	mesh = new Mesh(vertices.data(), sizeof(VertexType), vertices.size(),
 		indices.data(), indices.size());
 
 	CreateCompute();
 	brushBuffer = new BrushBuffer();
+
+	//alphaMap = Texture::Add(L"HeightMaps/AlphaMap.png");
+	secondMap = Texture::Add(L"Landscape/Stones.png");
+	thirdMap = Texture::Add(L"sana.jpeg");
 }
 
 TerrainEditor::~TerrainEditor()
@@ -43,16 +51,25 @@ void TerrainEditor::Update()
 	{
 		if (KEY_PRESS(VK_LBUTTON))
 		{
-			if (isRaise)
-				AdjustY(temp, adjustValue);
-			else
-				AdjustY(temp, -adjustValue);
+			if (isPainting)
+			{
+				if (isRaise)
+					PaintBrush(brushBuffer->data.location, paintValue);
+				else
+					PaintBrush(brushBuffer->data.location, -paintValue);
+			}
+			else 
+			{
+				if (isRaise)
+					AdjustY(temp, adjustValue);
+				else
+					AdjustY(temp, -adjustValue);
+			}
 		}
 
 		if (KEY_UP(VK_LBUTTON))
 		{
 			CreateNormal();
-			CreateTangent();
 			mesh->UpdateVertex(vertices.data(), vertices.size());
 		}
 
@@ -68,6 +85,10 @@ void TerrainEditor::Render()
 	SetWorldBuffer();
 	brushBuffer->SetBufferToVS(3);
 
+	//alphaMap->PSSet(10);
+	secondMap->PSSet(11);
+	thirdMap->PSSet(12);
+
 	material->Set();
 
 	DC->DrawIndexed(indices.size(), 0, 0);
@@ -76,9 +97,20 @@ void TerrainEditor::Render()
 void TerrainEditor::PostRender()
 {
 	ImGui::Text("TerrainEditor");
-	ImGui::SliderInt("Type", &brushBuffer->data.type, 1, 3);
+	ImGui::Checkbox("PaintMode", &isPainting);
 	ImGui::Checkbox("Raise", &isRaise);
 	ImGui::SliderFloat("AdjustValue", &adjustValue, 0, 300);
+	ImGui::SliderFloat("PaintValue", &paintValue, 0, 10);
+	ImGui::SliderInt("SelectMap", &selectMap, 0, 1);
+
+
+	if (ImGui::Button("Save"))
+		Save();
+	if (ImGui::Button("Load"))
+		Load();
+
+	if (ImGui::Button("SaveHeightMap"))
+		SaveHeightMap();
 }
 
 bool TerrainEditor::ComputePicking(OUT Vector3* position)
@@ -173,6 +205,101 @@ void TerrainEditor::AdjustY(Vector3 position, float value)
 	mesh->UpdateVertex(vertices.data(), vertices.size());
 }
 
+void TerrainEditor::PaintBrush(Vector3 position, float value)
+{
+	switch (brushBuffer->data.type)
+	{
+	case 1:
+	{
+		for (VertexType& vertex : vertices)
+		{
+			Vector3 p1 = Vector3(vertex.position.x, 0, vertex.position.z);
+			Vector3 p2 = Vector3(position.x, 0, position.z);
+
+			float dist = (p2 - p1).Length();
+
+			float temp = value * max(0, cos(XM_PIDIV2 * dist / brushBuffer->data.range));
+
+			if (dist <= brushBuffer->data.range)
+			{
+				vertex.alpha[selectMap] += temp * Time::Delta();
+				vertex.alpha[selectMap] = GameMath::Saturate(vertex.alpha[selectMap]);
+			}
+		}
+	}
+	default:
+		break;
+	}
+
+	mesh->UpdateVertex(vertices.data(), vertices.size());
+}
+
+void TerrainEditor::Save()
+{
+	heights.clear();
+
+	for (VertexType vertex : vertices)
+		heights.emplace_back(vertex.position.y);
+
+	BinaryWriter* writer = new BinaryWriter(L"TextData/MapHeight.map");
+
+	writer->UInt(heights.size());
+	writer->Byte(heights.data(), sizeof(float) * heights.size());
+
+	delete writer;
+}
+
+void TerrainEditor::Load()
+{
+	BinaryReader* reader = new BinaryReader(L"TextData/MapHeight.map");
+
+	UINT size = reader->UInt();
+
+	// resize는 초기화까지 해준다. reserve는 확보만
+	heights.resize(size);
+	void* data = heights.data();
+
+	reader->Byte(&data, sizeof(float) * size);
+
+	for (UINT i = 0; i < size; i++)
+		vertices[i].position.y = heights[i];
+
+	delete reader;
+
+	CreateNormal();
+
+	mesh->UpdateVertex(vertices.data(), vertices.size());
+
+}
+
+void TerrainEditor::SaveHeightMap()
+{
+	UINT size = (width + 1) * (height + 1) * 4;
+	uint8_t* pixels = new uint8_t[size];
+
+	for (UINT i = 0; i < size / 4; i++)
+	{
+		pixels[i * 4 + 0] = vertices[i].position.y * 20;
+		pixels[i * 4 + 1] = 0;
+		pixels[i * 4 + 2] = 0;
+		pixels[i * 4 + 3] = 255;
+	}
+
+	Image image;
+
+	image.width = width + 1;
+	image.height = height + 1;
+	image.pixels = pixels;
+	image.format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	image.rowPitch = (width + 1) * 4;
+
+	image.slicePitch = image.width * image.height * 4;
+
+	SaveToWICFile(image, WIC_FLAGS_FORCE_RGB, GetWICCodec(WIC_CODEC_PNG),
+		L"Textures/HeightMaps/TestHeightMap.png");
+
+}
+
 void TerrainEditor::CreateData()
 {
 	for (UINT z = 0; z <= height; z++)
@@ -183,7 +310,7 @@ void TerrainEditor::CreateData()
 			vertex.position = XMFLOAT3(x, 0, z);
 			vertex.uv = XMFLOAT2((x / (float)width)*2 , (1.0f - (z / (float)height))*2);
 
-			UINT index = width * z + x;
+			UINT index = (width+1) * z + x;
 
 			vertices.emplace_back(vertex);
 		}
@@ -237,56 +364,6 @@ void TerrainEditor::CreateNormal()
 		vertices[index0].normal = (vertices[index0].normal + normal).Normal();
 		vertices[index1].normal = (vertices[index1].normal + normal).Normal();
 		vertices[index2].normal = (vertices[index2].normal + normal).Normal();
-	}
-}
-
-void TerrainEditor::CreateTangent()
-{
-	for (UINT i = 0; i < indices.size() / 3; i++)
-	{
-		UINT index0 = indices[i * 3 + 0];
-		UINT index1 = indices[i * 3 + 1];
-		UINT index2 = indices[i * 3 + 2];
-
-		VertexType vertex0 = vertices[index0];
-		VertexType vertex1 = vertices[index1];
-		VertexType vertex2 = vertices[index2];
-
-		Vector3 p0 = vertex0.position;
-		Vector3 p1 = vertex1.position;
-		Vector3 p2 = vertex2.position;
-
-		XMFLOAT2 uv0 = vertex0.uv;
-		XMFLOAT2 uv1 = vertex1.uv;
-		XMFLOAT2 uv2 = vertex2.uv;
-
-		Vector3 e0 = p1 - p0;
-		Vector3 e1 = p2 - p0;
-
-		float u0 = uv1.x - uv0.x;
-		float u1 = uv2.x - uv0.x;
-		float v0 = uv1.y - uv0.y;
-		float v1 = uv2.y - uv0.y;
-
-		float d = 1.0f / (u0 * v1 - v0 * u1);
-
-		Vector3 tangent;
-		tangent = (v1 * e0 - v0 * e1) * d;
-
-		vertices[index0].tangent = tangent + vertices[index0].tangent;
-		vertices[index1].tangent = tangent + vertices[index1].tangent;
-		vertices[index2].tangent = tangent + vertices[index2].tangent;
-
-	}
-
-	for (VertexType& vertex : vertices)
-	{
-		Vector3 t = vertex.tangent;
-		Vector3 n = vertex.normal;
-
-		Vector3 temp = (t - n * Vector3::Dot(n, t)).Normal();
-
-		vertex.tangent = temp;
 	}
 }
 

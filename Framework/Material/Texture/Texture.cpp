@@ -39,7 +39,7 @@ Texture* Texture::Add(wstring file)
     }
     else
     {
-        HRESULT hr = LoadFromWICFile(path.c_str(), WIC_FLAGS_NONE, nullptr, image);
+        HRESULT hr = LoadFromWICFile(path.c_str(), WIC_FLAGS_FORCE_RGB, nullptr, image);
         assert(SUCCEEDED(hr));
     }
 

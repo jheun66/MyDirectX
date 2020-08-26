@@ -60,3 +60,16 @@ struct VertexUVNormalTangent
 
 	}
 };
+
+struct VertexUVNormalAlpha
+{
+	XMFLOAT3 position;
+	XMFLOAT2 uv;
+	XMFLOAT3 normal;
+	float alpha[4];
+
+	VertexUVNormalAlpha() : position(0, 0, 0), uv(0, 0), normal(0, 0, 0), alpha{}
+	{
+
+	}
+};

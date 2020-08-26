@@ -138,6 +138,15 @@
     <ClInclude Include="Scenes\TerrainEditorScene.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Framework\System\FileSystem\BinaryReader.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\System\FileSystem\BinaryWriter.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Math\Math.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MyDirectX.cpp">
@@ -248,6 +257,15 @@
     <ClCompile Include="Scenes\TerrainEditorScene.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Framework\System\FileSystem\BinaryReader.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\System\FileSystem\BinaryWriter.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Math\Math.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MyDirectX.rc">
@@ -280,5 +298,11 @@
     <FxCompile Include="Shaders\ComputeShaders\Intersection.hlsl" />
     <FxCompile Include="Shaders\PixelShaders\PixelBrushWithMapping.hlsl" />
     <FxCompile Include="Shaders\VertexShaders\VertexBrushWithMapping.hlsl" />
+    <FxCompile Include="Shaders\PixelShaders\PixelSplatting.hlsl" />
+    <FxCompile Include="Shaders\VertexShaders\VertexSplatting.hlsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shaders\PixelShaders\PixelHeader.hlsli" />
+    <None Include="Shaders\VertexShaders\VertexHeader.hlsli" />
   </ItemGroup>
 </Project>

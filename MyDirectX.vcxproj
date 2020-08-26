@@ -159,8 +159,11 @@
     <ClInclude Include="Framework\Environment\Environment.h" />
     <ClInclude Include="Framework\Material\Material.h" />
     <ClInclude Include="Framework\Material\Shaders\ComputeShader.h" />
+    <ClInclude Include="Framework\Math\Math.h" />
     <ClInclude Include="Framework\Math\Vector3.h" />
     <ClInclude Include="Framework\Material\Shaders\Shader.h" />
+    <ClInclude Include="Framework\System\FileSystem\BinaryReader.h" />
+    <ClInclude Include="Framework\System\FileSystem\BinaryWriter.h" />
     <ClInclude Include="Framework\System\Keyboard.h" />
     <ClInclude Include="Framework\System\Mouse.h" />
     <ClInclude Include="GameObject\Custom\Orb.h" />
@@ -203,8 +206,11 @@
     <ClCompile Include="Framework\Environment\Environment.cpp" />
     <ClCompile Include="Framework\Material\Material.cpp" />
     <ClCompile Include="Framework\Material\Shaders\ComputeShader.cpp" />
+    <ClCompile Include="Framework\Math\Math.cpp" />
     <ClCompile Include="Framework\Math\Vector3.cpp" />
     <ClCompile Include="Framework\Material\Shaders\Shader.cpp" />
+    <ClCompile Include="Framework\System\FileSystem\BinaryReader.cpp" />
+    <ClCompile Include="Framework\System\FileSystem\BinaryWriter.cpp" />
     <ClCompile Include="Framework\System\Keyboard.cpp" />
     <ClCompile Include="Framework\System\Mouse.cpp" />
     <ClCompile Include="GameObject\Custom\Orb.cpp" />
@@ -298,6 +304,13 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">PS</EntryPointName>
     </FxCompile>
+    <FxCompile Include="Shaders\PixelShaders\PixelSplatting.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">PS</EntryPointName>
+    </FxCompile>
     <FxCompile Include="Shaders\PixelShaders\PixelUV.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
@@ -347,6 +360,12 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
+    <FxCompile Include="Shaders\VertexShaders\VertexSplatting.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
     <FxCompile Include="Shaders\VertexShaders\VertexUV.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
@@ -361,6 +380,10 @@
     <ProjectReference Include="..\ImGui\ImGui.vcxproj">
       <Project>{bf46116d-a5a7-4ed4-9fd9-8fbcae20a2e0}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shaders\PixelShaders\PixelHeader.hlsli" />
+    <None Include="Shaders\VertexShaders\VertexHeader.hlsli" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

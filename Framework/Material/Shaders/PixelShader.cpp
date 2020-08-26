@@ -7,7 +7,7 @@ PixelShader::PixelShader(wstring file, string psName)
     DWORD flags = D3DCOMPILE_ENABLE_STRICTNESS | D3DCOMPILE_DEBUG;
 
     HRESULT hr;
-    hr = D3DCompileFromFile(path.c_str(), nullptr, nullptr,
+    hr = D3DCompileFromFile(path.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE,
         psName.c_str(), "ps_5_0", flags, 0, &pixelBlob, nullptr);
     assert(SUCCEEDED(hr));
 

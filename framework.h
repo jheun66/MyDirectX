@@ -83,6 +83,7 @@ using namespace std;
 
 // Math
 #include "Framework/Math/Vector3.h"
+#include "Framework/Math/Math.h"
 
 // State
 #include "Framework/State/SamplerState.h"
@@ -95,6 +96,8 @@ using namespace std;
 #include "Framework/System/Time.h"
 #include "Framework/System/Keyboard.h"
 #include "Framework/System/Mouse.h"
+#include "Framework/System/FileSystem/BinaryWriter.h"
+#include "Framework/System/FileSystem/BinaryReader.h"
 
 // GameObject Header
 #include "GameObject/Transform.h"
