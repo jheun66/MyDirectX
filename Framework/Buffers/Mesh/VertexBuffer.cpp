@@ -24,3 +24,8 @@ void VertexBuffer::Set()
 {
     DC->IASetVertexBuffers(0, 1, &buffer, &stride, &offset);
 }
+
+void VertexBuffer::Update(void* data, UINT count)
+{
+    DC->UpdateSubresource(buffer, 0, nullptr, data, stride, count);
+}

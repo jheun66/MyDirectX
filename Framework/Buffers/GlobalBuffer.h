@@ -1,5 +1,6 @@
 #pragma once
-// GlobalBuffer : 상수버퍼들
+// GlobalBuffer : 다양한데서 사용하는 상수버퍼들
+// 특정한데서만 사용하면 그 클래스에서 선언하자!
 
 class MatrixBuffer : public ConstBuffer
 {
@@ -121,4 +122,25 @@ public:
 	MSBuffer() : ConstBuffer(&data, sizeof(Data))
 	{
 	}
+};
+
+
+class RayBuffer : public ConstBuffer
+{
+public:
+	struct Data
+	{
+		XMFLOAT3 position;
+		float size;
+		XMFLOAT3 direction;
+		float padding;
+	}data;
+
+	RayBuffer() : ConstBuffer(&data, sizeof(Data))
+	{
+		data.position = XMFLOAT3(0, 0, 0);
+		data.size = 0;
+		data.direction = XMFLOAT3(0, 0, 0);
+	}
+
 };

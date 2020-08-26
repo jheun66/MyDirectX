@@ -30,7 +30,7 @@ void MousePickingScene::Update()
 {
 	if (Mouse::Get()->Down(0))
 	{
-		terrain->Picking(&pickingPos);
+		terrain->ComputePicking(&pickingPos);
 		curPos = sphere->position;
 	}
 

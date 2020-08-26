@@ -1,13 +1,9 @@
 #include "Framework.h"
 
-//#include "Scenes/CubeScene.h"
-//#include "Scenes/SphereScene.h"
-//#include "Scenes/TextureScene.h"
-//#include "Scenes/PlaneScene.h"
-//#include "Scenes/GridScene.h"
 #include "Scenes/SolarSystemScene.h"
 #include "Scenes/TerrainScene.h"
 #include "Scenes/MousePickingScene.h"
+#include "Scenes/TerrainEditorScene.h"
 
 Program::Program()
 {
@@ -21,7 +17,7 @@ Program::Program()
 
 	SetCursorPos((int)(WIN_WIDTH / 2), (int)(WIN_HEIGHT / 2));
 
-	scene = new MousePickingScene();
+	scene = new TerrainEditorScene();
 }
 
 Program::~Program()

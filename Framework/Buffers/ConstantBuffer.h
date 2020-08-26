@@ -12,6 +12,7 @@ public:
 	// shader 마다 만들어 줘야함
 	void SetBufferToVS(UINT slot);
 	void SetBufferToPS(UINT slot);
+	void SetBufferToCS(UINT slot);
 
 private:
 	ID3D11Buffer* buffer;

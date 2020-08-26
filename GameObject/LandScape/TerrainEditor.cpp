@@ -1,14 +1,12 @@
 #include "Framework.h"
-#include "Terrain.h"
 
-Terrain::Terrain()
+TerrainEditor::TerrainEditor(UINT width, UINT height)
+	:width(width), height(height), isRaise(true), adjustValue(50)
 {
-	material = new Material(L"NormalMapping");
-	material->SetDiffuseMap(L"Landscape/Wall.png");
-	material->SetSpecularMap(L"Landscape/Wall_specular.png");
-	material->SetNormalMap(L"Landscape/Wall_normal.png");
-
-	heightMap = Texture::Add(L"HeightMaps/HeightMap.png");
+	material = new Material(L"BrushWithMapping");
+	material->SetDiffuseMap(L"Terrain/brown_mud_leaves_01_diff_1k.png");
+	material->SetSpecularMap(L"Terrain/brown_mud_leaves_01_spec_1k.png");
+	material->SetNormalMap(L"Terrain/brown_mud_leaves_01_Nor_1k.png");
 
 	CreateData();
 	CreateNormal();
@@ -17,19 +15,11 @@ Terrain::Terrain()
 	mesh = new Mesh(vertices.data(), sizeof(VertexType), vertices.size(),
 		indices.data(), indices.size());
 
-	computeShader = Shader::AddCS(L"Intersection");
-
-	// Æú¸®°ï °³¼ö
-	size = indices.size() / 3;
-
-	structuredBuffer = new StructuredBuffer(input, sizeof(InputStruct), size,
-		sizeof(OutputStruct), size);
-
-	rayBuffer = new RayBuffer();
-	output = new OutputStruct[size];
+	CreateCompute();
+	brushBuffer = new BrushBuffer();
 }
 
-Terrain::~Terrain()
+TerrainEditor::~TerrainEditor()
 {
 	delete material;
 	delete mesh;
@@ -39,106 +29,62 @@ Terrain::~Terrain()
 
 	delete[] input;
 	delete[] output;
+
+	delete brushBuffer;
 }
 
-void Terrain::Update()
+void TerrainEditor::Update()
 {
+	Vector3 temp;
+	ComputePicking(&temp);
+	brushBuffer->data.location = temp;
+
+	if (KEY_PRESS(VK_LCONTROL))
+	{
+		if (KEY_PRESS(VK_LBUTTON))
+		{
+			if (isRaise)
+				AdjustY(temp, adjustValue);
+			else
+				AdjustY(temp, -adjustValue);
+		}
+
+		if (KEY_UP(VK_LBUTTON))
+		{
+			CreateNormal();
+			CreateTangent();
+			mesh->UpdateVertex(vertices.data(), vertices.size());
+		}
+
+	}
+
 	UpdateWorld();
 }
 
-void Terrain::Render()
+void TerrainEditor::Render()
 {
 	mesh->Set();
 
 	SetWorldBuffer();
+	brushBuffer->SetBufferToVS(3);
 
 	material->Set();
 
 	DC->DrawIndexed(indices.size(), 0, 0);
 }
 
-void Terrain::PostRender()
+void TerrainEditor::PostRender()
 {
-
+	ImGui::Text("TerrainEditor");
+	ImGui::SliderInt("Type", &brushBuffer->data.type, 1, 3);
+	ImGui::Checkbox("Raise", &isRaise);
+	ImGui::SliderFloat("AdjustValue", &adjustValue, 0, 300);
 }
 
-bool Terrain::Picking(OUT Vector3* position)
+bool TerrainEditor::ComputePicking(OUT Vector3* position)
 {
 	Ray ray = Environment::Get()->MainCamera()->ScreenPointToRay(Mouse::Get()->GetPosition());
-
-	for (UINT z = 0; z < height; z++)
-	{
-		for (UINT x = 0; x < width; x++)
-		{
-			UINT index[4];
-			index[0] = (width + 1) * z + x;
-			index[1] = (width + 1) * z + x + 1;
-			index[2] = (width + 1) * (z + 1) + x;
-			index[3] = (width + 1) * (z + 1) + x + 1;
-
-			Vector3 p[4];
-			for (UINT i = 0; i < 4; i++)
-				p[i] = vertices[index[i]].position;
-
-			float distance;
-			if (TriangleTests::Intersects(ray.position, ray.direction, p[0], p[1], p[2], distance))
-			{
-				*position = ray.position + ray.direction * distance;
-				return true;
-			}
-
-			if (TriangleTests::Intersects(ray.position, ray.direction, p[3], p[1], p[2], distance))
-			{
-				*position = ray.position + ray.direction * distance;
-				return true;
-			}
-		}
-	}
-
-	return false;
-}
-
-float Terrain::GetAltitude(Vector3 position)
-{
-	UINT x = (UINT)position.x;
-	UINT z = (UINT)position.z;
-
-	if (x < 0 || x > width) return 0.0f;
-	if (z < 0 || z > height) return 0.0f;
-
-	UINT index[4];
-	index[0] = (width + 1) * z + x;
-	index[1] = (width + 1) * (z + 1) + x;
-	index[2] = (width + 1) * z + x + 1;
-	index[3] = (width + 1) * (z + 1) + x + 1;
-
-	Vector3 p[4];
-	for (UINT i = 0; i < 4; i++)
-		p[i] = vertices[index[i]].position;
-
-	float u = position.x - p[0].x;
-	float v = position.z - p[0].z;
-
-	Vector3 result;
-	if (u + v <= 1)
-	{
-		result = p[0] + (p[2] - p[0]) * u + (p[1] - p[0]) * v;
-	}
-	else
-	{
-		u = 1.0f - u;
-		v = 1.0f - v;
-
-		result = p[3] + (p[1] - p[3]) * u + (p[2] - p[3]) * v;
-	}
-
-	return result.y;
-}
-
-bool Terrain::ComputePicking(OUT Vector3* position)
-{
-	Ray ray = Environment::Get()->MainCamera()->ScreenPointToRay(Mouse::Get()->GetPosition());
-
+	
 	rayBuffer->data.position = ray.position;
 	rayBuffer->data.direction = ray.direction;
 	rayBuffer->data.size = size;
@@ -174,7 +120,6 @@ bool Terrain::ComputePicking(OUT Vector3* position)
 
 	if (minIndex >= 0)
 	{
-
 		*position = ray.position + ray.direction * minDistance;
 		return true;
 	}
@@ -183,23 +128,62 @@ bool Terrain::ComputePicking(OUT Vector3* position)
 	return false;
 }
 
-void Terrain::CreateData()
+void TerrainEditor::AdjustY(Vector3 position, float value)
 {
-	width = heightMap->GetWidth() - 1;
-	height = heightMap->GetHeight() - 1;
+	switch (brushBuffer->data.type)
+	{
+	case 1:
+	{
+		for (VertexType& vertex : vertices)
+		{
+			Vector3 p1 = Vector3(vertex.position.x, 0, vertex.position.z);
+			Vector3 p2 = Vector3(position.x, 0, position.z);
 
-	vector<XMFLOAT4> pixels = heightMap->ReadPixels();
+			float dist = (p2 - p1).Length();
 
+			float temp = value * max(0, cos(XM_PIDIV2 * dist / brushBuffer->data.range));
+
+			if (dist <= brushBuffer->data.range)
+			{
+				vertex.position.y += temp * Time::Delta();
+			}
+		}
+	}
+	break;
+	case 2:
+	{
+		for (VertexType& vertex : vertices)
+		{
+			if (position.x - brushBuffer->data.range <= vertex.position.x
+				&& position.x + brushBuffer->data.range >= vertex.position.x
+				&& position.z - brushBuffer->data.range <= vertex.position.z
+				&& position.z + brushBuffer->data.range >= vertex.position.z)
+			{
+				vertex.position.y += value * Time::Delta();
+			}
+		}
+	}
+
+	break;
+	default:
+		break;
+
+	}
+
+	mesh->UpdateVertex(vertices.data(), vertices.size());
+}
+
+void TerrainEditor::CreateData()
+{
 	for (UINT z = 0; z <= height; z++)
 	{
 		for (UINT x = 0; x <= width; x++)
 		{
 			VertexType vertex;
 			vertex.position = XMFLOAT3(x, 0, z);
-			vertex.uv = XMFLOAT2((x / (float)width), (1.0f - (z / (float)height)));
+			vertex.uv = XMFLOAT2((x / (float)width)*2 , (1.0f - (z / (float)height))*2);
 
 			UINT index = width * z + x;
-			vertex.position.y = pixels[index].x * 20.0f;
 
 			vertices.emplace_back(vertex);
 		}
@@ -233,7 +217,7 @@ void Terrain::CreateData()
 	}
 }
 
-void Terrain::CreateNormal()
+void TerrainEditor::CreateNormal()
 {
 	for (UINT i = 0; i < indices.size() / 3; i++)
 	{
@@ -256,7 +240,7 @@ void Terrain::CreateNormal()
 	}
 }
 
-void Terrain::CreateTangent()
+void TerrainEditor::CreateTangent()
 {
 	for (UINT i = 0; i < indices.size() / 3; i++)
 	{
@@ -304,4 +288,18 @@ void Terrain::CreateTangent()
 
 		vertex.tangent = temp;
 	}
+}
+
+void TerrainEditor::CreateCompute()
+{
+	computeShader = Shader::AddCS(L"Intersection");
+
+	// Æú¸®°ï °³¼ö
+	size = indices.size() / 3;
+
+	structuredBuffer = new StructuredBuffer(input, sizeof(InputStruct), size,
+		sizeof(OutputStruct), size);
+
+	rayBuffer = new RayBuffer();
+	output = new OutputStruct[size];
 }

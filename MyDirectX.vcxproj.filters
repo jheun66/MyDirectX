@@ -126,6 +126,18 @@
     <ClInclude Include="Framework\Environment\Environment.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Framework\Material\Shaders\ComputeShader.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Buffers\StructuredBuffer.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject\LandScape\TerrainEditor.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\TerrainEditorScene.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MyDirectX.cpp">
@@ -224,6 +236,18 @@
     <ClCompile Include="Framework\Environment\Environment.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Framework\Material\Shaders\ComputeShader.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Buffers\StructuredBuffer.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject\LandScape\TerrainEditor.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenes\TerrainEditorScene.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MyDirectX.rc">
@@ -251,5 +275,10 @@
     <FxCompile Include="Shaders\VertexShaders\VertexSpecular.hlsl" />
     <FxCompile Include="Shaders\PixelShaders\PixelNormalMapping.hlsl" />
     <FxCompile Include="Shaders\VertexShaders\VertexNormalMapping.hlsl" />
+    <FxCompile Include="Shaders\VertexShaders\VertexBrush.hlsl" />
+    <FxCompile Include="Shaders\PixelShaders\PixelBrush.hlsl" />
+    <FxCompile Include="Shaders\ComputeShaders\Intersection.hlsl" />
+    <FxCompile Include="Shaders\PixelShaders\PixelBrushWithMapping.hlsl" />
+    <FxCompile Include="Shaders\VertexShaders\VertexBrushWithMapping.hlsl" />
   </ItemGroup>
 </Project>

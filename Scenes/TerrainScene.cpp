@@ -33,5 +33,10 @@ void TerrainScene::PostRender()
 	ImGui::Checkbox("SpecularMapping", (bool*)&settingBuffer->data.option[0]);
 	ImGui::Checkbox("NormalMapping", (bool*)&settingBuffer->data.option[1]);
 
-	terrain->PostRender();
+	Vector3 pickingPos;
+	terrain->ComputePicking(&pickingPos);
+	ImGui::SliderFloat3("PickingPos", (float*)&pickingPos, 0, 500);
+
+	float height = terrain->GetAltitude(pickingPos);
+	ImGui::Text("Height : %f", height);
 }

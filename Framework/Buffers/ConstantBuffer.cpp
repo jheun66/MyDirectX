@@ -1,7 +1,5 @@
 #include "Framework.h"
 
-#include "Framework.h"
-
 ConstBuffer::ConstBuffer(void* data, UINT dataSize)
     : data(data), dataSize(dataSize)
 {
@@ -43,5 +41,11 @@ void ConstBuffer::SetBufferToPS(UINT slot)
 {
     MapData();
     DC->PSSetConstantBuffers(slot, 1, &buffer);
+}
+
+void ConstBuffer::SetBufferToCS(UINT slot)
+{
+    MapData();
+    DC->CSSetConstantBuffers(slot, 1, &buffer);
 }
 

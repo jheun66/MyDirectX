@@ -18,3 +18,8 @@ void Mesh::Set(D3D11_PRIMITIVE_TOPOLOGY pt)
 	indexBuffer->Set();
 	DC->IASetPrimitiveTopology(pt);
 }
+
+void Mesh::UpdateVertex(void* data, UINT count)
+{
+	vertexBuffer->Update(data, count);
+}

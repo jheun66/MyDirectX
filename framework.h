@@ -63,6 +63,7 @@ using namespace std;
 // Buffers
 #include "Framework/Buffers/ConstantBuffer.h"
 #include "Framework/Buffers/GlobalBuffer.h"
+#include "Framework/Buffers/StructuredBuffer.h"
 #include "Framework/Buffers/Mesh/VertexBuffer.h"
 #include "Framework/Buffers/Mesh/IndexBuffer.h"
 #include "Framework/Buffers/Mesh/Mesh.h"
@@ -72,6 +73,7 @@ using namespace std;
 #include "Framework/Material/Shaders/Shader.h"
 #include "Framework/Material/Shaders/VertexShader.h"
 #include "Framework/Material/Shaders/PixelShader.h"
+#include "Framework/Material/Shaders/ComputeShader.h"
 #include "Framework/Material/Material.h"
 
 
@@ -101,6 +103,7 @@ using namespace std;
 #include "GameObject/Basic/Quad.h"
 #include "GameObject/Basic/Sphere.h"
 #include "GameObject/LandScape/Terrain.h"
+#include "GameObject/LandScape/TerrainEditor.h"
 #include "GameObject/Custom/Orb.h"
 
 // 게임 씬과 게임 프로세스

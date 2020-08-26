@@ -1,6 +1,5 @@
 #pragma once
-
-class Terrain : Transform
+class TerrainEditor : public Transform
 {
 	typedef VertexUVNormalTangent VertexType;
 
@@ -16,29 +15,47 @@ class Terrain : Transform
 		float u, v, distance;
 	};
 
+	class BrushBuffer : public ConstBuffer
+	{
+	public:
+		struct Data
+		{
+			int type;
+			XMFLOAT3 location;
+
+			float range;
+			XMFLOAT3 color;
+		}data;
+		BrushBuffer() : ConstBuffer(&data, sizeof(Data))
+		{
+			data.type = 1;
+			data.location = XMFLOAT3(0, 0, 0);
+
+			data.range = 10.0f;
+			data.color = XMFLOAT3(0, 1, 0);
+		}
+
+	};
+
 public:
-	Terrain();
-	~Terrain();
+	TerrainEditor(UINT width, UINT height);
+	~TerrainEditor();
 
 	void Update();
 	void Render();
 	void PostRender();
 
-	bool Picking(OUT Vector3* position);
-	float GetAltitude(Vector3 position);
-
-	// CS 이용해서 Picking
 	bool ComputePicking(OUT Vector3* position);
 
-	Material* GetMaterial() { return material; }
-
+	void AdjustY(Vector3 position, float value);
 private:
 	void CreateData();
 	void CreateNormal();
 	void CreateTangent();
+	void CreateCompute();
+	
 
 private:
-
 	Material* material;
 	Mesh* mesh;
 
@@ -46,8 +63,6 @@ private:
 	vector<UINT> indices;
 
 	UINT width, height;
-
-	Texture* heightMap;
 
 	ComputeShader* computeShader;
 	RayBuffer* rayBuffer;
@@ -57,6 +72,10 @@ private:
 	InputStruct* input;
 	OutputStruct* output;
 
-	// 폴리곤 수
 	UINT size;
+
+	BrushBuffer* brushBuffer;
+
+	bool isRaise;
+	float adjustValue;
 };
