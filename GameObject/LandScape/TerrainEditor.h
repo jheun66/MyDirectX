@@ -54,6 +54,7 @@ public:
 	void Load();
 
 	void SaveHeightMap();
+	void SaveAlphaMap();
 
 private:
 	void CreateData();
@@ -97,6 +98,4 @@ private:
 	Texture* secondMap;
 	Texture* thirdMap;
 
-
-	Texture* heightMap;
 };

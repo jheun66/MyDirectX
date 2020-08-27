@@ -9,10 +9,6 @@ TerrainEditor::TerrainEditor(UINT width, UINT height)
 	material->SetSpecularMap(L"Terrain/brown_mud_leaves_01_spec_1k.png");
 	material->SetNormalMap(L"Terrain/brown_mud_leaves_01_Nor_1k.png");
 
-	heightMap = Texture::Add(L"HeightMaps/TestHeightMap.png");
-	this->width = heightMap->GetWidth() - 1;
-	this->height = heightMap->GetHeight() - 1;
-
 	CreateData();
 	CreateNormal();
 
@@ -94,6 +90,7 @@ void TerrainEditor::Render()
 	DC->DrawIndexed(indices.size(), 0, 0);
 }
 
+
 void TerrainEditor::PostRender()
 {
 	ImGui::Text("TerrainEditor");
@@ -111,6 +108,9 @@ void TerrainEditor::PostRender()
 
 	if (ImGui::Button("SaveHeightMap"))
 		SaveHeightMap();
+
+	if (ImGui::Button("SaveAlphatMap"))
+		SaveAlphaMap();
 }
 
 bool TerrainEditor::ComputePicking(OUT Vector3* position)
@@ -178,6 +178,14 @@ void TerrainEditor::AdjustY(Vector3 position, float value)
 			if (dist <= brushBuffer->data.range)
 			{
 				vertex.position.y += temp * Time::Delta();
+
+				if (vertex.position.y < 0)
+					vertex.position.y = 0.0f;
+
+				float maxHeight = 255 * 3 / 20.0f;
+
+				if (vertex.position.y > maxHeight)
+					vertex.position.y = maxHeight;
 			}
 		}
 	}
@@ -192,6 +200,14 @@ void TerrainEditor::AdjustY(Vector3 position, float value)
 				&& position.z + brushBuffer->data.range >= vertex.position.z)
 			{
 				vertex.position.y += value * Time::Delta();
+
+				if (vertex.position.y < 0)
+					vertex.position.y = 0.0f;
+
+				float maxHeight = 255 * 3 / 20.0f;
+
+				if (vertex.position.y > maxHeight)
+					vertex.position.y = maxHeight;
 			}
 		}
 	}
@@ -274,24 +290,33 @@ void TerrainEditor::Load()
 
 void TerrainEditor::SaveHeightMap()
 {
-	UINT size = (width + 1) * (height + 1) * 4;
+	UINT size = width * height * 4;
 	uint8_t* pixels = new uint8_t[size];
 
 	for (UINT i = 0; i < size / 4; i++)
 	{
-		pixels[i * 4 + 0] = vertices[i].position.y * 20;
-		pixels[i * 4 + 1] = 0;
-		pixels[i * 4 + 2] = 0;
+		float y = (vertices[i].position.y) * 20.0f;
+
+		for (UINT j = 0; j < 3; j++)
+		{
+			pixels[i * 4 + j] = y > 255 ? 255 : y;
+
+			y -= 255;
+
+			if (y < 0)
+				y = 0;
+		}
+
 		pixels[i * 4 + 3] = 255;
 	}
 
 	Image image;
 
-	image.width = width + 1;
-	image.height = height + 1;
+	image.width = width;
+	image.height = height;
 	image.pixels = pixels;
 	image.format = DXGI_FORMAT_R8G8B8A8_UNORM;
-	image.rowPitch = (width + 1) * 4;
+	image.rowPitch = width * 4;
 
 	image.slicePitch = image.width * image.height * 4;
 
@@ -300,32 +325,59 @@ void TerrainEditor::SaveHeightMap()
 
 }
 
+void TerrainEditor::SaveAlphaMap()
+{
+	UINT size = width * height * 4;
+	uint8_t* pixels = new uint8_t[size];
+
+	for (UINT i = 0; i < size / 4; i++)
+	{
+		for (UINT j = 0; j < 3; j++)
+		{
+			pixels[i * 4 + j] = (uint8_t)(vertices[i].alpha[j] * 255);
+		}
+		pixels[i * 4 + 3] = 255;
+	}
+
+	Image image;
+
+	image.width = width;
+	image.height = height;
+	image.pixels = pixels;
+	image.format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	image.rowPitch = (size_t)width * 4;
+
+	image.slicePitch = image.width * image.height * 4;
+
+	SaveToWICFile(image, WIC_FLAGS_FORCE_RGB, GetWICCodec(WIC_CODEC_PNG),
+		L"Textures/HeightMaps/TestAlphaMap.png");
+}
+
 void TerrainEditor::CreateData()
 {
-	for (UINT z = 0; z <= height; z++)
+	for (UINT z = 0; z < height; z++)
 	{
-		for (UINT x = 0; x <= width; x++)
+		for (UINT x = 0; x < width; x++)
 		{
 			VertexType vertex;
 			vertex.position = XMFLOAT3(x, 0, z);
-			vertex.uv = XMFLOAT2((x / (float)width)*2 , (1.0f - (z / (float)height))*2);
+			vertex.uv = XMFLOAT2(x / (float)width, 1.0f - (z / (float)height));
 
-			UINT index = (width+1) * z + x;
 
 			vertices.emplace_back(vertex);
 		}
 	}
 
-	for (UINT z = 0; z < height; z++)
+	for (UINT z = 0; z < height - 1; z++)
 	{
-		for (UINT x = 0; x < width; x++)
+		for (UINT x = 0; x < width - 1; x++)
 		{
-			indices.emplace_back((width + 1) * z + x);
-			indices.emplace_back((width + 1) * (z + 1) + x);
-			indices.emplace_back((width + 1) * (z + 1) + x + 1);
-			indices.emplace_back((width + 1) * z + x);
-			indices.emplace_back((width + 1) * (z + 1) + x + 1);
-			indices.emplace_back((width + 1) * z + x + 1);
+			indices.emplace_back(width * z + x);
+			indices.emplace_back(width * (z + 1) + x);
+			indices.emplace_back(width * (z + 1) + x + 1);
+			indices.emplace_back(width * z + x);
+			indices.emplace_back(width * (z + 1) + x + 1);
+			indices.emplace_back(width * z + x + 1);
 		}
 	}
 

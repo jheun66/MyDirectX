@@ -4,9 +4,9 @@
 Terrain::Terrain()
 {
 	material = new Material(L"NormalMapping");
-	material->SetDiffuseMap(L"Landscape/Wall.png");
-	material->SetSpecularMap(L"Landscape/Wall_specular.png");
-	material->SetNormalMap(L"Landscape/Wall_normal.png");
+	material->SetDiffuseMap(L"Terrain/brown_mud_leaves_01_diff_1k.png");
+	material->SetSpecularMap(L"Terrain/brown_mud_leaves_01_spec_1k.png");
+	material->SetNormalMap(L"Terrain/brown_mud_leaves_01_Nor_1k.png");
 
 	heightMap = Texture::Add(L"HeightMaps/HeightMap.png");
 
@@ -196,10 +196,13 @@ void Terrain::CreateData()
 		{
 			VertexType vertex;
 			vertex.position = XMFLOAT3(x, 0, z);
-			vertex.uv = XMFLOAT2((x / (float)width), (1.0f - (z / (float)height)));
+			vertex.uv = XMFLOAT2(x / (float)width, 1.0f - (z / (float)height));
 
 			UINT index = (width + 1) * z + x;
-			vertex.position.y = pixels[index].x * 20.0f;
+
+			vertex.position.y += pixels[index].x * 20.0f;
+			vertex.position.y += pixels[index].y * 20.0f;
+			vertex.position.y += pixels[index].z * 20.0f;
 
 			vertices.emplace_back(vertex);
 		}

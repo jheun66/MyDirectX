@@ -1,7 +1,7 @@
 #include "Framework.h"
 
 Camera::Camera(string tag)
-    :Transform(tag), FOV(XM_PIDIV2), 
+    :Transform(tag), FOV(XM_PIDIV4), 
     forward(0, 0, 1), right(1, 0, 0), up(0, 1, 0),
     moveSpeed(20.0f), rotSpeed(1.0f)
 {
