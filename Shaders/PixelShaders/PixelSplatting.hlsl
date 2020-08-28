@@ -1,6 +1,5 @@
 #include "PixelHeader.hlsli"
 
-//Texture2D alphaMap : register(t10);
 Texture2D secondMap : register(t11);
 
 struct PixelInput

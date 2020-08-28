@@ -3,7 +3,7 @@
 
 TerrainEditorScene::TerrainEditorScene()
 {
-	terrainEditor = new TerrainEditor(100, 100);
+	terrainEditor = new TerrainEditor(200, 200);
 	settingBuffer = new MSBuffer();
 }
 

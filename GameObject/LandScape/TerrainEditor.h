@@ -1,7 +1,8 @@
 #pragma once
+
 class TerrainEditor : public Transform
 {
-	typedef VertexUVNormalAlpha VertexType;
+	typedef VertexUVNormalTangentAlpha VertexType;
 
 	struct InputStruct
 	{
@@ -49,16 +50,24 @@ public:
 
 	void AdjustY(Vector3 position, float value);
 	void PaintBrush(Vector3 position, float value);
+	void CreateCube(Vector3 position);
+	void CreateSphere(Vector3 position);
 
 	void Save();
 	void Load();
 
-	void SaveHeightMap();
-	void SaveAlphaMap();
+	void SaveHeightMap(wstring path);
+	void SaveAlphaMap(wstring path);
+
+	void LoadHeightMap(wstring path);
+	void LoadAlphaMap(wstring path);
+
+	void Brushing();
 
 private:
 	void CreateData();
 	void CreateNormal();
+	void CreateTangent();
 	void CreateCompute();
 	
 
@@ -83,10 +92,10 @@ private:
 
 	BrushBuffer* brushBuffer;
 
-	bool isRaise;
+	int isRaise;
 	float adjustValue;
 
-	bool isPainting;
+	int mode;
 	float paintValue;
 
 	int selectMap;
@@ -94,8 +103,20 @@ private:
 	// ≥Ù¿Ã∏  ¿˙¿Â¿ª ¿ß«— ∫§≈Õ
 	vector<float> heights;
 
-	//Texture* alphaMap;
-	Texture* secondMap;
-	Texture* thirdMap;
 
+	Texture* secondMap;
+	Texture* secondSMap;
+	Texture* secondNMap;
+	Texture* thirdMap;
+	Texture* thirdSMap;
+	Texture* thirdNMap;
+	Texture* fourthMap;
+	Texture* fourthSMap;
+	Texture* fourthNMap;
+	Texture* fifthMap;
+	Texture* fifthSMap;
+	Texture* fifthNMap;
+
+	vector<Cube*> cubes;
+	vector<Sphere*> spheres;
 };
