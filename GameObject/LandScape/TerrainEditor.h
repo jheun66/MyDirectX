@@ -50,8 +50,8 @@ public:
 
 	void AdjustY(Vector3 position, float value);
 	void PaintBrush(Vector3 position, float value);
-	void CreateCube(Vector3 position);
-	void CreateSphere(Vector3 position);
+	void CreateCube(Vector3 position, Vector3 rotation, Vector3 scale);
+	void CreateSphere(Vector3 position, Vector3 rotation, Vector3 scale);
 
 	void Save();
 	void Load();
@@ -119,4 +119,7 @@ private:
 
 	vector<Cube*> cubes;
 	vector<Sphere*> spheres;
+	XMFLOAT3 objectRotation;
+	XMFLOAT3 objectScale;
+
 };

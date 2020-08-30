@@ -2,7 +2,7 @@
 
 TerrainEditor::TerrainEditor(UINT width, UINT height)
 	:width(width), height(height), isRaise(1), adjustValue(50),
-	mode(0), paintValue(5.0f), selectMap(0)
+	mode(0), paintValue(5.0f), selectMap(0), objectRotation(0, 0, 0), objectScale(1, 1, 1)
 {
 	// default Material
 	material = new Material(L"SplattingAdvanced");
@@ -19,7 +19,7 @@ TerrainEditor::TerrainEditor(UINT width, UINT height)
 
 	CreateCompute();
 	brushBuffer = new BrushBuffer();
-	
+
 	secondMap = Texture::Add(L"Terrain/brown_mud_dry_diff_1k.png");
 	secondSMap = Texture::Add(L"Terrain/brown_mud_dry_spec_1k.png");
 	secondNMap = Texture::Add(L"Terrain/brown_mud_dry_nor_1k.png");
@@ -117,6 +117,8 @@ void TerrainEditor::Render()
 
 void TerrainEditor::PostRender()
 {
+	ImGui::ShowDemoWindow();
+
 	ImGui::Begin("TerrainEditor", 0, ImGuiWindowFlags_AlwaysAutoResize);
 	{
 		ImGui::RadioButton("SetHeight", &mode, 0); ImGui::SameLine();
@@ -131,7 +133,10 @@ void TerrainEditor::PostRender()
 		ImGui::SliderFloat("PaintValue", &paintValue, 0, 10);
 		ImGui::SliderInt("SelectMap", &selectMap, 0, 3);
 		ImGui::SliderInt("Type", &brushBuffer->data.type, 1, 2);
-		
+		ImGui::SliderFloat("Range", &brushBuffer->data.range, 1, 20);
+
+		ImGui::SliderFloat3("Rotation", (float*)&objectRotation, 0, XM_2PI);
+		ImGui::SliderFloat3("Scale", (float*)&objectScale, 0.1f, 10.0f);
 
 		if (ImGui::Button("Save"))
 			Save();
@@ -372,6 +377,7 @@ void TerrainEditor::Save()
 		for (auto cube : cubes)
 		{
 			writer->Byte(&cube->position,sizeof(Vector3));
+			writer->Byte(&cube->rotation, sizeof(Vector3));
 			writer->Byte(&cube->scale, sizeof(Vector3));
 		}
 	}
@@ -383,6 +389,7 @@ void TerrainEditor::Save()
 		for (auto sphere : spheres)
 		{
 			writer->Byte(&sphere->position, sizeof(Vector3));
+			writer->Byte(&sphere->rotation, sizeof(Vector3));
 			writer->Byte(&sphere->scale, sizeof(Vector3));
 		}
 	}
@@ -404,8 +411,10 @@ void TerrainEditor::Load()
 			Cube* tmp = new Cube();
 			void* data = &tmp->position;
 			reader->Byte(&data, sizeof(Vector3));
-			void* data2 = &tmp->scale;
+			void* data2 = &tmp->rotation;
 			reader->Byte(&data2, sizeof(Vector3));
+			void* data3 = &tmp->scale;
+			reader->Byte(&data3, sizeof(Vector3));
 			cubes[i]= tmp;
 			cubes[i]->UpdateWorld();
 		}
@@ -421,8 +430,10 @@ void TerrainEditor::Load()
 			Sphere* tmp = new Sphere(5, 50, 50);
 			void* data = &tmp->position;
 			reader->Byte(&data, sizeof(Vector3));
-			void* data2 = &tmp->scale;
+			void* data2 = &tmp->rotation;
 			reader->Byte(&data2, sizeof(Vector3));
+			void* data3 = &tmp->scale;
+			reader->Byte(&data3, sizeof(Vector3));
 			spheres[i] = tmp;
 			spheres[i]->UpdateWorld();
 		}
@@ -634,13 +645,13 @@ void TerrainEditor::Brushing()
 		if (KEY_DOWN(VK_LBUTTON) && mode == 2)
 		{
 			if (isRaise)
-				CreateCube(brushBuffer->data.location);
+				CreateCube(brushBuffer->data.location, objectRotation, objectScale);
 		}
 
 		if (KEY_DOWN(VK_LBUTTON) && mode == 3)
 		{
 			if (isRaise)
-				CreateSphere(brushBuffer->data.location);
+				CreateSphere(brushBuffer->data.location, objectRotation, objectScale);
 		}
 
 		if (KEY_UP(VK_LBUTTON) && mode == 0)
@@ -779,6 +790,12 @@ void TerrainEditor::CreateCompute()
 	// Æú¸®°ï °³¼ö
 	size = indices.size() / 3;
 
+	if (structuredBuffer)
+	{
+		delete structuredBuffer;
+		structuredBuffer = nullptr;
+	}
+
 	structuredBuffer = new StructuredBuffer(input, sizeof(InputStruct), size,
 		sizeof(OutputStruct), size);
 
@@ -786,19 +803,22 @@ void TerrainEditor::CreateCompute()
 	output = new OutputStruct[size];
 }
 
-void TerrainEditor::CreateCube(Vector3 position)
+void TerrainEditor::CreateCube(Vector3 position, Vector3 rotation, Vector3 scale)
 {
 	Cube* tmp = new Cube();
 	tmp->position = position;
-	tmp->scale = { 5,5,5 };
+	tmp->rotation = rotation;
+	tmp->scale = scale;
 	tmp->UpdateWorld();
 	cubes.push_back(tmp);
 }
 
-void TerrainEditor::CreateSphere(Vector3 position)
+void TerrainEditor::CreateSphere(Vector3 position, Vector3 rotation, Vector3 scale)
 {
 	Sphere* tmp = new Sphere(5, 50, 50);
-	tmp->position = position;
+	tmp->position = position + scale.y;
+	tmp->rotation = rotation;
+	tmp->scale = scale;
 	tmp->UpdateWorld();
 	spheres.push_back(tmp);
 }
