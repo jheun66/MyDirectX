@@ -33,7 +33,7 @@ void BinaryWriter::String(string data)
 	UInt(data.size());
 
 	const char* str = data.c_str();
-	WriteFile(file, &str, sizeof(char) * data.size(), &size, nullptr);
+	WriteFile(file, str, sizeof(char) * data.size(), &size, nullptr);
 }
 
 void BinaryWriter::Byte(void* data, UINT dataSize)
