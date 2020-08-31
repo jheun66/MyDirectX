@@ -1,5 +1,9 @@
 #pragma once
 
+class Tree;
+class Zombie;
+class WarChief;
+
 class TerrainEditor : public Transform
 {
 	typedef VertexUVNormalTangentAlpha VertexType;
@@ -50,8 +54,9 @@ public:
 
 	void AdjustY(Vector3 position, float value);
 	void PaintBrush(Vector3 position, float value);
-	void CreateCube(Vector3 position, Vector3 rotation, Vector3 scale);
-	void CreateSphere(Vector3 position, Vector3 rotation, Vector3 scale);
+	void CreateTree(Vector3 position, Vector3 rotation, Vector3 scale);
+	void CreateZombie(Vector3 position, Vector3 rotation, Vector3 scale);
+	void CreateWarChief(Vector3 position, Vector3 rotation, Vector3 scale);
 
 	void Save();
 	void Load();
@@ -117,8 +122,9 @@ private:
 	Texture* fifthSMap;
 	Texture* fifthNMap;
 
-	vector<Cube*> cubes;
-	vector<Sphere*> spheres;
+	vector<Tree*> trees;
+	vector<Zombie*> zombies;
+	vector<WarChief*> warChiefs;
 	XMFLOAT3 objectRotation;
 	XMFLOAT3 objectScale;
 

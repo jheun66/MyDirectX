@@ -78,7 +78,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\jheun\source\repos\ImGui;C:\Users\jheun\source\repos\MyDirectX\Libraries;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\jheun\source\repos\MyDirectX\Libraries;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -151,6 +152,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Framework.h" />
+    <ClInclude Include="Framework\Assimp\ModelReader.h" />
+    <ClInclude Include="Framework\Assimp\ModelTypes.h" />
     <ClInclude Include="Framework\Buffers\ConstantBuffer.h" />
     <ClInclude Include="Framework\Buffers\GlobalBuffer.h" />
     <ClInclude Include="Framework\Buffers\Mesh\IndexBuffer.h" />
@@ -164,18 +167,25 @@
     <ClInclude Include="Framework\Math\Math.h" />
     <ClInclude Include="Framework\Math\Vector3.h" />
     <ClInclude Include="Framework\Material\Shaders\Shader.h" />
-    <ClInclude Include="Framework\System\FileSystem\BinaryReader.h" />
-    <ClInclude Include="Framework\System\FileSystem\BinaryWriter.h" />
-    <ClInclude Include="Framework\System\Keyboard.h" />
-    <ClInclude Include="Framework\System\Mouse.h" />
+    <ClInclude Include="Framework\Utility\FileSystem\BinaryReader.h" />
+    <ClInclude Include="Framework\Utility\FileSystem\BinaryWriter.h" />
+    <ClInclude Include="Framework\Utility\FileSystem\Xml.h" />
+    <ClInclude Include="Framework\Utility\Keyboard.h" />
+    <ClInclude Include="Framework\Utility\Mouse.h" />
+    <ClInclude Include="Framework\Utility\Utility.h" />
     <ClInclude Include="GameObject\Custom\Orb.h" />
+    <ClInclude Include="GameObject\Custom\Tree.h" />
+    <ClInclude Include="GameObject\Custom\WarChief.h" />
+    <ClInclude Include="GameObject\Custom\Zombie.h" />
     <ClInclude Include="GameObject\LandScape\Terrain.h" />
     <ClInclude Include="GameObject\LandScape\TerrainEditor.h" />
+    <ClInclude Include="GameObject\Model\Model.h" />
+    <ClInclude Include="GameObject\Model\ModelMesh.h" />
     <ClInclude Include="GameObject\Transform.h" />
     <ClInclude Include="Framework\State\RasterizerState.h" />
     <ClInclude Include="Framework\State\SamplerState.h" />
     <ClInclude Include="GameObject\Camera\Camera.h" />
-    <ClInclude Include="Framework\System\Time.h" />
+    <ClInclude Include="Framework\Utility\Time.h" />
     <ClInclude Include="Framework\Material\Texture\Texture.h" />
     <ClInclude Include="Framework\VertexLayout\VertexLayout.h" />
     <ClInclude Include="GameObject\Basic\Cube.h" />
@@ -187,6 +197,7 @@
     <ClInclude Include="MyDirectX.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Scenes\GridScene.h" />
+    <ClInclude Include="Scenes\ModelScene.h" />
     <ClInclude Include="Scenes\MousePickingScene.h" />
     <ClInclude Include="Scenes\Scene.h" />
     <ClInclude Include="Scenes\SolarSystemScene.h" />
@@ -199,6 +210,7 @@
     <ClCompile Include="Framework.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Framework\Assimp\ModelReader.cpp" />
     <ClCompile Include="Framework\Buffers\ConstantBuffer.cpp" />
     <ClCompile Include="Framework\Buffers\Mesh\IndexBuffer.cpp" />
     <ClCompile Include="Framework\Buffers\Mesh\Mesh.cpp" />
@@ -211,20 +223,27 @@
     <ClCompile Include="Framework\Math\Math.cpp" />
     <ClCompile Include="Framework\Math\Vector3.cpp" />
     <ClCompile Include="Framework\Material\Shaders\Shader.cpp" />
-    <ClCompile Include="Framework\System\FileSystem\BinaryReader.cpp" />
-    <ClCompile Include="Framework\System\FileSystem\BinaryWriter.cpp" />
-    <ClCompile Include="Framework\System\Keyboard.cpp" />
-    <ClCompile Include="Framework\System\Mouse.cpp" />
+    <ClCompile Include="Framework\Utility\FileSystem\BinaryReader.cpp" />
+    <ClCompile Include="Framework\Utility\FileSystem\BinaryWriter.cpp" />
+    <ClCompile Include="Framework\Utility\FileSystem\Xml.cpp" />
+    <ClCompile Include="Framework\Utility\Keyboard.cpp" />
+    <ClCompile Include="Framework\Utility\Mouse.cpp" />
+    <ClCompile Include="Framework\Utility\Utility.cpp" />
     <ClCompile Include="GameObject\Custom\Orb.cpp" />
+    <ClCompile Include="GameObject\Custom\Tree.cpp" />
+    <ClCompile Include="GameObject\Custom\WarChief.cpp" />
+    <ClCompile Include="GameObject\Custom\Zombie.cpp" />
     <ClCompile Include="GameObject\LandScape\Terrain.cpp" />
     <ClCompile Include="GameObject\LandScape\TerrainEditor.cpp" />
+    <ClCompile Include="GameObject\Model\Model.cpp" />
+    <ClCompile Include="GameObject\Model\ModelMesh.cpp" />
     <ClCompile Include="GameObject\Transform.cpp" />
     <ClCompile Include="Framework\Material\Shaders\PixelShader.cpp" />
     <ClCompile Include="Framework\Material\Shaders\VertexShader.cpp" />
     <ClCompile Include="Framework\State\RasterizerState.cpp" />
     <ClCompile Include="Framework\State\SamplerState.cpp" />
     <ClCompile Include="GameObject\Camera\Camera.cpp" />
-    <ClCompile Include="Framework\System\Time.cpp" />
+    <ClCompile Include="Framework\Utility\Time.cpp" />
     <ClCompile Include="Framework\Material\Texture\Texture.cpp" />
     <ClCompile Include="GameObject\Basic\Cube.cpp" />
     <ClCompile Include="GameObject\Basic\Quad.cpp" />
@@ -232,6 +251,7 @@
     <ClCompile Include="MyDirectX.cpp" />
     <ClCompile Include="MyGame\Program.cpp" />
     <ClCompile Include="Scenes\GridScene.cpp" />
+    <ClCompile Include="Scenes\ModelScene.cpp" />
     <ClCompile Include="Scenes\MousePickingScene.cpp" />
     <ClCompile Include="Scenes\SolarSystemScene.cpp" />
     <ClCompile Include="Scenes\TerrainEditorScene.cpp" />
@@ -285,6 +305,13 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">PS</EntryPointName>
     </FxCompile>
+    <FxCompile Include="Shaders\PixelShaders\PixelModel.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">PS</EntryPointName>
+    </FxCompile>
     <FxCompile Include="Shaders\PixelShaders\PixelNormalMapping.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
@@ -314,6 +341,13 @@
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">PS</EntryPointName>
     </FxCompile>
     <FxCompile Include="Shaders\PixelShaders\PixelSplattingAdvanced.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">PS</EntryPointName>
+    </FxCompile>
+    <FxCompile Include="Shaders\PixelShaders\PixelTree.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
@@ -351,6 +385,12 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
+    <FxCompile Include="Shaders\VertexShaders\VertexModel.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
     <FxCompile Include="Shaders\VertexShaders\VertexNormalMapping.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
@@ -376,6 +416,12 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
     <FxCompile Include="Shaders\VertexShaders\VertexSplattingAdvanced.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shaders\VertexShaders\VertexTree.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>

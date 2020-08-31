@@ -6,9 +6,9 @@ TerrainEditor::TerrainEditor(UINT width, UINT height)
 {
 	// default Material
 	material = new Material(L"SplattingAdvanced");
-	material->SetDiffuseMap(L"Terrain/brown_mud_leaves_01_diff_1k.png");
-	material->SetSpecularMap(L"Terrain/brown_mud_leaves_01_spec_1k.png");
-	material->SetNormalMap(L"Terrain/brown_mud_leaves_01_Nor_1k.png");
+	material->SetDiffuseMap(L"Textures/Terrain/brown_mud_leaves_01_diff_1k.png");
+	material->SetSpecularMap(L"Textures/Terrain/brown_mud_leaves_01_spec_1k.png");
+	material->SetNormalMap(L"Textures/Terrain/brown_mud_leaves_01_Nor_1k.png");
 
 	CreateData();
 	CreateNormal();
@@ -20,18 +20,18 @@ TerrainEditor::TerrainEditor(UINT width, UINT height)
 	CreateCompute();
 	brushBuffer = new BrushBuffer();
 
-	secondMap = Texture::Add(L"Terrain/brown_mud_dry_diff_1k.png");
-	secondSMap = Texture::Add(L"Terrain/brown_mud_dry_spec_1k.png");
-	secondNMap = Texture::Add(L"Terrain/brown_mud_dry_nor_1k.png");
-	thirdMap = Texture::Add(L"Terrain/coral_mud_01_diff_1k.png");
-	thirdSMap = Texture::Add(L"Terrain/coral_mud_01_spec_1k.png");
-	thirdNMap = Texture::Add(L"Terrain/coral_mud_01_Nor_1k.png");
-	fourthMap = Texture::Add(L"Terrain/snow_02_diff_1k.png");
-	fourthSMap = Texture::Add(L"Terrain/snow_02_spec_1k.png");
-	fourthNMap = Texture::Add(L"Terrain/snow_02_nor_1k.png");
-	fifthMap = Texture::Add(L"Terrain/brown_mud_rocks_01_diff_1k.png");
-	fifthSMap = Texture::Add(L"Terrain/brown_mud_rocks_01_spec_1k.png");
-	fifthNMap = Texture::Add(L"Terrain/brown_mud_rocks_01_nor_1k.png");
+	secondMap = Texture::Add(L"Textures/Terrain/brown_mud_dry_diff_1k.png");
+	secondSMap = Texture::Add(L"Textures/Terrain/brown_mud_dry_spec_1k.png");
+	secondNMap = Texture::Add(L"Textures/Terrain/brown_mud_dry_nor_1k.png");
+	thirdMap = Texture::Add(L"Textures/Terrain/coral_mud_01_diff_1k.png");
+	thirdSMap = Texture::Add(L"Textures/Terrain/coral_mud_01_spec_1k.png");
+	thirdNMap = Texture::Add(L"Textures/Terrain/coral_mud_01_Nor_1k.png");
+	fourthMap = Texture::Add(L"Textures/Terrain/snow_02_diff_1k.png");
+	fourthSMap = Texture::Add(L"Textures/Terrain/snow_02_spec_1k.png");
+	fourthNMap = Texture::Add(L"Textures/Terrain/snow_02_nor_1k.png");
+	fifthMap = Texture::Add(L"Textures/Terrain/brown_mud_rocks_01_diff_1k.png");
+	fifthSMap = Texture::Add(L"Textures/Terrain/brown_mud_rocks_01_spec_1k.png");
+	fifthNMap = Texture::Add(L"Textures/Terrain/brown_mud_rocks_01_nor_1k.png");
 }
 
 TerrainEditor::~TerrainEditor()
@@ -47,16 +47,22 @@ TerrainEditor::~TerrainEditor()
 
 	delete brushBuffer;
 
-	if (cubes.size())
+	if (trees.size())
 	{
-		for (auto cube : cubes)
-			delete cube;
+		for (auto tree : trees)
+			delete tree;
 	}
-	if (spheres.size())
+	if (zombies.size())
 	{
-		for (auto sphere : spheres)
-			delete sphere;
+		for (auto zombie : zombies)
+			delete zombie;
 	}
+	if (warChiefs.size())
+	{
+		for (auto warChief : warChiefs)
+			delete warChief;
+	}
+
 }
 
 void TerrainEditor::Update()
@@ -65,15 +71,20 @@ void TerrainEditor::Update()
 
 	UpdateWorld();
 
-	if (cubes.size())
+	if (trees.size())
 	{
-		for (auto cube : cubes)
-			cube->Update();
+		for (auto tree : trees)
+			tree->Update();
 	}
-	if (spheres.size())
+	if (zombies.size())
 	{
-		for (auto sphere : spheres)
-			sphere->Update();
+		for (auto zombie : zombies)
+			zombie->Update();
+	}
+	if (warChiefs.size())
+	{
+		for (auto warChief : warChiefs)
+			warChief->Update();
 	}
 }
 
@@ -101,15 +112,20 @@ void TerrainEditor::Render()
 
 	DC->DrawIndexed(indices.size(), 0, 0);
 
-	if (cubes.size())
+	if (trees.size())
 	{
-		for (auto cube : cubes)
-			cube->Render();
+		for (auto tree : trees)
+			tree->Render();
 	}
-	if (spheres.size())
+	if (zombies.size())
 	{
-		for (auto sphere : spheres)
-			sphere->Render();
+		for (auto zombie : zombies)
+			zombie->Render();
+	}
+	if (warChiefs.size())
+	{
+		for (auto warChief : warChiefs)
+			warChief->Render();
 	}
 
 }
@@ -117,14 +133,15 @@ void TerrainEditor::Render()
 
 void TerrainEditor::PostRender()
 {
-	ImGui::ShowDemoWindow();
+	//ImGui::ShowDemoWindow();
 
 	ImGui::Begin("TerrainEditor", 0, ImGuiWindowFlags_AlwaysAutoResize);
 	{
 		ImGui::RadioButton("SetHeight", &mode, 0); ImGui::SameLine();
-		ImGui::RadioButton("Painting", &mode, 1); ImGui::SameLine();
-		ImGui::RadioButton("Cube", &mode, 2); ImGui::SameLine();
-		ImGui::RadioButton("Sphere", &mode, 3);
+		ImGui::RadioButton("Painting", &mode, 1);
+		ImGui::RadioButton("Tree", &mode, 2); ImGui::SameLine();
+		ImGui::RadioButton("Zombie", &mode, 3); ImGui::SameLine();
+		ImGui::RadioButton("WarChief", &mode, 4);
 
 		ImGui::RadioButton("Up(Paint)", &isRaise, 1); ImGui::SameLine();
 		ImGui::RadioButton("Down(Erase)", &isRaise, 0);
@@ -136,7 +153,7 @@ void TerrainEditor::PostRender()
 		ImGui::SliderFloat("Range", &brushBuffer->data.range, 1, 20);
 
 		ImGui::SliderFloat3("Rotation", (float*)&objectRotation, 0, XM_2PI);
-		ImGui::SliderFloat3("Scale", (float*)&objectScale, 0.1f, 10.0f);
+		ImGui::SliderFloat3("Scale", (float*)&objectScale, 0.01f, 10.0f);
 
 		if (ImGui::Button("Save"))
 			Save();
@@ -370,27 +387,39 @@ void TerrainEditor::Save()
 {
 	BinaryWriter* writer = new BinaryWriter(L"TextData/SaveObject.object");
 
-	writer->String("Cube");
-	writer->UInt(cubes.size());
-	if (cubes.size())
+	writer->String("Tree");
+	writer->UInt(trees.size());
+	if (trees.size())
 	{
-		for (auto cube : cubes)
+		for (auto tree : trees)
 		{
-			writer->Byte(&cube->position,sizeof(Vector3));
-			writer->Byte(&cube->rotation, sizeof(Vector3));
-			writer->Byte(&cube->scale, sizeof(Vector3));
+			writer->Byte(&tree->position,sizeof(Vector3));
+			writer->Byte(&tree->rotation, sizeof(Vector3));
+			writer->Byte(&tree->scale, sizeof(Vector3));
 		}
 	}
 
-	writer->String("Sphere");
-	writer->UInt(spheres.size());
-	if (spheres.size())
+	writer->String("Zombie");
+	writer->UInt(zombies.size());
+	if (zombies.size())
 	{
-		for (auto sphere : spheres)
+		for (auto zombie : zombies)
 		{
-			writer->Byte(&sphere->position, sizeof(Vector3));
-			writer->Byte(&sphere->rotation, sizeof(Vector3));
-			writer->Byte(&sphere->scale, sizeof(Vector3));
+			writer->Byte(&zombie->position, sizeof(Vector3));
+			writer->Byte(&zombie->rotation, sizeof(Vector3));
+			writer->Byte(&zombie->scale, sizeof(Vector3));
+		}
+	}
+
+	writer->String("WarChief");
+	writer->UInt(warChiefs.size());
+	if (warChiefs.size())
+	{
+		for (auto warChief : warChiefs)
+		{
+			writer->Byte(&warChief->position, sizeof(Vector3));
+			writer->Byte(&warChief->rotation, sizeof(Vector3));
+			writer->Byte(&warChief->scale, sizeof(Vector3));
 		}
 	}
 
@@ -405,18 +434,18 @@ void TerrainEditor::Load()
 	UINT size = reader->UInt();
 	if (size)
 	{
-		cubes.resize(size);
+		trees.resize(size);
 		for (int i = 0; i < size; i++)
 		{
-			Cube* tmp = new Cube();
+			Tree* tmp = new Tree();
 			void* data = &tmp->position;
 			reader->Byte(&data, sizeof(Vector3));
 			void* data2 = &tmp->rotation;
 			reader->Byte(&data2, sizeof(Vector3));
 			void* data3 = &tmp->scale;
 			reader->Byte(&data3, sizeof(Vector3));
-			cubes[i]= tmp;
-			cubes[i]->UpdateWorld();
+			trees[i]= tmp;
+			trees[i]->UpdateWorld();
 		}
 	}
 
@@ -424,18 +453,37 @@ void TerrainEditor::Load()
 	UINT size2 = reader->UInt();
 	if (size2)
 	{
-		spheres.resize(size2);
+		zombies.resize(size2);
 		for (int i = 0; i < size2; i++)
 		{
-			Sphere* tmp = new Sphere(5, 50, 50);
+			Zombie* tmp = new Zombie();
 			void* data = &tmp->position;
 			reader->Byte(&data, sizeof(Vector3));
 			void* data2 = &tmp->rotation;
 			reader->Byte(&data2, sizeof(Vector3));
 			void* data3 = &tmp->scale;
 			reader->Byte(&data3, sizeof(Vector3));
-			spheres[i] = tmp;
-			spheres[i]->UpdateWorld();
+			zombies[i] = tmp;
+			zombies[i]->UpdateWorld();
+		}
+	}
+
+	string objName3 = reader->String();
+	UINT size3 = reader->UInt();
+	if (size3)
+	{
+		warChiefs.resize(size2);
+		for (int i = 0; i < size2; i++)
+		{
+			WarChief* tmp = new WarChief();
+			void* data = &tmp->position;
+			reader->Byte(&data, sizeof(Vector3));
+			void* data2 = &tmp->rotation;
+			reader->Byte(&data2, sizeof(Vector3));
+			void* data3 = &tmp->scale;
+			reader->Byte(&data3, sizeof(Vector3));
+			warChiefs[i] = tmp;
+			warChiefs[i]->UpdateWorld();
 		}
 	}
 
@@ -645,14 +693,22 @@ void TerrainEditor::Brushing()
 		if (KEY_DOWN(VK_LBUTTON) && mode == 2)
 		{
 			if (isRaise)
-				CreateCube(brushBuffer->data.location, objectRotation, objectScale);
+				CreateTree(brushBuffer->data.location, objectRotation, objectScale);
 		}
 
 		if (KEY_DOWN(VK_LBUTTON) && mode == 3)
 		{
 			if (isRaise)
-				CreateSphere(brushBuffer->data.location, objectRotation, objectScale);
+				CreateZombie(brushBuffer->data.location, objectRotation, objectScale);
 		}
+
+
+		if (KEY_DOWN(VK_LBUTTON) && mode == 4)
+		{
+			if (isRaise)
+				CreateWarChief(brushBuffer->data.location, objectRotation, objectScale);
+		}
+
 
 		if (KEY_UP(VK_LBUTTON) && mode == 0)
 		{
@@ -803,22 +859,32 @@ void TerrainEditor::CreateCompute()
 	output = new OutputStruct[size];
 }
 
-void TerrainEditor::CreateCube(Vector3 position, Vector3 rotation, Vector3 scale)
+void TerrainEditor::CreateTree(Vector3 position, Vector3 rotation, Vector3 scale)
 {
-	Cube* tmp = new Cube();
+	Tree* tmp = new Tree();
 	tmp->position = position;
 	tmp->rotation = rotation;
 	tmp->scale = scale;
 	tmp->UpdateWorld();
-	cubes.push_back(tmp);
+	trees.push_back(tmp);
 }
 
-void TerrainEditor::CreateSphere(Vector3 position, Vector3 rotation, Vector3 scale)
+void TerrainEditor::CreateZombie(Vector3 position, Vector3 rotation, Vector3 scale)
 {
-	Sphere* tmp = new Sphere(5, 50, 50);
-	tmp->position = position + scale.y;
+	Zombie* tmp = new Zombie();
+	tmp->position = position;
 	tmp->rotation = rotation;
 	tmp->scale = scale;
 	tmp->UpdateWorld();
-	spheres.push_back(tmp);
+	zombies.push_back(tmp);
+}
+
+void TerrainEditor::CreateWarChief(Vector3 position, Vector3 rotation, Vector3 scale)
+{
+	WarChief* tmp = new WarChief();
+	tmp->position = position;
+	tmp->rotation = rotation;
+	tmp->scale = scale;
+	tmp->UpdateWorld();
+	warChiefs.push_back(tmp);
 }

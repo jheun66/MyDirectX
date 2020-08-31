@@ -10,3 +10,11 @@ cbuffer Light : register(b0)
     float specExp;
     float4 ambient;
 }
+
+// ¸ðµ¨ÀÇ Material
+cbuffer Material : register(b1)
+{
+    float4 mDiffuse;
+    float4 mSpecular;
+    float4 mAmbient;
+}

@@ -48,13 +48,21 @@
 #pragma comment(lib, "dxguid.lib")
 
 // ImGui
-#include "../ImGui/imgui.h"
-#include "../ImGui/imgui_impl_dx11.h"
-#include "../ImGui/imgui_impl_win32.h"
-#include "../ImGui/ImGuiFileDialog.h"
+#include <imgui.h>
+#include <imgui_impl_dx11.h>
+#include <imgui_impl_win32.h>
+#include <CustomFont.h>
+#include <ImGuiFileDialog.h>
 
 // DirectXTex
 #include "../DirectXTex/DirectXTex.h"
+
+//Assimp
+#include <Assimp/Importer.hpp>
+#include <Assimp/scene.h>
+#include <Assimp/postprocess.h>
+
+#pragma comment(lib, "Assimp/assimp-vc142-mtd.lib")
 
 using namespace DirectX;
 using namespace std;
@@ -94,12 +102,18 @@ using namespace std;
 // Environment
 #include "Framework/Environment/Environment.h"
 
+// Assimp
+#include "Framework/Assimp/ModelTypes.h"
+#include "Framework/Assimp/ModelReader.h"
+
 // System
-#include "Framework/System/Time.h"
-#include "Framework/System/Keyboard.h"
-#include "Framework/System/Mouse.h"
-#include "Framework/System/FileSystem/BinaryWriter.h"
-#include "Framework/System/FileSystem/BinaryReader.h"
+#include "Framework/Utility/Utility.h"
+#include "Framework/Utility/Time.h"
+#include "Framework/Utility/Keyboard.h"
+#include "Framework/Utility/Mouse.h"
+#include "Framework/Utility/FileSystem/BinaryWriter.h"
+#include "Framework/Utility/FileSystem/BinaryReader.h"
+#include "Framework/Utility/FileSystem/Xml.h"
 
 // GameObject Header
 #include "GameObject/Transform.h"
@@ -110,6 +124,12 @@ using namespace std;
 #include "GameObject/LandScape/Terrain.h"
 #include "GameObject/LandScape/TerrainEditor.h"
 #include "GameObject/Custom/Orb.h"
+#include "GameObject/Model/ModelMesh.h"
+#include "GameObject/Model/Model.h"
+// Custom Object
+#include "GameObject/Custom/WarChief.h"
+#include "GameObject/Custom/Tree.h"
+#include "GameObject/Custom/Zombie.h"
 
 // 게임 씬과 게임 프로세스
 #include "Scenes/Scene.h"

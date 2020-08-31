@@ -1,0 +1,20 @@
+<Materials>
+    <Material>
+        <Name>Trunk</Name>
+        <DiffuseFile></DiffuseFile>
+        <SpecularFile></SpecularFile>
+        <NormalFile></NormalFile>
+        <Ambient R="0" G="0" B="0" A="1"/>
+        <Diffuse R="0.63921571" G="0.4627451" B="0.3019608" A="1"/>
+        <Specular R="0.021960784" G="0.021960784" B="0.021960784" A="20"/>
+    </Material>
+    <Material>
+        <Name>wire_086086086</Name>
+        <DiffuseFile></DiffuseFile>
+        <SpecularFile></SpecularFile>
+        <NormalFile></NormalFile>
+        <Ambient R="0" G="0" B="0" A="1"/>
+        <Diffuse R="0.24705882" G="0.50980395" B="0.27058825" A="1"/>
+        <Specular R="0.031372551" G="0.031372551" B="0.031372551" A="20"/>
+    </Material>
+</Materials>

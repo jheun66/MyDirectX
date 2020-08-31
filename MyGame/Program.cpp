@@ -4,6 +4,7 @@
 #include "Scenes/TerrainScene.h"
 #include "Scenes/MousePickingScene.h"
 #include "Scenes/TerrainEditorScene.h"
+#include "Scenes/ModelScene.h"
 
 Program::Program()
 {

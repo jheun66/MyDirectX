@@ -19,27 +19,26 @@ Texture* Texture::Add(wstring file)
     if (totalTexture.count(file) > 0)
         return totalTexture[file];
 
-    // 마지막 . 위치 찾기
-    size_t index = file.find_last_of('.');
-    wstring extension = file.substr(index + 1, file.length());
+    wstring extension = Utility::GetExtension(file);
 
     ScratchImage image;
 
-    wstring path = L"Textures/" + file;
+    // Texture 위치가 Model마다 다른 위치에 Texture를 저장하기 위해 전체 경로를 이용하기로 함
+    //wstring path = L"Textures/" + file;
 
     if (extension == L"tga")
     {
-        HRESULT hr = LoadFromTGAFile(path.c_str(), nullptr, image);
+        HRESULT hr = LoadFromTGAFile(file.c_str(), nullptr, image);
         assert(SUCCEEDED(hr));
     }
     else if (extension == L"dds")
     {
-        HRESULT hr = LoadFromDDSFile(path.c_str(), DDS_FLAGS_NONE, nullptr, image);
+        HRESULT hr = LoadFromDDSFile(file.c_str(), DDS_FLAGS_NONE, nullptr, image);
         assert(SUCCEEDED(hr));
     }
     else
     {
-        HRESULT hr = LoadFromWICFile(path.c_str(), WIC_FLAGS_FORCE_RGB, nullptr, image);
+        HRESULT hr = LoadFromWICFile(file.c_str(), WIC_FLAGS_FORCE_RGB, nullptr, image);
         assert(SUCCEEDED(hr));
     }
 
