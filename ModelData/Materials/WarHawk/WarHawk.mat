@@ -1,0 +1,110 @@
+<Materials>
+    <Material>
+        <Name>CanopyPistons</Name>
+        <DiffuseFile>EucadianWarhawkExport_CanopyPistons_BaseColor.png</DiffuseFile>
+        <SpecularFile></SpecularFile>
+        <NormalFile></NormalFile>
+        <Ambient R="0" G="0" B="0" A="1"/>
+        <Diffuse R="0.63999999" G="0.63999999" B="0.63999999" A="1"/>
+        <Specular R="0.2" G="0.2" B="0.2" A="780.27722"/>
+    </Material>
+    <Material>
+        <Name>Glass</Name>
+        <DiffuseFile>EucadianWarhawkExport_Glass_BaseColor.png</DiffuseFile>
+        <SpecularFile></SpecularFile>
+        <NormalFile></NormalFile>
+        <Ambient R="0" G="0" B="0" A="1"/>
+        <Diffuse R="0.63999999" G="0.63999999" B="0.63999999" A="1"/>
+        <Specular R="0.2" G="0.2" B="0.2" A="780.27722"/>
+    </Material>
+    <Material>
+        <Name>InteriorMetal</Name>
+        <DiffuseFile>InteriorMetal_Base_Color.png</DiffuseFile>
+        <SpecularFile></SpecularFile>
+        <NormalFile></NormalFile>
+        <Ambient R="0" G="0" B="0" A="1"/>
+        <Diffuse R="0.63999999" G="0.63999999" B="0.63999999" A="1"/>
+        <Specular R="0" G="0" B="0" A="1"/>
+    </Material>
+    <Material>
+        <Name>Instruments</Name>
+        <DiffuseFile>Instruments.png</DiffuseFile>
+        <SpecularFile></SpecularFile>
+        <NormalFile></NormalFile>
+        <Ambient R="0" G="0" B="0" A="1"/>
+        <Diffuse R="0.63999999" G="0.63999999" B="0.63999999" A="1"/>
+        <Specular R="0" G="0" B="0" A="1"/>
+    </Material>
+    <Material>
+        <Name>SeatStoff</Name>
+        <DiffuseFile>SeatStoff_Base_Color.png</DiffuseFile>
+        <SpecularFile></SpecularFile>
+        <NormalFile></NormalFile>
+        <Ambient R="0" G="0" B="0" A="1"/>
+        <Diffuse R="0.63999999" G="0.63999999" B="0.63999999" A="1"/>
+        <Specular R="0" G="0" B="0" A="1"/>
+    </Material>
+    <Material>
+        <Name>WarhawkSurface</Name>
+        <DiffuseFile>EucadianWarhawkExport_WarhawkSurface_BaseColor.png</DiffuseFile>
+        <SpecularFile></SpecularFile>
+        <NormalFile></NormalFile>
+        <Ambient R="0" G="0" B="0" A="1"/>
+        <Diffuse R="0.63999999" G="0.63999999" B="0.63999999" A="1"/>
+        <Specular R="0.2" G="0.2" B="0.2" A="780.27722"/>
+    </Material>
+    <Material>
+        <Name>Black</Name>
+        <DiffuseFile>EucadianWarhawkExport_Black_BaseColor.png</DiffuseFile>
+        <SpecularFile></SpecularFile>
+        <NormalFile></NormalFile>
+        <Ambient R="0" G="0" B="0" A="1"/>
+        <Diffuse R="0.63999999" G="0.63999999" B="0.63999999" A="1"/>
+        <Specular R="0.2" G="0.2" B="0.2" A="780.27722"/>
+    </Material>
+    <Material>
+        <Name>GearPodsInternal</Name>
+        <DiffuseFile>EucadianWarhawkExport_GearPodsInternal_BaseColor.png</DiffuseFile>
+        <SpecularFile></SpecularFile>
+        <NormalFile></NormalFile>
+        <Ambient R="0" G="0" B="0" A="1"/>
+        <Diffuse R="0.63999999" G="0.63999999" B="0.63999999" A="1"/>
+        <Specular R="0.2" G="0.2" B="0.2" A="780.27722"/>
+    </Material>
+    <Material>
+        <Name>Wheel</Name>
+        <DiffuseFile>Wheels.png</DiffuseFile>
+        <SpecularFile></SpecularFile>
+        <NormalFile></NormalFile>
+        <Ambient R="0" G="0" B="0" A="1"/>
+        <Diffuse R="0.63999999" G="0.63999999" B="0.63999999" A="1"/>
+        <Specular R="0.2" G="0.2" B="0.2" A="780.27722"/>
+    </Material>
+    <Material>
+        <Name>GUNS_ENGINE</Name>
+        <DiffuseFile>EucadianWarhawkExport_GUNS_ENGINE_BaseColor.png</DiffuseFile>
+        <SpecularFile></SpecularFile>
+        <NormalFile></NormalFile>
+        <Ambient R="0" G="0" B="0" A="1"/>
+        <Diffuse R="0.63999999" G="0.63999999" B="0.63999999" A="1"/>
+        <Specular R="0.2" G="0.2" B="0.2" A="780.27722"/>
+    </Material>
+    <Material>
+        <Name>Engines</Name>
+        <DiffuseFile>EucadianWarhawkExport_Engines_BaseColor.png</DiffuseFile>
+        <SpecularFile></SpecularFile>
+        <NormalFile></NormalFile>
+        <Ambient R="0" G="0" B="0" A="1"/>
+        <Diffuse R="0.63999999" G="0.63999999" B="0.63999999" A="1"/>
+        <Specular R="0.2" G="0.2" B="0.2" A="780.27722"/>
+    </Material>
+    <Material>
+        <Name>Intake</Name>
+        <DiffuseFile>EucadianWarhawkExport_Intake_BaseColor.png</DiffuseFile>
+        <SpecularFile></SpecularFile>
+        <NormalFile></NormalFile>
+        <Ambient R="0" G="0" B="0" A="1"/>
+        <Diffuse R="0.63999999" G="0.63999999" B="0.63999999" A="1"/>
+        <Specular R="0.2" G="0.2" B="0.2" A="780.27722"/>
+    </Material>
+</Materials>

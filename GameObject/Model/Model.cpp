@@ -12,10 +12,22 @@ Model::Model(string file)
 
 Model::~Model()
 {
+	for (auto material : materials)
+		delete material.second;
+
+	for (ModelMesh* mesh : meshes)
+		delete mesh;
+
+	for (ModelBone* bone : bones)
+		delete bone;
+
+	for (ModelClip* clip : clips)
+		delete clip;
 }
 
 void Model::Update()
 {
+	UpdateTransform();
 	UpdateWorld();
 }
 
@@ -111,11 +123,24 @@ void Model::ReadMesh(string file)
 
 	for (UINT i = 0; i < count; i++)
 	{
+		ModelBone* bone = new ModelBone();
+
+		bone->index = r->Int();
+		bone->name = r->String();
+		bone->parentIndex = r->Int();
+		bone->transform = XMLoadFloat4x4(&r->Float4x4());
+
+		bones.emplace_back(bone);
+	}
+
+	count = r->UInt();
+
+	for (UINT i = 0; i < count; i++)
+	{
 		ModelMesh* mesh = new ModelMesh();
 		mesh->name = r->String();
-		mesh->materialName = r->String();
+		mesh->boneIndex = r->Int();
 
-		mesh->material = materials[mesh->materialName];
 		{//Vertices
 			UINT count = r->UInt();
 
@@ -136,16 +161,121 @@ void Model::ReadMesh(string file)
 			r->Byte(&ptr, sizeof(UINT) * count);
 		}
 
+		UINT partCount = r->UInt();
+		for (UINT k = 0; k < partCount; k++)
+		{
+			ModelMeshPart* meshPart = new ModelMeshPart();
+			meshPart->mesh = mesh;
+			meshPart->name = r->String();
+			meshPart->materialName = r->String();
+
+			meshPart->material = materials[meshPart->materialName];
+
+			meshPart->startVertex = r->UInt();
+			meshPart->vertexCount = r->UInt();
+
+			meshPart->startIndex = r->UInt();
+			meshPart->indexCount = r->UInt();
+
+			mesh->meshParts.emplace_back(meshPart);
+		}
+
 		mesh->CreateMesh();
 
 		meshes.emplace_back(mesh);
 	}
 
 	delete r;
+
+	BindBone();
+	BindMesh();
+}
+
+void Model::ReadClip(string file)
+{
+	file = "ModelData/Clips/" + file + ".clip";
+
+	BinaryReader* r = new BinaryReader(Utility::ToWString(file));
+
+	ModelClip* clip = new ModelClip();
+
+	clip->name = r->String();
+	clip->duration = r->Float();
+	clip->frameRate = r->Float();
+	clip->frameCount = r->UInt();
+
+	UINT keyFrameCount = r->UInt();
+	for (UINT i = 0; i < keyFrameCount; i++)
+	{
+		KeyFrame* keyFrame = new KeyFrame();
+		keyFrame->boneName = r->String();
+
+		UINT size = r->UInt();
+		if (size > 0)
+		{
+			keyFrame->transforms.resize(size);
+
+			void* ptr = (void*)keyFrame->transforms.data();
+			r->Byte(&ptr, sizeof(KeyTransform) * size);
+		}
+		clip->keyFrameMap[keyFrame->boneName] = keyFrame;
+	}
+	clips.emplace_back(clip);
+
+	delete r;
+}
+
+void Model::BindBone()
+{
+	root = bones[0];
+
+	for (ModelBone* bone : bones)
+	{
+		if (bone->parentIndex > -1)
+		{
+			bone->parent = bones[bone->parentIndex];
+			bone->parent->children.emplace_back(bone);
+		}
+		else
+			bone->parent = nullptr;
+
+	}
+}
+
+void Model::BindMesh()
+{
+	for (ModelMesh* mesh : meshes)
+	{
+		for (ModelBone* bone : bones)
+		{
+			if (mesh->boneIndex == bone->index)
+			{
+				mesh->bone = bone;
+				break;
+			}
+		}
+
+
+	}
 }
 
 void Model::SetShader(wstring file)
 {
 	for (auto material : materials)
 		material.second->SetShader(file);
+}
+
+void Model::SetShader(wstring vsFile, wstring psFile)
+{
+	for (auto material : materials)
+		material.second->SetShader(vsFile, psFile);
+}
+
+void Model::UpdateTransform()
+{
+	for (UINT i = 0; i < bones.size(); i++)
+		transforms[i] = bones[i]->transform;
+
+	for (ModelMesh* mesh : meshes)
+		mesh->SetTransforms(transforms);
 }

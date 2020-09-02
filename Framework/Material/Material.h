@@ -36,6 +36,7 @@ public:
 
 	// 생성자에서 바로 안넣고 외부 모델에 shader 적용할 때 사용
 	void SetShader(wstring file);
+	void SetShader(wstring vsFile, wstring psFile);
 
 	void SetDiffuseMap(wstring file) { diffuseMap = Texture::Add(file); }
 	void SetSpecularMap(wstring file) { specularMap = Texture::Add(file); }

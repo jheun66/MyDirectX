@@ -3,7 +3,7 @@
 
 MousePickingScene::MousePickingScene()
 {
-	terrain = new Terrain();
+	terrain = new Terrain(100, 100);
 	sphere = new Sphere();
 
 	terrain->GetMaterial()->SetDiffuseMap(L"rocks_ground_01_diff_1k.png");

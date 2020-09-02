@@ -3,7 +3,7 @@
 
 TerrainScene::TerrainScene()
 {
-	terrain = new Terrain();
+	terrain = new Terrain(100, 100);
 	settingBuffer = new MSBuffer();
 }
 

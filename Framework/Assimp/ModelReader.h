@@ -20,8 +20,18 @@ public:
 	//Mesh//////////////////////////////////////////////////
 	void ExportMesh(string savePath);
 
-	void ReadMeshData(aiNode* node);
-	void WriteMeshData(string savePath);
+	void ReadBone(aiNode* node, int index, int parent);
+	void ReadMesh(aiNode* node, int bone);
+	void ReadSkin();
+	void WriteMesh(string savePath);
+
+	////////////////////////////////////////////////////////
+	//Clip//////////////////////////////////////////////////
+	void ExportClip(UINT index, string savePath);
+
+	Clip* ReadClip(aiAnimation* animation);
+	void ReadKeyFrame(Clip* clip, aiNode* node, vector<ClipNode>& nodeInfos);
+	void WriteClip(Clip* clip, string savePath);
 
 private:
 	string file;
@@ -31,4 +41,5 @@ private:
 
 	vector<MaterialData*> materials;
 	vector<MeshData*> meshes;
+	vector<BoneData*> bones;
 };

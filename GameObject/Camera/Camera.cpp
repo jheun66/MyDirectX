@@ -82,8 +82,8 @@ void Camera::Move()
 
 void Camera::Update()
 {
-    Rotation();
-    Move();
+    //Rotation();
+    //Move();
 
     UpdateWorld();
 

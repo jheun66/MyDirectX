@@ -177,6 +177,24 @@
     <ClInclude Include="GameObject\Custom\Tree.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="GameObject\Model\ModelAnimator.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject\Model\ModelClip.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\ModelAnimationScene.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject\Model\ModelMeshPart.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject\Custom\WarHawk.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\MoveModelScene.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MyDirectX.cpp">
@@ -321,6 +339,21 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="GameObject\Custom\Tree.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject\Model\ModelClip.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenes\ModelAnimationScene.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject\Model\ModelMeshPart.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject\Custom\WarHawk.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenes\MoveModelScene.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

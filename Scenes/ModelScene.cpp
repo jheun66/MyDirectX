@@ -12,6 +12,7 @@ ModelScene::ModelScene()
 	model = new Model(name);
 	model->SetShader(L"Tree");
 
+
 	settingBuffer = new MSBuffer();
 }
 

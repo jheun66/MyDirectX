@@ -16,8 +16,6 @@ struct PixelInput
     float4 pos : SV_Position;
     float2 uv : UV;
     float3 normal : NORMAL;
-    float3 tangent : TANGENT;
-    float3 binormal : BINORMAL;
     float3 viewDir : VIEWDIR;
 };
 
@@ -37,8 +35,6 @@ PixelInput VS(VertexInput input)
     output.uv = input.uv;
 
     output.normal = mul(input.normal, (float3x3) world);
-    output.tangent = mul(input.tangent, (float3x3) world);
-    output.binormal = cross(output.normal, output.tangent);
     
     return output;
 }

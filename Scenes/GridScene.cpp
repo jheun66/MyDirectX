@@ -3,7 +3,7 @@
 
 GridScene::GridScene()
 {
-	grid = new Terrain();
+	grid = new Terrain(100, 100);
 	planet = new Sphere();
 
 	planet->position = Vector3(32, 39, 0);

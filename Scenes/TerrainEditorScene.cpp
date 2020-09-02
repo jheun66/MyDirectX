@@ -9,6 +9,7 @@ TerrainEditorScene::TerrainEditorScene()
 
 TerrainEditorScene::~TerrainEditorScene()
 {
+	delete settingBuffer;
 	delete terrainEditor;
 }
 

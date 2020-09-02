@@ -1,14 +1,13 @@
 #include "Framework.h"
 #include "Terrain.h"
 
-Terrain::Terrain()
+Terrain::Terrain(UINT width, UINT height)
+	:width(width), height(height)
 {
-	material = new Material(L"NormalMapping");
-	material->SetDiffuseMap(L"Terrain/brown_mud_leaves_01_diff_1k.png");
-	material->SetSpecularMap(L"Terrain/brown_mud_leaves_01_spec_1k.png");
-	material->SetNormalMap(L"Terrain/brown_mud_leaves_01_Nor_1k.png");
-
-	heightMap = Texture::Add(L"HeightMaps/HeightMap.png");
+	material = new Material(L"SplattingAdvanced");
+	material->SetDiffuseMap(L"Textures/Terrain/brown_mud_leaves_01_diff_1k.png");
+	material->SetSpecularMap(L"Textures/Terrain/brown_mud_leaves_01_spec_1k.png");
+	material->SetNormalMap(L"Textures/Terrain/brown_mud_leaves_01_Nor_1k.png");
 
 	CreateData();
 	CreateNormal();
@@ -17,16 +16,24 @@ Terrain::Terrain()
 	mesh = new Mesh(vertices.data(), sizeof(VertexType), vertices.size(),
 		indices.data(), indices.size());
 
-	computeShader = Shader::AddCS(L"Intersection");
-
-	// Æú¸®°ï °³¼ö
-	size = indices.size() / 3;
-
-	structuredBuffer = new StructuredBuffer(input, sizeof(InputStruct), size,
-		sizeof(OutputStruct), size);
-
-	rayBuffer = new RayBuffer();
-	output = new OutputStruct[size];
+	CreateCompute();
+	
+	secondMap = Texture::Add(L"Textures/Terrain/brown_mud_dry_diff_1k.png");
+	secondSMap = Texture::Add(L"Textures/Terrain/brown_mud_dry_spec_1k.png");
+	secondNMap = Texture::Add(L"Textures/Terrain/brown_mud_dry_nor_1k.png");
+	thirdMap = Texture::Add(L"Textures/Terrain/coral_mud_01_diff_1k.png");
+	thirdSMap = Texture::Add(L"Textures/Terrain/coral_mud_01_spec_1k.png");
+	thirdNMap = Texture::Add(L"Textures/Terrain/coral_mud_01_Nor_1k.png");
+	fourthMap = Texture::Add(L"Textures/Terrain/snow_02_diff_1k.png");
+	fourthSMap = Texture::Add(L"Textures/Terrain/snow_02_spec_1k.png");
+	fourthNMap = Texture::Add(L"Textures/Terrain/snow_02_nor_1k.png");
+	fifthMap = Texture::Add(L"Textures/Terrain/brown_mud_rocks_01_diff_1k.png");
+	fifthSMap = Texture::Add(L"Textures/Terrain/brown_mud_rocks_01_spec_1k.png");
+	fifthNMap = Texture::Add(L"Textures/Terrain/brown_mud_rocks_01_nor_1k.png");
+	
+	LoadHeightMap(L"Textures/HeightMaps/TestHeightMap.png");
+	LoadAlphaMap(L"Textures/HeightMaps/TestAlphaMap.png");
+	LoadTree();
 }
 
 Terrain::~Terrain()
@@ -39,11 +46,24 @@ Terrain::~Terrain()
 
 	delete[] input;
 	delete[] output;
+
+
+	if (trees.size())
+	{
+		for (auto tree : trees)
+			delete tree;
+	}
 }
 
 void Terrain::Update()
 {
 	UpdateWorld();
+
+	if (trees.size())
+	{
+		for (auto tree : trees)
+			tree->Update();
+	}
 }
 
 void Terrain::Render()
@@ -52,65 +72,90 @@ void Terrain::Render()
 
 	SetWorldBuffer();
 
+	secondMap->PSSet(10);
+	secondSMap->PSSet(11);
+	secondNMap->PSSet(12);
+	thirdMap->PSSet(20);
+	thirdSMap->PSSet(21);
+	thirdNMap->PSSet(22);
+	fourthMap->PSSet(30);
+	fourthSMap->PSSet(31);
+	fourthNMap->PSSet(32);
+	fifthMap->PSSet(40);
+	fifthSMap->PSSet(41);
+	fifthNMap->PSSet(42);
+
 	material->Set();
 
 	DC->DrawIndexed(indices.size(), 0, 0);
+
+	if (trees.size())
+	{
+		for (auto tree : trees)
+			tree->Render();
+	}
 }
 
 void Terrain::PostRender()
 {
+	Vector3 pickingPos;
+	ComputePicking(&pickingPos);
+	ImGui::SliderFloat3("PickingPos", (float*)&pickingPos, 0, 500);
 
+	float height = GetAltitude(pickingPos);
+	ImGui::Text("Height : %f", height);
 }
 
-bool Terrain::Picking(OUT Vector3* position)
-{
-	Ray ray = Environment::Get()->MainCamera()->ScreenPointToRay(Mouse::Get()->GetPosition());
-
-	for (UINT z = 0; z < height; z++)
-	{
-		for (UINT x = 0; x < width; x++)
-		{
-			UINT index[4];
-			index[0] = (width + 1) * z + x;
-			index[1] = (width + 1) * z + x + 1;
-			index[2] = (width + 1) * (z + 1) + x;
-			index[3] = (width + 1) * (z + 1) + x + 1;
-
-			Vector3 p[4];
-			for (UINT i = 0; i < 4; i++)
-				p[i] = vertices[index[i]].position;
-
-			float distance;
-			if (TriangleTests::Intersects(ray.position, ray.direction, p[0], p[1], p[2], distance))
-			{
-				*position = ray.position + ray.direction * distance;
-				return true;
-			}
-
-			if (TriangleTests::Intersects(ray.position, ray.direction, p[3], p[1], p[2], distance))
-			{
-				*position = ray.position + ray.direction * distance;
-				return true;
-			}
-		}
-	}
-
-	return false;
-}
+// ±âÁ¸ ¹æ½Ä ¾È¾¸
+//bool Terrain::Picking(OUT Vector3* position)
+//{
+//	Ray ray = Environment::Get()->MainCamera()->ScreenPointToRay(Mouse::Get()->GetPosition());
+//
+//	for (UINT z = 0; z < height; z++)
+//	{
+//		for (UINT x = 0; x < width; x++)
+//		{
+//			UINT index[4];
+//			index[0] = (width + 1) * z + x;
+//			index[1] = (width + 1) * z + x + 1;
+//			index[2] = (width + 1) * (z + 1) + x;
+//			index[3] = (width + 1) * (z + 1) + x + 1;
+//
+//			Vector3 p[4];
+//			for (UINT i = 0; i < 4; i++)
+//				p[i] = vertices[index[i]].position;
+//
+//			float distance;
+//			if (TriangleTests::Intersects(ray.position, ray.direction, p[0], p[1], p[2], distance))
+//			{
+//				*position = ray.position + ray.direction * distance;
+//				return true;
+//			}
+//
+//			if (TriangleTests::Intersects(ray.position, ray.direction, p[3], p[1], p[2], distance))
+//			{
+//				*position = ray.position + ray.direction * distance;
+//				return true;
+//			}
+//		}
+//	}
+//
+//	return false;
+//}
 
 float Terrain::GetAltitude(Vector3 position)
 {
 	UINT x = (UINT)position.x;
 	UINT z = (UINT)position.z;
 
-	if (x < 0 || x > width) return 0.0f;
-	if (z < 0 || z > height) return 0.0f;
+	if (x < 0 || x > width - 1) return 0.0f;
+	if (z < 0 || z > height - 1) return 0.0f;
 
 	UINT index[4];
-	index[0] = (width + 1) * z + x;
-	index[1] = (width + 1) * (z + 1) + x;
-	index[2] = (width + 1) * z + x + 1;
-	index[3] = (width + 1) * (z + 1) + x + 1;
+	index[0] = (width) * z + x;
+	index[1] = (width) * (z + 1) + x;
+	index[2] = (width) * z + x + 1;
+	index[3] = (width) * (z + 1) + x + 1;
 
 	Vector3 p[4];
 	for (UINT i = 0; i < 4; i++)
@@ -183,56 +228,141 @@ bool Terrain::ComputePicking(OUT Vector3* position)
 	return false;
 }
 
+void Terrain::LoadTree()
+{
+	BinaryReader* reader = new BinaryReader(L"TextData/SaveObject.object");
+
+	string objName = reader->String();
+	UINT size = reader->UInt();
+	if (size)
+	{
+		trees.resize(size);
+		for (int i = 0; i < size; i++)
+		{
+			Tree* tmp = new Tree();
+			void* data = &tmp->position;
+			reader->Byte(&data, sizeof(Vector3));
+			void* data2 = &tmp->rotation;
+			reader->Byte(&data2, sizeof(Vector3));
+			void* data3 = &tmp->scale;
+			reader->Byte(&data3, sizeof(Vector3));
+			trees[i] = tmp;
+			trees[i]->UpdateWorld();
+		}
+	}
+
+	delete reader;
+}
+
+void Terrain::LoadHeightMap(wstring path)
+{
+	ScratchImage image;
+
+	HRESULT hr = LoadFromWICFile(path.c_str(), WIC_FLAGS_FORCE_RGB, nullptr, image);
+	assert(SUCCEEDED(hr));
+
+
+	ID3D11ShaderResourceView* srv;
+
+	hr = CreateShaderResourceView(DEVICE, image.GetImages(), image.GetImageCount(),
+		image.GetMetadata(), &srv);
+	assert(SUCCEEDED(hr));
+
+
+	UINT width = image.GetMetadata().width - 1;
+	UINT height = image.GetMetadata().height - 1;
+
+	vector<XMFLOAT4> pixels;
+
+	uint8_t* colors = image.GetPixels();
+	UINT size = image.GetPixelsSize();
+
+	float scale = 1.0f / 255.0f;
+
+	for (int i = 0; i < size; i += 4)
+	{
+		XMFLOAT4 color;
+
+		color.x = colors[i + 0] * scale;
+		color.y = colors[i + 1] * scale;
+		color.z = colors[i + 2] * scale;
+		color.w = colors[i + 3] * scale;
+
+		pixels.emplace_back(color);
+	}
+
+
+	for (UINT i = 0; i < pixels.size(); i++)
+	{
+		vertices[i].position.y = 0;
+		vertices[i].position.y += pixels[i].x * 20.0f;
+		vertices[i].position.y += pixels[i].y * 20.0f;
+		vertices[i].position.y += pixels[i].z * 20.0f;
+	}
+
+	CreateNormal();
+	CreateTangent();
+	CreateCompute();
+
+	srv->Release();
+	srv = nullptr;
+
+	mesh->UpdateVertex(vertices.data(), vertices.size());
+}
+
+void Terrain::LoadAlphaMap(wstring path)
+{
+	UINT size = width * height * 4;
+	uint8_t* pixels = new uint8_t[size];
+
+	for (UINT i = 0; i < size / 4; i++)
+	{
+		for (UINT j = 0; j < 4; j++)
+		{
+			pixels[i * 4 + j] = (uint8_t)(vertices[i].alpha[j] * 255);
+		}
+		//pixels[i * 4 + 3] = 255;
+	}
+
+	Image image;
+
+	image.width = width;
+	image.height = height;
+	image.pixels = pixels;
+	image.format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	image.rowPitch = (size_t)width * 4;
+
+	image.slicePitch = image.width * image.height * 4;
+
+	SaveToWICFile(image, WIC_FLAGS_FORCE_RGB, GetWICCodec(WIC_CODEC_PNG), path.c_str());
+}
+
 void Terrain::CreateData()
 {
-	width = heightMap->GetWidth() - 1;
-	height = heightMap->GetHeight() - 1;
-
-	vector<XMFLOAT4> pixels = heightMap->ReadPixels();
-
-	for (UINT z = 0; z <= height; z++)
+	for (UINT z = 0; z < height; z++)
 	{
-		for (UINT x = 0; x <= width; x++)
+		for (UINT x = 0; x < width; x++)
 		{
 			VertexType vertex;
 			vertex.position = XMFLOAT3(x, 0, z);
-			vertex.uv = XMFLOAT2(x / (float)width, 1.0f - (z / (float)height));
+			vertex.uv = XMFLOAT2((x / (float)width) * 3, (1.0f - (z / (float)height)) * 3);
 
-			UINT index = (width + 1) * z + x;
-
-			vertex.position.y += pixels[index].x * 20.0f;
-			vertex.position.y += pixels[index].y * 20.0f;
-			vertex.position.y += pixels[index].z * 20.0f;
 
 			vertices.emplace_back(vertex);
 		}
 	}
 
-	for (UINT z = 0; z < height; z++)
+	for (UINT z = 0; z < height - 1; z++)
 	{
-		for (UINT x = 0; x < width; x++)
+		for (UINT x = 0; x < width - 1; x++)
 		{
-			indices.emplace_back((width + 1) * z + x);
-			indices.emplace_back((width + 1) * (z + 1) + x);
-			indices.emplace_back((width + 1) * (z + 1) + x + 1);
-			indices.emplace_back((width + 1) * z + x);
-			indices.emplace_back((width + 1) * (z + 1) + x + 1);
-			indices.emplace_back((width + 1) * z + x + 1);
+			indices.emplace_back(width * z + x);
+			indices.emplace_back(width * (z + 1) + x);
+			indices.emplace_back(width * (z + 1) + x + 1);
+			indices.emplace_back(width * z + x);
+			indices.emplace_back(width * (z + 1) + x + 1);
+			indices.emplace_back(width * z + x + 1);
 		}
-	}
-
-	input = new InputStruct[indices.size() / 3];
-	for (UINT i = 0; i < indices.size() / 3; i++)
-	{
-		UINT index0 = indices[i * 3 + 0];
-		UINT index1 = indices[i * 3 + 1];
-		UINT index2 = indices[i * 3 + 2];
-
-		input[i].v0 = vertices[index0].position;
-		input[i].v1 = vertices[index1].position;
-		input[i].v2 = vertices[index2].position;
-
-		input[i].index = i;
 	}
 }
 
@@ -307,4 +437,38 @@ void Terrain::CreateTangent()
 
 		vertex.tangent = temp;
 	}
+}
+
+void Terrain::CreateCompute()
+{
+	input = new InputStruct[indices.size() / 3];
+	for (UINT i = 0; i < indices.size() / 3; i++)
+	{
+		UINT index0 = indices[i * 3 + 0];
+		UINT index1 = indices[i * 3 + 1];
+		UINT index2 = indices[i * 3 + 2];
+
+		input[i].v0 = vertices[index0].position;
+		input[i].v1 = vertices[index1].position;
+		input[i].v2 = vertices[index2].position;
+
+		input[i].index = i;
+	}
+
+	computeShader = Shader::AddCS(L"Intersection");
+
+	// Æú¸®°ï °³¼ö
+	size = indices.size() / 3;
+
+	if (structuredBuffer)
+	{
+		delete structuredBuffer;
+		structuredBuffer = nullptr;
+	}
+
+	structuredBuffer = new StructuredBuffer(input, sizeof(InputStruct), size,
+		sizeof(OutputStruct), size);
+
+	rayBuffer = new RayBuffer();
+	output = new OutputStruct[size];
 }

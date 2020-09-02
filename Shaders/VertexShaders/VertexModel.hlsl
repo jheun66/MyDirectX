@@ -26,7 +26,9 @@ PixelInput VS(VertexInput input)
 {
     PixelInput output;
     
-    output.pos = mul(input.pos, world);
+    matrix boneWorld = mul(bones[index], world);
+    
+    output.pos = mul(input.pos, boneWorld);
     
     float3 camPos = invView._41_42_43;
     output.viewDir = normalize(output.pos.xyz - camPos);

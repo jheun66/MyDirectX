@@ -5,6 +5,8 @@
 #include "Scenes/MousePickingScene.h"
 #include "Scenes/TerrainEditorScene.h"
 #include "Scenes/ModelScene.h"
+#include "Scenes/ModelAnimationScene.h"
+#include "Scenes/MoveModelScene.h"
 
 Program::Program()
 {
@@ -18,7 +20,7 @@ Program::Program()
 
 	SetCursorPos((int)(WIN_WIDTH / 2), (int)(WIN_HEIGHT / 2));
 
-	scene = new TerrainEditorScene();
+	scene = new MoveModelScene();
 }
 
 Program::~Program()
@@ -37,8 +39,13 @@ Program::~Program()
 void Program::Update()
 {
 	Time::Get()->Update();
-	Keyboard::Get()->Update();
-	Mouse::Get()->Update();
+	
+	if (ImGui::GetIO().WantCaptureMouse == false)
+	{
+		Keyboard::Get()->Update();
+		Mouse::Get()->Update();
+	}
+
 	scene->Update();
 	Environment::Get()->MainCamera()->Update();
 }

@@ -15,6 +15,9 @@
 #define WIN_START_X 100
 #define WIN_START_Y 100
 
+// 본 개수 제한
+#define MAX_MODEL_BONE 256
+
 #define DEVICE Device::Get()->GetDevice()
 #define DC Device::Get()->GetDeviceContext()
 
@@ -30,8 +33,9 @@
 #include <tchar.h>
 #include <assert.h>
 #include <vector>
-#include <map>
+#include <map>// RBTree 구조, 넣을 때 자동 정렬
 #include <string>
+#include <unordered_map>// HashTable 구조
 
 // direct 라이브러리 추가
 #include <d3d11.h>
@@ -124,12 +128,17 @@ using namespace std;
 #include "GameObject/LandScape/Terrain.h"
 #include "GameObject/LandScape/TerrainEditor.h"
 #include "GameObject/Custom/Orb.h"
+#include "GameObject/Model/ModelMeshPart.h"
 #include "GameObject/Model/ModelMesh.h"
+#include "GameObject/Model/ModelClip.h"
 #include "GameObject/Model/Model.h"
+#include "GameObject/Model/ModelAnimator.h"
+
 // Custom Object
 #include "GameObject/Custom/WarChief.h"
 #include "GameObject/Custom/Tree.h"
 #include "GameObject/Custom/Zombie.h"
+#include "GameObject/Custom/WarHawk.h"
 
 // 게임 씬과 게임 프로세스
 #include "Scenes/Scene.h"
