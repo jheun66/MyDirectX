@@ -13,6 +13,6 @@ public:
 
 private:
 	ModelReader* modelReader;
-	Model* model;
+	ModelRender* model;
 	MSBuffer* settingBuffer;
 };

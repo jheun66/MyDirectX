@@ -1,8 +1,10 @@
 #pragma once
+// 모델 생성과 그에 필요한 구조체 정의
+
 
 typedef VertexUVNormalTangentBlend ModelVertex;
 
-// 원하는것만 따로 뽑아서 쓰도록
+// 내가 사용할 머테리얼 데이터들
 struct MaterialData
 {
 	string name;
@@ -56,9 +58,7 @@ struct KeyTransform
 	float time;
 
 	XMFLOAT3 scale;
-
-	// 쿼터니언으로 사용
-	XMFLOAT4 rotation;
+	XMFLOAT4 rotation;	// 혼자 XMFLOAT4 쿼터니언으로 사용
 	XMFLOAT3 position;
 };
 
@@ -121,6 +121,7 @@ struct BlendWeight
 	}
 };
 
+// Bone 가중치
 struct BoneWeights
 {
 private:

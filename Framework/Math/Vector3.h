@@ -97,6 +97,6 @@ public:
 
 	static bool Approximation(Vector3 origin, Vector3 target, float approxValue);
 
-private:
+public:
 	XMVECTOR data;
 };

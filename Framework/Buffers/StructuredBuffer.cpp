@@ -31,7 +31,7 @@ void StructuredBuffer::Copy(void* data, UINT size)
 	// output의 리소스를 result에 카피한 후 
 	DC->CopyResource(result, output);
 
-	// gpu에 매핑하여 읽어 오고 data에 복사한후 매핑 해제
+	// 자료를 매핑해서 읽어 들인다.
 	D3D11_MAPPED_SUBRESOURCE subResoruce;
 
 	DC->Map(result, 0, D3D11_MAP_READ, 0, &subResoruce);

@@ -44,14 +44,25 @@ void Material::Set()
 	// 오류나면 slot 번호 체크하기!!
 	buffer->SetBufferToPS(1);
 
+	// 해당 맵을 가지고 있으면 hasMap 1로 변경
 	if (diffuseMap != nullptr)
+	{
+		buffer->data.hasMap[0] = 1;
 		diffuseMap->PSSet(0);
+	}
 
 	if (specularMap != nullptr)
+	{
+		buffer->data.hasMap[1] = 1;
 		specularMap->PSSet(1);
+	}
+
 
 	if (normalMap != nullptr)
+	{
+		buffer->data.hasMap[2] = 1;
 		normalMap->PSSet(2);
+	}
 
 	vertexShader->Set();
 	pixelShader->Set();

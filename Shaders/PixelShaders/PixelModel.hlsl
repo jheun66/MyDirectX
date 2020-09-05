@@ -1,11 +1,5 @@
 #include "PixelHeader.hlsli"
 
-cbuffer Selected : register(b10)
-{
-    int isSpecularMap;
-    int isNormalMap;
-}
-
 struct PixelInput
 {
     float4 pos : SV_Position;
@@ -19,7 +13,9 @@ struct PixelInput
 //                          반환값의 시멘틱 네임(SV : system value)
 float4 PS(PixelInput input) : SV_Target
 {
-    float4 albedo = diffuseMap.Sample(samp, input.uv);
+    float4 albedo = float4(1, 1, 1, 1);
+    if (hasMap[0])
+        albedo = diffuseMap.Sample(samp, input.uv);
     
     float3 light = normalize(lightDir);
     
@@ -30,7 +26,7 @@ float4 PS(PixelInput input) : SV_Target
     
     float3 normal = N;
     
-    if (isNormalMap)
+    if (hasMap[2])
     {
         float4 normalMapping = normalMap.Sample(samp, input.uv);
     
@@ -57,7 +53,7 @@ float4 PS(PixelInput input) : SV_Target
         specular = saturate(dot(-halfWay, normal));
         
         float4 specualrIntensity = 1;
-        if (isSpecularMap)
+        if (hasMap[1])
             specualrIntensity = specularMap.Sample(samp, input.uv);
         
         specular = pow(specular, mSpecular.a) * specualrIntensity;
@@ -65,6 +61,6 @@ float4 PS(PixelInput input) : SV_Target
    
     
     // model의 mAmbient가 0이여서 빛을 안받은 그냥 제거했음
-    //return albedo * (diffuse * mDiffuse + ambient * mAmbient) + specular * mSpecular;
-    return albedo * (diffuse * mDiffuse + ambient) + specular * mSpecular;
+    return albedo * (diffuse * mDiffuse + ambient * mAmbient) + specular * mSpecular;
+    //return albedo * (diffuse * mDiffuse + ambient) + specular * mSpecular;
 }

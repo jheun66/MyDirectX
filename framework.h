@@ -17,6 +17,8 @@
 
 // 본 개수 제한
 #define MAX_MODEL_BONE 256
+// 애미메이션 키프레임 제한
+#define MAX_ANIM_KEY 500
 
 #define DEVICE Device::Get()->GetDevice()
 #define DC Device::Get()->GetDeviceContext()
@@ -132,6 +134,7 @@ using namespace std;
 #include "GameObject/Model/ModelMesh.h"
 #include "GameObject/Model/ModelClip.h"
 #include "GameObject/Model/Model.h"
+#include "GameObject/Model/ModelRender.h"
 #include "GameObject/Model/ModelAnimator.h"
 
 // Custom Object

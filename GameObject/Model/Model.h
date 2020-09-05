@@ -12,7 +12,6 @@ public:
 
 	void ReadMaterial(string file);
 	void ReadMesh(string file);	
-	void ReadClip(string file);
 
 	void BindBone();
 	void BindMesh();
@@ -20,15 +19,12 @@ public:
 	void SetShader(wstring file);
 	void SetShader(wstring vsFile, wstring psFile);
 
-	void UpdateTransform();
 
-private:
+protected:
 	ModelBone* root;
 
 	map<string, Material*> materials;
 	vector<ModelMesh*> meshes;
 	vector<ModelBone*> bones;
-	vector<ModelClip*> clips;
-
-	XMMATRIX transforms[MAX_MODEL_BONE];
+	
 };

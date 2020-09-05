@@ -195,6 +195,9 @@
     <ClInclude Include="Scenes\MoveModelScene.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="GameObject\Model\ModelRender.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MyDirectX.cpp">
@@ -356,6 +359,12 @@
     <ClCompile Include="Scenes\MoveModelScene.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="GameObject\Model\ModelAnimator.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject\Model\ModelRender.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MyDirectX.rc">
@@ -394,8 +403,7 @@
     <FxCompile Include="Shaders\VertexShaders\VertexSplattingAdvanced.hlsl" />
     <FxCompile Include="Shaders\PixelShaders\PixelModel.hlsl" />
     <FxCompile Include="Shaders\VertexShaders\VertexModel.hlsl" />
-    <FxCompile Include="Shaders\PixelShaders\PixelTree.hlsl" />
-    <FxCompile Include="Shaders\VertexShaders\VertexTree.hlsl" />
+    <FxCompile Include="Shaders\VertexShaders\VertexModelAnimation.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\PixelShaders\PixelHeader.hlsli" />

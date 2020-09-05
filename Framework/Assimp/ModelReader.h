@@ -34,7 +34,8 @@ public:
 	void WriteClip(Clip* clip, string savePath);
 
 private:
-	string file;
+	// ±ª¿Ã?
+	//string file;
 
 	Assimp::Importer* importer;
 	const aiScene* scene;

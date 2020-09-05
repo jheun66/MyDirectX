@@ -3,7 +3,7 @@
 Tree::Tree()
 	:Model("Tree/Tree")
 {
-	SetShader(L"Tree");
+	SetShader(L"Model");
 }
 
 Tree::~Tree()

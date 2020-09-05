@@ -12,6 +12,9 @@ public:
 			XMFLOAT4 diffuse;
 			XMFLOAT4 specular;
 			XMFLOAT4 ambient;
+
+			// 해당 맵을 가지고 있는지 알려줌
+			UINT hasMap[4];
 		}data;
 
 		MaterialBuffer() : ConstBuffer(&data, sizeof(Data))
@@ -19,6 +22,9 @@ public:
 			data.diffuse = XMFLOAT4(1, 1, 1, 1);
 			data.specular = XMFLOAT4(1, 1, 1, 1);
 			data.ambient = XMFLOAT4(1, 1, 1, 1);
+			
+			for (UINT& i : data.hasMap)
+				i = 0;
 		}
 	};
 

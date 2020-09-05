@@ -2,6 +2,7 @@
 
 ModelReader::ModelReader()
 {
+	// importer를 이용하여 추출한다. 이를 위한 instance 생성
 	importer = new Assimp::Importer();
 }
 
@@ -12,13 +13,16 @@ ModelReader::~ModelReader()
 
 void ModelReader::ReadFile(string file)
 {
-	this->file = file;
+	// file 이름 사용 안함
+	//this->file = file;
 
+	// 정보를 담고 있는 포인터를 scene에 넣어줌
 	scene = importer->ReadFile(file,
 		aiProcess_ConvertToLeftHanded | aiProcessPreset_TargetRealtime_MaxQuality);
 	assert(scene != nullptr);
 }
 
+// Material을 읽고 해당 경로에 저장해줌 
 void ModelReader::ExportMaterial(string savePath)
 {
 	ReadMaterial();
@@ -28,6 +32,7 @@ void ModelReader::ExportMaterial(string savePath)
 
 void ModelReader::ReadMaterial()
 {
+	// 필요한 머테리얼 데이터들을 읽어온다.
 	for (UINT i = 0; i < scene->mNumMaterials; i++)
 	{
 		aiMaterial* srcMaterial = scene->mMaterials[i];
@@ -64,6 +69,7 @@ void ModelReader::ReadMaterial()
 	}
 }
 
+// 읽어온 Material을 xml 형식으로 출력
 void ModelReader::WriteMaterial(string savePath)
 {
 	Utility::CreateFolders(savePath);
@@ -126,12 +132,13 @@ void ModelReader::WriteMaterial(string savePath)
 	delete document;
 }
 
+// 머테리얼에서 텍스처 파일 쓰기
 string ModelReader::WriteTexture(string savePath, string file)
 {
 	if (file.length() == 0)
 		return "";
 
-	//string fileName = Utility::GetFileName(file);
+	// png 파일에 대해서만 생각.. (다른 형식의 그림 파일이 들어 있으면 문제 있을 수도)
 	string fileName = Utility::GetFileNameWithoutExtension(file) + ".png";
 	const aiTexture* texture = scene->GetEmbeddedTexture(file.c_str());
 
@@ -141,6 +148,7 @@ string ModelReader::WriteTexture(string savePath, string file)
 	{
 		path = savePath + fileName;
 
+		// 높이가 없으면 binary로 쓰기
 		if (texture->mHeight < 1)
 		{
 			BinaryWriter w(Utility::ToWString(path));
@@ -166,9 +174,12 @@ string ModelReader::WriteTexture(string savePath, string file)
 	return fileName;
 }
 
+// Mesh 데이터 추출하여 저장까지
 void ModelReader::ExportMesh(string savePath)
 {
+	// Bone 마다 달려있는 Mesh를 읽어준다.
 	ReadBone(scene->mRootNode, -1, -1);
+	// bone weight를 이용해서 스킨 만들기(애니메이션에서 벌어지는 부분을 위해)
 	ReadSkin();
 	savePath = "ModelData/Meshes/" + savePath + ".mesh";
 	WriteMesh(savePath);
@@ -181,21 +192,25 @@ void ModelReader::ReadBone(aiNode* node, int index, int parent)
 	bone->parent = parent;
 	bone->name = node->mName.C_Str();
 
+	// 주의) 전치 행렬로 넣어줌
 	XMMATRIX transform(node->mTransformation[0]);
 	bone->transform = XMMatrixTranspose(transform);
 
 	XMMATRIX matParent;
-	// 부모 0보다 작으면 루트
+	// 부모 0보다 작으면 == 루트
 	if (parent < 0)
 		matParent = XMMatrixIdentity();
 	else
 		matParent = bones[parent]->transform;
 
+	// 부모 bone의 transform을 곱해줌
 	bone->transform = bone->transform * matParent;
 	bones.emplace_back(bone);
 
+	// 해당 bone의 mesh를 읽어 meshes에 넣어줌
 	ReadMesh(node, index);
 
+	// 자식들에 대해 더이상 자식이 없을 때까지 재귀
 	for (UINT i = 0; i < node->mNumChildren; i++)
 		ReadBone(node->mChildren[i], bones.size(), index);
 
@@ -483,20 +498,22 @@ void ModelReader::ReadKeyFrame(Clip* clip, aiNode* node, vector<ClipNode>& nodeI
 			XMMATRIX transform(node->mTransformation[0]);
 			transform = XMMatrixTranspose(transform);
 
-			Vector3 scale;
+			XMVECTOR scale;
 			XMVECTOR rotation;
-			Vector3 position;
-			XMMatrixDecompose(&(XMVECTOR)scale, &rotation, &(XMVECTOR)position, transform);
-			keyTransform.scale = scale;
+			XMVECTOR position;
+			
+			// 계속 움직이니까 벡터의 주소값을 받아준다. 중요!
+			// Decompose : Matrix 분해!!
+			XMMatrixDecompose(&scale, &rotation, &position, transform);
+			XMStoreFloat3(&keyTransform.scale, scale);
 			XMStoreFloat4(&keyTransform.rotation, rotation);
-			keyTransform.position = position;
+			XMStoreFloat3(&keyTransform.position, position);
 
 			keyTransform.time = (float)i;
 		}
 		else
 		{
 			keyTransform = clipNode->keyFrame[i];
-
 		}
 		keyFrame->transforms.emplace_back(keyTransform);
 	}
