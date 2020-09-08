@@ -93,7 +93,7 @@ void TerrainEditor::Render()
 	mesh->Set();
 
 	SetWorldBuffer();
-	brushBuffer->SetBufferToVS(3);
+	brushBuffer->SetVSBuffer(3);
 
 	secondMap->PSSet(10);
 	secondSMap->PSSet(11);
@@ -248,14 +248,14 @@ void TerrainEditor::PostRender()
 
 bool TerrainEditor::ComputePicking(OUT Vector3* position)
 {
-	Ray ray = Environment::Get()->MainCamera()->ScreenPointToRay(Mouse::Get()->GetPosition());
+	Ray ray = Camera::Get()->ScreenPointToRay(Mouse::Get()->GetPosition());
 	
 	rayBuffer->data.position = ray.position;
 	rayBuffer->data.direction = ray.direction;
 	rayBuffer->data.size = size;
 	computeShader->Set();
 
-	rayBuffer->SetBufferToCS(0);
+	rayBuffer->SetCSBuffer(0);
 
 	DC->CSSetShaderResources(0, 1, &structuredBuffer->GetSRV());
 	DC->CSSetUnorderedAccessViews(0, 1, &structuredBuffer->GetUAV(), nullptr);

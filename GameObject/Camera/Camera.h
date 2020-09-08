@@ -1,23 +1,27 @@
 #pragma once
 
-struct Ray
-{
-	Vector3 position;
-	Vector3 direction;
-};
-
+class FreeCamera;
+class FollowCamera;
 
 class Camera : public Transform
 {
+protected:
+	Camera();
+	virtual ~Camera();
+
 public:
-	Camera(string tag);
-	~Camera();
+	static Camera* Get() { return instance; }
+	static void Create(); 
+	static void Delete() { delete instance; }
 
-	void Rotation();
-	void Move();
+	virtual void Update();
+	virtual void PostRender();
 
-	void Update();
-	void PostRender();
+	// 자식 클래스에서
+	virtual void Move() {}
+	virtual void Rotation() {}
+	virtual void SetTarget(Transform* value) {}
+
 	void CreatePerspective();
 	void CreateView();
 
@@ -29,23 +33,18 @@ public:
 
 	Ray ScreenPointToRay(Vector3 pos);
 
-private:	
-	Vector3 forward;
-	Vector3 right;
-	Vector3 up;
+protected:
+	static Camera* instance;
 
-	XMMATRIX matRotation;
 	XMMATRIX matView;
 	XMMATRIX matPerspective;
 
 	ViewBuffer* viewBuffer;
 	MatrixBuffer* projectionBuffer;
 
+	// 전체 모니터 화면에서의 위치
 	POINT curPos;
 	POINT oldPos;
 
 	float FOV;
-
-	float moveSpeed;
-	float rotSpeed;
 };

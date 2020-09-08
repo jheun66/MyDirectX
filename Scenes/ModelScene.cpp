@@ -34,7 +34,7 @@ void ModelScene::PreRender()
 
 void ModelScene::Render()
 {
-	settingBuffer->SetBufferToPS(10);
+	settingBuffer->SetPSBuffer(10);
 	model->Render();
 }
 

@@ -33,7 +33,7 @@ void Model::Update()
 
 void Model::Render()
 {
-	worldBuffer->SetBufferToVS(0);
+	worldBuffer->SetVSBuffer(0);
 
 	for (ModelMesh* mesh : meshes)
 		mesh->Render();

@@ -86,9 +86,9 @@ void SolarSystemScene::PreRender()
 
 void SolarSystemScene::Render()
 {
-    lightBuffer->SetBufferToVS(3);
+    lightBuffer->SetVSBuffer(3);
     {
-        colorBuffer->SetBufferToPS(0);
+        colorBuffer->SetPSBuffer(0);
         sun->Render();
     }
     earth->Render();

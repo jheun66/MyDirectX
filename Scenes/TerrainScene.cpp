@@ -24,7 +24,7 @@ void TerrainScene::PreRender()
 
 void TerrainScene::Render()
 {
-	settingBuffer->SetBufferToPS(1);
+	settingBuffer->SetPSBuffer(1);
 	terrain->Render();
 }
 

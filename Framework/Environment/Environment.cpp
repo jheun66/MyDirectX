@@ -7,7 +7,6 @@ Environment::Environment()
     CreateViewort();
     CreateSamplerState();
 
-    mainCamera = new Camera("mainCamera");
     lightBuffer = new DirLightBuffer();
 }
 
@@ -15,7 +14,6 @@ Environment::~Environment()
 {
     delete samplerState;
 
-    delete mainCamera;
     delete lightBuffer;
 }
 
@@ -41,7 +39,6 @@ void Environment::CreateSamplerState()
 void Environment::PostRender()
 {
     ImGui::Text("FPS : %d", (int)Time::Get()->FPS());
-    mainCamera->PostRender();
 
     ImGui::SliderFloat3("LightDir", (float*)&lightBuffer->data.direction, -100, 100);
     ImGui::SliderFloat("LightSpecularExp", (float*)&lightBuffer->data.specularExp, 1, 100);

@@ -26,7 +26,7 @@ WarHawk::~WarHawk()
 
 void WarHawk::Render()
 {
-	settingBuffer->SetBufferToPS(10);
+	settingBuffer->SetPSBuffer(10);
 	__super::Render();
 }
 

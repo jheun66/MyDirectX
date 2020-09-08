@@ -27,5 +27,27 @@ void Transform::UpdateWorld()
 
 void Transform::SetWorldBuffer(UINT slot)
 {
-	worldBuffer->SetBufferToVS(slot);
+	worldBuffer->SetVSBuffer(slot);
+}
+
+Vector3 Transform::Forward()
+{
+	return XMVector3Normalize(XMVector3TransformNormal(GameMath::kForward, world));
+}
+
+Vector3 Transform::Up()
+{
+	return XMVector3Normalize(XMVector3TransformNormal(GameMath::kUp, world));
+}
+
+Vector3 Transform::Right()
+{
+	//							마지막 w 0
+	return XMVector3Normalize(XMVector3TransformNormal(GameMath::kRight, world));
+}
+
+Vector3 Transform::WorldPos()
+{
+	// 마지막 w 1
+	return XMVector3TransformCoord(XMVectorZero(), world);
 }

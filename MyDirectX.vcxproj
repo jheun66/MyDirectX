@@ -160,6 +160,9 @@
     <ClInclude Include="Framework\Buffers\Mesh\Mesh.h" />
     <ClInclude Include="Framework\Buffers\Mesh\VertexBuffer.h" />
     <ClInclude Include="Framework\Buffers\StructuredBuffer.h" />
+    <ClInclude Include="GameObject\Collision\BoxCollider.h" />
+    <ClInclude Include="GameObject\Collision\Collider.h" />
+    <ClInclude Include="GameObject\Collision\SphereCollider.h" />
     <ClInclude Include="Framework\Device\Device.h" />
     <ClInclude Include="Framework\Environment\Environment.h" />
     <ClInclude Include="Framework\Material\Material.h" />
@@ -173,11 +176,14 @@
     <ClInclude Include="Framework\Utility\Keyboard.h" />
     <ClInclude Include="Framework\Utility\Mouse.h" />
     <ClInclude Include="Framework\Utility\Utility.h" />
+    <ClInclude Include="GameObject\Camera\FollowCamera.h" />
+    <ClInclude Include="GameObject\Camera\FreeCamera.h" />
     <ClInclude Include="GameObject\Custom\Orb.h" />
     <ClInclude Include="GameObject\Custom\Tree.h" />
+    <ClInclude Include="GameObject\Custom\Vanguard.h" />
     <ClInclude Include="GameObject\Custom\WarChief.h" />
     <ClInclude Include="GameObject\Custom\WarHawk.h" />
-    <ClInclude Include="GameObject\Custom\Zombie.h" />
+    <ClInclude Include="GameObject\Character\Zombie.h" />
     <ClInclude Include="GameObject\LandScape\Terrain.h" />
     <ClInclude Include="GameObject\LandScape\TerrainEditor.h" />
     <ClInclude Include="GameObject\Model\Model.h" />
@@ -201,6 +207,7 @@
     <ClInclude Include="Framework\Material\Shaders\VertexShader.h" />
     <ClInclude Include="MyDirectX.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="Scenes\CollisionScene.h" />
     <ClInclude Include="Scenes\GridScene.h" />
     <ClInclude Include="Scenes\ModelAnimationScene.h" />
     <ClInclude Include="Scenes\ModelScene.h" />
@@ -223,6 +230,7 @@
     <ClCompile Include="Framework\Buffers\Mesh\Mesh.cpp" />
     <ClCompile Include="Framework\Buffers\Mesh\VertexBuffer.cpp" />
     <ClCompile Include="Framework\Buffers\StructuredBuffer.cpp" />
+    <ClCompile Include="GameObject\Collision\Collider.cpp" />
     <ClCompile Include="Framework\Device\Device.cpp" />
     <ClCompile Include="Framework\Environment\Environment.cpp" />
     <ClCompile Include="Framework\Material\Material.cpp" />
@@ -236,11 +244,15 @@
     <ClCompile Include="Framework\Utility\Keyboard.cpp" />
     <ClCompile Include="Framework\Utility\Mouse.cpp" />
     <ClCompile Include="Framework\Utility\Utility.cpp" />
+    <ClCompile Include="GameObject\Camera\FollowCamera.cpp" />
+    <ClCompile Include="GameObject\Camera\FreeCamera.cpp" />
+    <ClCompile Include="GameObject\Collision\SphereCollider.cpp" />
     <ClCompile Include="GameObject\Custom\Orb.cpp" />
     <ClCompile Include="GameObject\Custom\Tree.cpp" />
+    <ClCompile Include="GameObject\Custom\Vanguard.cpp" />
     <ClCompile Include="GameObject\Custom\WarChief.cpp" />
     <ClCompile Include="GameObject\Custom\WarHawk.cpp" />
-    <ClCompile Include="GameObject\Custom\Zombie.cpp" />
+    <ClCompile Include="GameObject\Character\Zombie.cpp" />
     <ClCompile Include="GameObject\LandScape\Terrain.cpp" />
     <ClCompile Include="GameObject\LandScape\TerrainEditor.cpp" />
     <ClCompile Include="GameObject\Model\Model.cpp" />
@@ -262,6 +274,7 @@
     <ClCompile Include="GameObject\Basic\Sphere.cpp" />
     <ClCompile Include="MyDirectX.cpp" />
     <ClCompile Include="MyGame\Program.cpp" />
+    <ClCompile Include="Scenes\CollisionScene.cpp" />
     <ClCompile Include="Scenes\GridScene.cpp" />
     <ClCompile Include="Scenes\ModelAnimationScene.cpp" />
     <ClCompile Include="Scenes\ModelScene.cpp" />

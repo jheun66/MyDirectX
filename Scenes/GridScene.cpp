@@ -32,8 +32,8 @@ void GridScene::PreRender()
 void GridScene::Render()
 {
 	// ºûÀÌ ÇÈ¼¿·Î °¨
-	dirLBuffer->SetBufferToPS(0);
-	useMapBuffer->SetBufferToPS(1);
+	dirLBuffer->SetPSBuffer(0);
+	useMapBuffer->SetPSBuffer(1);
 
 	planet->Render();
 	grid->Render();

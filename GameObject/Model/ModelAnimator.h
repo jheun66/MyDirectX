@@ -23,11 +23,20 @@ class ModelAnimator : public Model
 	public:
 		struct Data
 		{
-			KeyFrameDesc keyFrame;
+			float takeTime;
+			float tweenTime;
+			float runningTime;
+			float padding;
+
+			KeyFrameDesc cur;
+			KeyFrameDesc next;
 		}data;
 
 		FrameBuffer() : ConstBuffer(&data, sizeof(Data))
 		{
+			data.takeTime = 0.0f;
+			data.tweenTime = 0.0f;
+			data.runningTime = 0.0f;
 		}
 	};
 
@@ -60,9 +69,10 @@ public:
 	void Update();
 	void Render();
 
-	void PlayClip(UINT clip, float speed = 1.0f);
+	void PlayClip(UINT clip, float speed = 1.0f, float takeTime = 1.0f);
 	void ReadClip(string file);
 
+	void SetEndEvent(UINT clip, function<void()> value) { EndEvent[clip] = value; }
 private:
 	void CreateTexture();
 	void CreateClipTransform(UINT index);
@@ -76,4 +86,6 @@ private:
 
 	vector<ModelClip*> clips;
 
+	map<UINT, function<void()>> EndEvent;
+	
 };

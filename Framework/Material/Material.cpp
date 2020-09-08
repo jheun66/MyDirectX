@@ -42,7 +42,7 @@ Material::~Material()
 void Material::Set()
 {
 	// 오류나면 slot 번호 체크하기!!
-	buffer->SetBufferToPS(1);
+	buffer->SetPSBuffer(1);
 
 	// 해당 맵을 가지고 있으면 hasMap 1로 변경
 	if (diffuseMap != nullptr)

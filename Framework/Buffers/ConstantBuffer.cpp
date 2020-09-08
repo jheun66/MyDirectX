@@ -31,19 +31,19 @@ void ConstBuffer::MapData()
     DC->Unmap(buffer, 0);
 }
 
-void ConstBuffer::SetBufferToVS(UINT slot)
+void ConstBuffer::SetVSBuffer(UINT slot)
 {
     MapData();
     DC->VSSetConstantBuffers(slot, 1, &buffer);
 }
 
-void ConstBuffer::SetBufferToPS(UINT slot)
+void ConstBuffer::SetPSBuffer(UINT slot)
 {
     MapData();
     DC->PSSetConstantBuffers(slot, 1, &buffer);
 }
 
-void ConstBuffer::SetBufferToCS(UINT slot)
+void ConstBuffer::SetCSBuffer(UINT slot)
 {
     MapData();
     DC->CSSetConstantBuffers(slot, 1, &buffer);

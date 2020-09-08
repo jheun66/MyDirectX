@@ -2,9 +2,6 @@
 
 #define MAX_INPUT_KEY 255
 
-#define KeyPress(p) Keyboard::Get()->Press(p)
-#define KeyDown(p) Keyboard::Get()->Down(p)
-#define KeyUp(p) Keyboard::Get()->Up(p)
 
 class Keyboard
 {

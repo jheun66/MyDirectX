@@ -145,11 +145,13 @@ void Terrain::PostRender()
 
 float Terrain::GetAltitude(Vector3 position)
 {
+	// 버림
 	UINT x = (UINT)position.x;
 	UINT z = (UINT)position.z;
 
-	if (x < 0 || x > width - 1) return 0.0f;
-	if (z < 0 || z > height - 1) return 0.0f;
+	// Vertex 기준으로 생각하기 (0 ~ width-1)(0 ~ height-1)까지 있으면 index는 그보다 1 작음
+	if (x < 0 || x >= width - 1) return 0.0f;
+	if (z < 0 || z >= height - 1) return 0.0f;
 
 	UINT index[4];
 	index[0] = (width) * z + x;
@@ -182,14 +184,14 @@ float Terrain::GetAltitude(Vector3 position)
 
 bool Terrain::ComputePicking(OUT Vector3* position)
 {
-	Ray ray = Environment::Get()->MainCamera()->ScreenPointToRay(Mouse::Get()->GetPosition());
+	Ray ray = Camera::Get()->ScreenPointToRay(Mouse::Get()->GetPosition());
 
 	rayBuffer->data.position = ray.position;
 	rayBuffer->data.direction = ray.direction;
 	rayBuffer->data.size = size;
 	computeShader->Set();
 
-	rayBuffer->SetBufferToCS(0);
+	rayBuffer->SetCSBuffer(0);
 
 	DC->CSSetShaderResources(0, 1, &structuredBuffer->GetSRV());
 	DC->CSSetUnorderedAccessViews(0, 1, &structuredBuffer->GetUAV(), nullptr);
@@ -312,29 +314,54 @@ void Terrain::LoadHeightMap(wstring path)
 
 void Terrain::LoadAlphaMap(wstring path)
 {
-	UINT size = width * height * 4;
-	uint8_t* pixels = new uint8_t[size];
+	ScratchImage image;
 
-	for (UINT i = 0; i < size / 4; i++)
+	HRESULT hr = LoadFromWICFile(path.c_str(), WIC_FLAGS_FORCE_RGB, nullptr, image);
+	assert(SUCCEEDED(hr));
+
+
+	ID3D11ShaderResourceView* srv;
+
+	hr = CreateShaderResourceView(DEVICE, image.GetImages(), image.GetImageCount(),
+		image.GetMetadata(), &srv);
+	assert(SUCCEEDED(hr));
+
+
+	UINT width = image.GetMetadata().width - 1;
+	UINT height = image.GetMetadata().height - 1;
+
+	vector<XMFLOAT4> pixels;
+
+	uint8_t* colors = image.GetPixels();
+	UINT size = image.GetPixelsSize();
+
+	float scale = 1.0f / 255.0f;
+
+	for (int i = 0; i < size; i += 4)
 	{
-		for (UINT j = 0; j < 4; j++)
-		{
-			pixels[i * 4 + j] = (uint8_t)(vertices[i].alpha[j] * 255);
-		}
-		//pixels[i * 4 + 3] = 255;
+		XMFLOAT4 color;
+
+		color.x = colors[i + 0] * scale;
+		color.y = colors[i + 1] * scale;
+		color.z = colors[i + 2] * scale;
+		color.w = colors[i + 3] * scale;
+
+		pixels.emplace_back(color);
 	}
 
-	Image image;
 
-	image.width = width;
-	image.height = height;
-	image.pixels = pixels;
-	image.format = DXGI_FORMAT_R8G8B8A8_UNORM;
-	image.rowPitch = (size_t)width * 4;
+	for (UINT i = 0; i < pixels.size(); i++)
+	{
+		vertices[i].alpha[0] = pixels[i].x;
+		vertices[i].alpha[1] = pixels[i].y;
+		vertices[i].alpha[2] = pixels[i].z;
+		vertices[i].alpha[3] = pixels[i].w;
+	}
 
-	image.slicePitch = image.width * image.height * 4;
+	srv->Release();
+	srv = nullptr;
 
-	SaveToWICFile(image, WIC_FLAGS_FORCE_RGB, GetWICCodec(WIC_CODEC_PNG), path.c_str());
+	mesh->UpdateVertex(vertices.data(), vertices.size());
 }
 
 void Terrain::CreateData()

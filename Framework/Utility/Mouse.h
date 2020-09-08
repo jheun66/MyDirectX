@@ -57,9 +57,9 @@ private:
 	byte buttonOldStatus[MAX_INPUT_MOUSE];
 	byte buttonMap[MAX_INPUT_MOUSE];
 
-	XMVECTOR wheelStatus;
-	XMVECTOR wheelOldStatus;
-	XMVECTOR wheelMoveValue;
+	Vector3 wheelStatus;
+	Vector3 wheelOldStatus;
+	Vector3 wheelMoveValue;
 
 	DWORD timeDblClk;
 	DWORD startDblClk[MAX_INPUT_MOUSE];

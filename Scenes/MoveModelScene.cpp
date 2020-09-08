@@ -29,7 +29,7 @@ void MoveModelScene::PreRender()
 
 void MoveModelScene::Render()
 {
-	settingBuffer->SetBufferToPS(1);
+	settingBuffer->SetPSBuffer(1);
 	terrain->Render();
 	warHawk->Render();
 }
@@ -44,6 +44,6 @@ void MoveModelScene::UpdateCamera()
 {
 	Vector3 offset = { 0,1500, -2500 };
 	offset = XMVector3TransformNormal(offset, *warHawk->GetWorld());
-	Environment::Get()->MainCamera()->position = warHawk->position + offset;
-	Environment::Get()->MainCamera()->rotation = warHawk->rotation + Vector3(XM_PIDIV4 / 2, 0, 0);
+	Camera::Get()->position = warHawk->position + offset;
+	Camera::Get()->rotation = warHawk->rotation + Vector3(XM_PIDIV4 / 2, 0, 0);
 }

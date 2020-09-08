@@ -17,7 +17,7 @@ void ModelMeshPart::Update()
 
 void ModelMeshPart::Render()
 {
-	boneBuffer->SetBufferToVS(3);
+	boneBuffer->SetVSBuffer(3);
 
 	material->Set();
 

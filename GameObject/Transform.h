@@ -12,6 +12,14 @@ public:
 
 	XMMATRIX* GetWorld() { return &world; }
 	void SetParent(XMMATRIX* value) { parent = value; }
+	
+	XMMATRIX* GetParent() { return parent; }
+
+	Vector3 Forward();
+	Vector3 Up();
+	Vector3 Right();
+
+	Vector3 WorldPos();
 
 // 접근성 편하게 할려고
 public:
@@ -28,5 +36,4 @@ protected:
 	XMMATRIX* parent;
 
 	MatrixBuffer* worldBuffer;
-
 };

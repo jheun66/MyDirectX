@@ -1,0 +1,11 @@
+<Materials>
+    <Material>
+        <Name>MP44</Name>
+        <DiffuseFile>MP44_albedo.tga</DiffuseFile>
+        <SpecularFile>MP44_metalness.tga</SpecularFile>
+        <NormalFile></NormalFile>
+        <Ambient R="0.2" G="0.2" B="0.2" A="1"/>
+        <Diffuse R="0.80000001" G="0.80000001" B="0.80000001" A="1"/>
+        <Specular R="0.2" G="0.2" B="0.2" A="20.000006"/>
+    </Material>
+</Materials>

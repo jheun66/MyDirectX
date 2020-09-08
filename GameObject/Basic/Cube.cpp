@@ -31,7 +31,7 @@ void Cube::Render()
     SetWorldBuffer();
 
     material->Set();
-    colorBuffer->SetBufferToPS(0);
+    colorBuffer->SetPSBuffer(0);
 
     DC->DrawIndexed(indices.size(), 0, 0);
 }

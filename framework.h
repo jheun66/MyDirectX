@@ -121,15 +121,33 @@ using namespace std;
 #include "Framework/Utility/FileSystem/BinaryReader.h"
 #include "Framework/Utility/FileSystem/Xml.h"
 
-// GameObject Header
+///////////////////////////////////////////
+// GameObject Header //////////////////////
+///////////////////////////////////////////
+
+// 모든 Object는 Transform 상속
 #include "GameObject/Transform.h"
+
+// 충돌
+#include "GameObject/Collision/Collider.h"
+#include "GameObject/Collision/BoxCollider.h"
+#include "GameObject/Collision/SphereCollider.h"
+
+// 카메라
 #include "GameObject/Camera/Camera.h"
+#include "GameObject/Camera/FreeCamera.h"
+#include "GameObject/Camera/FollowCamera.h"
+
+// 기본형
 #include "GameObject/Basic/Cube.h"
 #include "GameObject/Basic/Quad.h"
 #include "GameObject/Basic/Sphere.h"
+
+// Terrain
 #include "GameObject/LandScape/Terrain.h"
 #include "GameObject/LandScape/TerrainEditor.h"
-#include "GameObject/Custom/Orb.h"
+
+// Model
 #include "GameObject/Model/ModelMeshPart.h"
 #include "GameObject/Model/ModelMesh.h"
 #include "GameObject/Model/ModelClip.h"
@@ -137,11 +155,15 @@ using namespace std;
 #include "GameObject/Model/ModelRender.h"
 #include "GameObject/Model/ModelAnimator.h"
 
+// Character Object
+#include "GameObject/Character/Zombie.h"
+
 // Custom Object
+#include "GameObject/Custom/Orb.h"
 #include "GameObject/Custom/WarChief.h"
 #include "GameObject/Custom/Tree.h"
-#include "GameObject/Custom/Zombie.h"
 #include "GameObject/Custom/WarHawk.h"
+#include "GameObject/Custom/Vanguard.h"
 
 // 게임 씬과 게임 프로세스
 #include "Scenes/Scene.h"

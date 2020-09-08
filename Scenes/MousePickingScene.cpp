@@ -47,7 +47,7 @@ void MousePickingScene::PreRender()
 
 void MousePickingScene::Render()
 {
-	settingBuffer->SetBufferToPS(1);
+	settingBuffer->SetPSBuffer(1);
 	terrain->Render();
 	sphere->Render();
 }
@@ -79,8 +79,8 @@ void MousePickingScene::MoveToPickingPos()
 
 	Vector3 offset = { 0,10,-10 };
 	offset = XMVector3TransformNormal(offset, *sphere->GetWorld());
-	Environment::Get()->MainCamera()->position = Vector3(sphere->position.x, terrain->GetAltitude(sphere->position), sphere->position.z) + offset;
-	Environment::Get()->MainCamera()->rotation = sphere->rotation;
+	Camera::Get()->position = Vector3(sphere->position.x, terrain->GetAltitude(sphere->position), sphere->position.z) + offset;
+	Camera::Get()->rotation = sphere->rotation;
 }
 
 void MousePickingScene::RotateSphere()

@@ -16,3 +16,8 @@ float GameMath::Random(float min, float max)
 
     return min + (max - min) * normal;
 }
+
+float GameMath::Lerp(float start, float end, float deltaTime)
+{
+    return start + (end - start) * deltaTime;
+}

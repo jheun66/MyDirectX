@@ -69,12 +69,8 @@ void Mouse::Update()
 	// 전체 화면 기준인 커서의 좌표를 해당 클라이언트 기준으로 좌표를 변환 
 	ScreenToClient(handle, &point);
 
-
-	wheelOldStatus = XMVectorSetX(wheelOldStatus, XMVectorGetX(wheelStatus));
-	wheelOldStatus = XMVectorSetY(wheelOldStatus, XMVectorGetY(wheelStatus));
-
-	wheelStatus = XMVectorSetX(wheelStatus, float(point.x));
-	wheelStatus = XMVectorSetY(wheelStatus, float(point.y));
+	wheelOldStatus = wheelStatus;
+	wheelStatus = { float(point.x) ,float(point.y) ,0 };
 
 	wheelMoveValue = wheelStatus - wheelOldStatus;
 
@@ -136,7 +132,7 @@ LRESULT Mouse::InputProc(UINT message, WPARAM wParam, LPARAM lParam)
 		short tWheelValue = (short)HIWORD(wParam);
 
 		wheelOldStatus = XMVectorSetZ(wheelOldStatus, XMVectorGetZ(wheelStatus));
-		wheelStatus += XMVectorSetZ(wheelStatus, XMVectorGetZ(wheelStatus) + (float)tWheelValue);
+		wheelStatus = XMVectorSetZ(wheelStatus, XMVectorGetZ(wheelStatus) + (float)tWheelValue);
 	}
 
 	return TRUE;
