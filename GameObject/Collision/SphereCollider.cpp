@@ -10,19 +10,6 @@ SphereCollider::~SphereCollider()
 {
 }
 
-bool SphereCollider::IsCollision(Collider* collider)
-{
-    //enum으로 찾는게 깔끔함..
-
-    // 형이 맞으면 변환 안맞으면 널을 반환
-    BoxCollider* coll = dynamic_cast<BoxCollider*>(collider);
-
-    if (coll != nullptr)
-        return IsBoxCollision(coll);
-
-    return IsSphereCollision(static_cast<SphereCollider*>(collider));
-}
-
 bool SphereCollider::IsCollision(IN Ray ray, OUT Contact* contact)
 {
     Vector3 P = ray.position;
@@ -53,7 +40,28 @@ bool SphereCollider::IsCollision(IN Ray ray, OUT Contact* contact)
 
 bool SphereCollider::IsBoxCollision(BoxCollider* collider)
 {
-    return false;
+    Obb box = collider->GetObb();
+
+    Vector3 D = WorldPos() - box.position;
+
+    for (UINT i = 0; i < 3; i++)
+    {
+        if (collider->SeperateAxis(D, box.axis[i], box, radius)) return false;
+    }
+
+    if (collider->SeperateAxis(D, (box.axis[0] + box.axis[1]).Normal(), box, radius)) return false;
+    if (collider->SeperateAxis(D, (box.axis[0] - box.axis[2]).Normal(), box, radius)) return false;
+    if (collider->SeperateAxis(D, (box.axis[1] + box.axis[2]).Normal(), box, radius)) return false;
+    if (collider->SeperateAxis(D, (box.axis[1] - box.axis[2]).Normal(), box, radius)) return false;
+    if (collider->SeperateAxis(D, (box.axis[2] + box.axis[0]).Normal(), box, radius)) return false;
+    if (collider->SeperateAxis(D, (box.axis[2] - box.axis[0]).Normal(), box, radius)) return false;
+
+    if (collider->SeperateAxis(D, (box.axis[0] + box.axis[1] + box.axis[2]).Normal(), box, radius)) return false;
+    if (collider->SeperateAxis(D, (box.axis[1] + box.axis[2] - box.axis[0]).Normal(), box, radius)) return false;
+    if (collider->SeperateAxis(D, (box.axis[0] + box.axis[2] - box.axis[1]).Normal(), box, radius)) return false;
+    if (collider->SeperateAxis(D, (box.axis[0] + box.axis[1] - box.axis[2]).Normal(), box, radius)) return false;
+
+    return true;
 }
 
 bool SphereCollider::IsSphereCollision(SphereCollider* collider)

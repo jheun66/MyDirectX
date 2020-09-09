@@ -26,7 +26,7 @@ ModelAnimationScene::ModelAnimationScene()
 		zombie->offset.position = { (float)GameMath::Random(20, 100), 0, (float)GameMath::Random(20, 100) };
 		
 		zombie->SetTerrain(terrain);
-		zombie->SetPlayer(vanguard);
+		//zombie->SetPlayer(vanguard);
 		zombie->SetSpeed(GameMath::Random(7, 12));
 		zombies.push_back(zombie);
 	}

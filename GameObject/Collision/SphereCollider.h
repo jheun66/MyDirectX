@@ -13,12 +13,12 @@ public:
 	~SphereCollider();
 
 	// Collider을(를) 통해 상속됨
-	virtual bool IsCollision(Collider* collider) override;
 	virtual bool IsCollision(IN Ray ray, OUT Contact* contact = nullptr) override;
 
 	virtual bool IsBoxCollision(BoxCollider* collider) override;
 	virtual bool IsSphereCollision(SphereCollider* collider) override;
 
+	float GetRadius() { return radius; }
 private:
 	virtual void CreateMesh() override;
 };

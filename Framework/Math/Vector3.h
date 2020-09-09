@@ -47,6 +47,8 @@ public:
 	void operator+=(const Vector3& value);
 	void operator-=(const Vector3& value);
 
+	bool operator==(const Vector3& value);
+
 	Vector3 operator*(const float& value) const;
 	Vector3 operator/(const float& value) const;
 

@@ -112,6 +112,11 @@ void Vector3::operator-=(const Vector3& value)
 	data -= value.data;
 }
 
+bool Vector3::operator==(const Vector3& value)
+{
+	return XMVector3Equal(data, value.data);
+}
+
 Vector3 Vector3::operator*(const float& value) const
 {
 	return data * XMVectorReplicate(value);

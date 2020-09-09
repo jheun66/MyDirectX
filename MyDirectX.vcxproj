@@ -212,6 +212,7 @@
     <ClInclude Include="Scenes\ModelAnimationScene.h" />
     <ClInclude Include="Scenes\ModelScene.h" />
     <ClInclude Include="Scenes\MousePickingScene.h" />
+    <ClInclude Include="Scenes\MousePickingScene2.h" />
     <ClInclude Include="Scenes\MoveModelScene.h" />
     <ClInclude Include="Scenes\Scene.h" />
     <ClInclude Include="Scenes\SolarSystemScene.h" />
@@ -230,6 +231,7 @@
     <ClCompile Include="Framework\Buffers\Mesh\Mesh.cpp" />
     <ClCompile Include="Framework\Buffers\Mesh\VertexBuffer.cpp" />
     <ClCompile Include="Framework\Buffers\StructuredBuffer.cpp" />
+    <ClCompile Include="GameObject\Collision\BoxCollider.cpp" />
     <ClCompile Include="GameObject\Collision\Collider.cpp" />
     <ClCompile Include="Framework\Device\Device.cpp" />
     <ClCompile Include="Framework\Environment\Environment.cpp" />
@@ -279,6 +281,7 @@
     <ClCompile Include="Scenes\ModelAnimationScene.cpp" />
     <ClCompile Include="Scenes\ModelScene.cpp" />
     <ClCompile Include="Scenes\MousePickingScene.cpp" />
+    <ClCompile Include="Scenes\MousePickingScene2.cpp" />
     <ClCompile Include="Scenes\MoveModelScene.cpp" />
     <ClCompile Include="Scenes\SolarSystemScene.cpp" />
     <ClCompile Include="Scenes\TerrainEditorScene.cpp" />

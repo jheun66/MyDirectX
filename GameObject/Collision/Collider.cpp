@@ -1,4 +1,5 @@
 #include "Framework.h"
+#include "Collider.h"
 
 Collider::Collider()
 {
@@ -12,14 +13,38 @@ Collider::~Collider()
     delete mesh;
 }
 
+bool Collider::IsCollision(Collider* collider)
+{
+    //enum으로 찾는게 깔끔함..
+
+    // 형이 맞으면 변환 안맞으면 널을 반환
+    BoxCollider* coll = dynamic_cast<BoxCollider*>(collider);
+
+    if (coll != nullptr)
+        return IsBoxCollision(coll);
+
+    return IsSphereCollision(static_cast<SphereCollider*>(collider));
+}
+
 void Collider::Render()
 {
     UpdateWorld();
 
-    mesh->Set(D3D_PRIMITIVE_TOPOLOGY_LINELIST);
+    RasterizerState fillMode[2];
+    fillMode[1].FillMode(D3D11_FILL_WIREFRAME);
+    if (dynamic_cast<BoxCollider*>(this) != nullptr)
+    {
+        fillMode[1].SetState();
+        mesh->Set(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+    }
+    else
+    {
+        mesh->Set(D3D_PRIMITIVE_TOPOLOGY_LINELIST);
+    }
 
     worldBuffer->SetVSBuffer(0);
     material->Set();
 
     DC->DrawIndexed(indices.size(), 0, 0);
+    fillMode[0].SetState();
 }

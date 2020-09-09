@@ -10,7 +10,10 @@ struct Vertex
 	{
 
 	}
+	Vertex(float x, float y, float z) : position(x, y, z)
+	{
 
+	}
 };
 
 struct VertexColor

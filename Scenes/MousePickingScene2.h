@@ -1,11 +1,12 @@
 #pragma once
 
-class TerrainScene : public Scene
+class MousePickingScene2 : public Scene
 {
 public:
-	TerrainScene();
-	~TerrainScene();
+	MousePickingScene2();
+	~MousePickingScene2();
 
+	// Scene을(를) 통해 상속됨
 	virtual void Update() override;
 	virtual void PreRender() override;
 	virtual void Render() override;
@@ -13,9 +14,6 @@ public:
 
 private:
 	Terrain* terrain;
-
-	MSBuffer* settingBuffer;
-
-	//Vector3 pickingPos;
-	//float height;
+	Vanguard* vanguard;
+	vector<Zombie*> zombies;
 };

@@ -8,6 +8,7 @@
 #include "Scenes/ModelAnimationScene.h"
 #include "Scenes/MoveModelScene.h"
 #include "Scenes/CollisionScene.h"
+#include "Scenes/MousePickingScene2.h"
 
 Program::Program()
 {
