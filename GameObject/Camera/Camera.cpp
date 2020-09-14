@@ -25,7 +25,7 @@ Camera::~Camera()
 
 void Camera::Create()
 {
-    instance = new FreeCamera();
+    instance = new FollowCamera();
 }
 
 void Camera::Update()
@@ -40,8 +40,8 @@ void Camera::PostRender()
 {
     ImGui::Begin("Camera", 0, ImGuiWindowFlags_AlwaysAutoResize);
     {
-        ImGui::SliderFloat3("CameraPosition", (float*)&position, -50, 50);
-        ImGui::SliderFloat3("CameraRotation", (float*)&rotation, -XM_2PI, XM_2PI);
+        ImGui::Text("CameraPosition : %.2f, %.2f, %.2f", position.x, position.y, position.z);
+        ImGui::Text("CameraRotation : %.2f, %.2f, %.2f", rotation.x, rotation.y, rotation.z);
         ImGui::Text("CursorPos :%f, %f", (float)curPos.x, (float)curPos.y);
         ImGui::Text("CursorPos With Window : %f, %f", XMVectorGetX(Mouse::Get()->GetPosition()), XMVectorGetY(Mouse::Get()->GetPosition()));
     }
@@ -55,6 +55,16 @@ void Camera::CreateView()
     matView = XMMatrixInverse(nullptr, world);
 
     viewBuffer->Set(matView);
+}
+
+void Camera::ChangeCameraMode(bool isFollowCamera)
+{
+    delete instance;
+
+    if (isFollowCamera)
+        instance = new FollowCamera();
+    else
+        instance = new FreeCamera();
 }
 
 Ray Camera::ScreenPointToRay(Vector3 pos)

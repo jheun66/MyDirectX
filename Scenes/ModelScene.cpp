@@ -3,14 +3,14 @@
 
 ModelScene::ModelScene()
 {
-	string name = "Tree/Tree";
+	string name = "Medea/Medea";
 	modelReader = new ModelReader();
-	modelReader->ReadFile("ModelData/Models/tree-05.fbx");
+	modelReader->ReadFile("ModelData/Models/Medea.fbx");
 	modelReader->ExportMaterial(name);
 	modelReader->ExportMesh(name);
 
 	model = new ModelRender(name);
-	model->SetShader(L"Tree");
+	model->SetShader(L"VertexModel", L"PixelNormalMapping");
 
 
 	settingBuffer = new MSBuffer();

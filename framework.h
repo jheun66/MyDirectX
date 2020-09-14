@@ -129,6 +129,10 @@ using namespace std;
 // 모든 Object는 Transform 상속
 #include "GameObject/Transform.h"
 
+// 알고리즘
+#include "Algorithm/Node.h"
+#include "Algorithm/Astar.h"
+
 // 충돌
 #include "GameObject/Collision/Collider.h"
 #include "GameObject/Collision/BoxCollider.h"
@@ -159,6 +163,7 @@ using namespace std;
 
 // Character Object
 #include "GameObject/Character/Zombie.h"
+#include "GameObject/Character/Medea.h"
 
 // Custom Object
 #include "GameObject/Custom/WarChief.h"

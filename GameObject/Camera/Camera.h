@@ -31,6 +31,8 @@ public:
 	ViewBuffer* GetViewBuffer() { return viewBuffer; }
 	MatrixBuffer* GetProjection() { return projectionBuffer; }
 
+	void ChangeCameraMode(bool isFollowCamera);
+
 	Ray ScreenPointToRay(Vector3 pos);
 
 protected:

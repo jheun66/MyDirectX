@@ -17,6 +17,11 @@ float GameMath::Random(float min, float max)
     return min + (max - min) * normal;
 }
 
+float GameMath::Distance(const Vector3& v1, const Vector3& v2)
+{
+    return (v2-v1).Length();
+}
+
 float GameMath::Lerp(float start, float end, float deltaTime)
 {
     return start + (end - start) * deltaTime;

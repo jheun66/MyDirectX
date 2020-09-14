@@ -1,7 +1,7 @@
 #include "Framework.h"
 
 FollowCamera::FollowCamera()
-	:Camera(), distance(5), height(3), offset(0, 0, 20),
+	:Camera(), distance(60), height(60), offset(0, 0, 20),
 	moveDamping(5), rotDamping(0), destPos(0, 0, 0), destRot(0),
 	rotY(0), rotSpeed(0.001f), zoomSpeed(0.1f),
 	target(nullptr), isFP(false)

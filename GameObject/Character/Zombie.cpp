@@ -3,18 +3,28 @@
 Zombie::Zombie()
 	:ModelAnimator("Zombie/Zombie"), moveSpeed(10), rotSpeed(10), collider(nullptr), isPicked(false), canMove(false)
 {
-	scale = { 0.01f, 0.01f, 0.01f };
+	scale = { 0.1f, 0.1f, 0.1f };
+
+	ModelReader* modelReader = new ModelReader();
+	modelReader->ReadFile("ModelData/Animations/Zombie/Agony.fbx");
+	modelReader->ExportClip(0, "Zombie/Agony");
+	modelReader->ReadFile("ModelData/Animations/Zombie/Dying.fbx");
+	modelReader->ExportClip(0, "Zombie/Dying");
+	delete modelReader;
 
 	ReadClip("Zombie/Idle");
 	ReadClip("Zombie/Run");
+	ReadClip("Zombie/Agony");
+	ReadClip("Zombie/Dying");
+
+	SetEndEvent(AGONY, bind(&Zombie::DamagedEnd, this));
+	SetEndEvent(DIE, bind(&Zombie::DieEnd, this));
 
 	PlayClip(0);
 
 	// offset을 부모 행렬로, 마치 빈 오브젝트에 담는거 처럼 
-	
 	offset.UpdateWorld();
 	SetParent(offset.GetWorld());
-
 }
 
 Zombie::~Zombie()
@@ -27,29 +37,58 @@ Zombie::~Zombie()
 
 void Zombie::Update()
 {
-	AutoMove();
-	offset.UpdateWorld();
-	ModelAnimator::Update();
-
-	if (collider != nullptr)
+	if (!isDead)
 	{
-		collider->UpdateWorld();
-	}
+		AutoMove();
+		offset.UpdateWorld();
+
+		ModelAnimator::Update();
+
+		if (collider != nullptr)
+		{
+			collider->UpdateWorld();
+		}
+	}	
 }
 
 void Zombie::Render()
 {
 	ModelAnimator::Render();
 
-	if (collider != nullptr)
+	if (!isDead)
 	{
-		collider->Render();
+		if (collider != nullptr)
+		{
+			collider->Render();
+		}
 	}
 }
 
 void Zombie::AutoMove()
 {
-	if (canMove)
+	/*if (Mouse::Get()->Down(0))
+	{
+		Ray ray = Camera::Get()->ScreenPointToRay(Mouse::Get()->GetPosition());
+		if (KEY_PRESS(VK_LCONTROL))
+		{
+			if (CheckCollision(ray))
+				Pick(true);
+			else
+				Pick(false);
+		}
+	}
+	if (Mouse::Get()->Down(1))
+	{
+		Ray ray = Camera::Get()->ScreenPointToRay(Mouse::Get()->GetPosition());
+
+		Vector3 targetPos;
+		terrain->ComputePicking(&targetPos);
+
+		SetTarget(targetPos);
+	}
+
+
+	if (canMove && isPicked)
 	{
 		if ((targetPos - offset.position).Length() > 0.1f)
 		{
@@ -80,6 +119,19 @@ void Zombie::AutoMove()
 	else
 	{
 		SetAnimation(IDLE);
+	}*/
+
+	if (isDamaged)
+	{
+		SetAnimation(AGONY);
+	}
+	else if (HP<=0.0f)
+	{
+		Die();
+	}
+	else
+	{
+		SetAnimation(IDLE);
 	}
 }
 
@@ -97,7 +149,7 @@ void Zombie::SetCollider(Collider* collider)
 	this->collider = collider;
 	if (collider != nullptr)
 	{
-		collider->position.y += 0.6f;
+		collider->position.y += 6.0f;
 		collider->SetParent(offset.GetWorld());
 	}
 }
@@ -121,6 +173,30 @@ void Zombie::Pick(bool isPicked)
 	{
 		collider->SetColor({ 0,1,0,1 });
 	}
+}
+
+void Zombie::Damaged(float damage)
+{
+	if (!isDamaged)
+	{
+		isDamaged = true;
+		HP -= damage;
+	}
+}
+
+void Zombie::DamagedEnd()
+{
+	isDamaged = false;
+}
+
+void Zombie::Die()
+{
+	SetAnimation(DIE);
+}
+
+void Zombie::DieEnd()
+{
+	isDead = true;
 }
 
 void Zombie::SetTarget(Vector3 targetPos)

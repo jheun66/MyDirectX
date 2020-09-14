@@ -154,7 +154,9 @@ Obb BoxCollider::GetObb()
     obb.axis[2] = Forward();
 
     obb.halfSize = (maxBox - minBox) * 0.5f;
-    obb.halfSize *= scale;
+
+    // 무기를 부모로 할 경우 무기의 scale도 적용해줘야함 
+    obb.halfSize *= WorldScale();
 
     return obb;
 }

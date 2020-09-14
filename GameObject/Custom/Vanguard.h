@@ -9,6 +9,34 @@ class Vanguard : public ModelAnimator
 		RUN,
 		ATTACK
 	}state;
+
+private:
+	// 마우스 이용에 사용
+	float moveSpeed;
+	float rotSpeed;
+	float acceleration;
+	float deceleration;
+	Vector3 velocity;
+	Vector3 destPos;
+
+	// Terrain에서 높이 값 받아 오는 용도
+	Terrain* terrain;
+
+	// 플레이어가 캐릭터를 선택할 수 있도록
+	Collider* characterCollider;
+	bool isPicked = false;
+	bool canMove = false;
+
+	// 칼모델
+	ModelRender* sword;
+	ModelBone* rightHand;
+	XMMATRIX boneWorld;
+	Collider* weaponCollider;
+	bool isAttack =false;
+
+	// 상대콜라이더(별로임)
+	Zombie* enemy;
+
 public:
 	Vanguard();
 	~Vanguard();
@@ -19,36 +47,13 @@ public:
 
 	void Move();
 	void Rotation();
-	//void Jump();
-	//void JumpEnd();
-	void Attack();
+
 	void AttackEnd();
 
-	void SetAnimation(AnimState state, float speed = 1.0f, float takeTime = 1.0f);
+	void SetAnimation(AnimState state);
 	void SetTerrain(Terrain* terrain) { this->terrain = terrain; }
 
-	void SetCollider(Collider* col);	// 캐릭터의 콜라이더`
+	void SetCollider(Collider* col);	// 캐릭터의 콜라이더
 	void SetWeapon();
-private:
-	float moveSpeed;
-	float acceleration;
-	float maxSpeed;
-
-	float rotSpeed;
-
-	// Terrain에서 높이 값 받아 오는 용도
-	Terrain* terrain;
-
-	// 빈 오브젝트 (position, rotation, scale 조절)
-	Transform offset;
-
-	// 총모델
-	ModelRender* sword;
-
-	ModelBone* rightHand;
-	XMMATRIX boneWorld;
-
-	Collider* CharacterCollider;
-	Collider* WeaponCollider;
-
+	void SetEnemy(ModelAnimator* model);
 };

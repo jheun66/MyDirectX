@@ -2,7 +2,8 @@
 
 Skybox::Skybox()
 {
-	sphere = new Sphere(L"SkyBox", 5.0f);
+	// shader에서 처리하면서 크기가 의미없음
+	sphere = new Sphere(L"SkyBox");
 	sphere->GetFillMode()->FrontCounterClockWise(true);
 
 	cubeMap = Texture::Add(L"Textures/Landscape/NightMoon.dds");

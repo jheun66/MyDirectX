@@ -4,7 +4,7 @@
 Terrain::Terrain(UINT width, UINT height)
 	:width(width), height(height)
 {
-	material = new Material(L"SplattingAdvanced");
+	material = new Material(L"NormalMapping");
 	material->SetDiffuseMap(L"Textures/Terrain/brown_mud_leaves_01_diff_1k.png");
 	material->SetSpecularMap(L"Textures/Terrain/brown_mud_leaves_01_spec_1k.png");
 	material->SetNormalMap(L"Textures/Terrain/brown_mud_leaves_01_Nor_1k.png");
@@ -18,22 +18,8 @@ Terrain::Terrain(UINT width, UINT height)
 
 	CreateCompute();
 	
-	secondMap = Texture::Add(L"Textures/Terrain/brown_mud_dry_diff_1k.png");
-	secondSMap = Texture::Add(L"Textures/Terrain/brown_mud_dry_spec_1k.png");
-	secondNMap = Texture::Add(L"Textures/Terrain/brown_mud_dry_nor_1k.png");
-	thirdMap = Texture::Add(L"Textures/Terrain/coral_mud_01_diff_1k.png");
-	thirdSMap = Texture::Add(L"Textures/Terrain/coral_mud_01_spec_1k.png");
-	thirdNMap = Texture::Add(L"Textures/Terrain/coral_mud_01_Nor_1k.png");
-	fourthMap = Texture::Add(L"Textures/Terrain/snow_02_diff_1k.png");
-	fourthSMap = Texture::Add(L"Textures/Terrain/snow_02_spec_1k.png");
-	fourthNMap = Texture::Add(L"Textures/Terrain/snow_02_nor_1k.png");
-	fifthMap = Texture::Add(L"Textures/Terrain/brown_mud_rocks_01_diff_1k.png");
-	fifthSMap = Texture::Add(L"Textures/Terrain/brown_mud_rocks_01_spec_1k.png");
-	fifthNMap = Texture::Add(L"Textures/Terrain/brown_mud_rocks_01_nor_1k.png");
-	
-	LoadHeightMap(L"Textures/HeightMaps/TestHeightMap.png");
-	LoadAlphaMap(L"Textures/HeightMaps/TestAlphaMap.png");
-	LoadTree();
+	//LoadHeightMap(L"Textures/HeightMaps/TestHeightMap.png");
+	//LoadAlphaMap(L"Textures/HeightMaps/TestAlphaMap.png");
 }
 
 Terrain::~Terrain()
@@ -46,24 +32,11 @@ Terrain::~Terrain()
 
 	delete[] input;
 	delete[] output;
-
-
-	if (trees.size())
-	{
-		for (auto tree : trees)
-			delete tree;
-	}
 }
 
 void Terrain::Update()
 {
 	UpdateWorld();
-
-	if (trees.size())
-	{
-		for (auto tree : trees)
-			tree->Update();
-	}
 }
 
 void Terrain::Render()
@@ -72,28 +45,9 @@ void Terrain::Render()
 
 	SetWorldBuffer();
 
-	secondMap->PSSet(10);
-	secondSMap->PSSet(11);
-	secondNMap->PSSet(12);
-	thirdMap->PSSet(20);
-	thirdSMap->PSSet(21);
-	thirdNMap->PSSet(22);
-	fourthMap->PSSet(30);
-	fourthSMap->PSSet(31);
-	fourthNMap->PSSet(32);
-	fifthMap->PSSet(40);
-	fifthSMap->PSSet(41);
-	fifthNMap->PSSet(42);
-
 	material->Set();
 
 	DC->DrawIndexed(indices.size(), 0, 0);
-
-	if (trees.size())
-	{
-		for (auto tree : trees)
-			tree->Render();
-	}
 }
 
 void Terrain::PostRender()
@@ -105,43 +59,6 @@ void Terrain::PostRender()
 	float height = GetAltitude(pickingPos);
 	ImGui::Text("Height : %f", height);
 }
-
-// 기존 방식 안씀
-//bool Terrain::Picking(OUT Vector3* position)
-//{
-//	Ray ray = Environment::Get()->MainCamera()->ScreenPointToRay(Mouse::Get()->GetPosition());
-//
-//	for (UINT z = 0; z < height; z++)
-//	{
-//		for (UINT x = 0; x < width; x++)
-//		{
-//			UINT index[4];
-//			index[0] = (width + 1) * z + x;
-//			index[1] = (width + 1) * z + x + 1;
-//			index[2] = (width + 1) * (z + 1) + x;
-//			index[3] = (width + 1) * (z + 1) + x + 1;
-//
-//			Vector3 p[4];
-//			for (UINT i = 0; i < 4; i++)
-//				p[i] = vertices[index[i]].position;
-//
-//			float distance;
-//			if (TriangleTests::Intersects(ray.position, ray.direction, p[0], p[1], p[2], distance))
-//			{
-//				*position = ray.position + ray.direction * distance;
-//				return true;
-//			}
-//
-//			if (TriangleTests::Intersects(ray.position, ray.direction, p[3], p[1], p[2], distance))
-//			{
-//				*position = ray.position + ray.direction * distance;
-//				return true;
-//			}
-//		}
-//	}
-//
-//	return false;
-//}
 
 float Terrain::GetAltitude(Vector3 position)
 {
@@ -228,32 +145,6 @@ bool Terrain::ComputePicking(OUT Vector3* position)
 
 
 	return false;
-}
-
-void Terrain::LoadTree()
-{
-	BinaryReader* reader = new BinaryReader(L"TextData/SaveObject.object");
-
-	string objName = reader->String();
-	UINT size = reader->UInt();
-	if (size)
-	{
-		trees.resize(size);
-		for (int i = 0; i < size; i++)
-		{
-			Tree* tmp = new Tree();
-			void* data = &tmp->position;
-			reader->Byte(&data, sizeof(Vector3));
-			void* data2 = &tmp->rotation;
-			reader->Byte(&data2, sizeof(Vector3));
-			void* data3 = &tmp->scale;
-			reader->Byte(&data3, sizeof(Vector3));
-			trees[i] = tmp;
-			trees[i]->UpdateWorld();
-		}
-	}
-
-	delete reader;
 }
 
 void Terrain::LoadHeightMap(wstring path)
@@ -498,4 +389,5 @@ void Terrain::CreateCompute()
 
 	rayBuffer = new RayBuffer();
 	output = new OutputStruct[size];
+
 }

@@ -2,174 +2,238 @@
 #include <algorithm>
 
 Vanguard::Vanguard()
-	:ModelAnimator("Vanguard/Vanguard"), maxSpeed(7.5f), moveSpeed(0), acceleration(3.5f), rotSpeed(5)
+	:ModelAnimator("Vanguard/Vanguard"),
+	moveSpeed(30.0f), rotSpeed(20.0f), state(IDLE),
+	acceleration(10), deceleration(3), velocity(0, 0, 0) , characterCollider(nullptr), isAttack(false)
 {
-	scale = { 0.01f, 0.01f, 0.01f };
-
-	// 모아서 한꺼번에 해주기 한번만
-	ModelReader* reader = new ModelReader();
-	reader->ReadFile("ModelData/Animations/Vanguard/SwordIdle.fbx");
-	reader->ExportClip(0, "Vanguard/Idle");
-	reader->ReadFile("ModelData/Animations/Vanguard/SwordWalk.fbx");
-	reader->ExportClip(0, "Vanguard/Walk");
-	reader->ReadFile("ModelData/Animations/Vanguard/SwordRun.fbx");
-	reader->ExportClip(0, "Vanguard/Run");
-	reader->ReadFile("ModelData/Animations/Vanguard/SwordAttack.fbx");
-	reader->ExportClip(0, "Vanguard/Attack");
-	delete reader;
-
-
-
-	// 미리 모델 읽어주고 나서 사용하기, export material 등
-	sword = new ModelRender("Sword/Sword");
-	sword->position = { -7.5f,-4.0f,-22.0f };
-	sword->scale = { 1.5f, 1.5f, 1.5f };
-	sword->rotation = {0,XM_PI,0};
-	rightHand = GetBoneByName("mixamorig:RightHand");
-	sword->SetParent(&boneWorld);
-
-
+	scale = { 0.1f, 0.1f, 0.1f };
 	ReadClip("Vanguard/Idle");
 	ReadClip("Vanguard/Walk");
 	ReadClip("Vanguard/Run");
 	ReadClip("Vanguard/Attack");
 
-	//SetEndEvent(ATTACK, bind(&Vanguard::AttackEnd, this));
+	SetEndEvent(ATTACK, bind(&Vanguard::AttackEnd, this));
 
 	PlayClip(0);
 
-	// offset을 부모 행렬로, 마치 빈 오브젝트에 담는거 처럼 
-	offset.rotation.y = XM_PI;
-	offset.UpdateWorld();
-	parent = offset.GetWorld();
+	// 미리 모델 읽어주고 나서 사용하기, export material 등
+	sword = new ModelRender("Sword/Sword");
+	sword->position = { -7.5f,-4.0f,-22.0f };
+	sword->scale = { 1.5f, 1.5f, 1.5f };
+	sword->rotation = { 0,XM_PI,0 };
+	rightHand = GetBoneByName("mixamorig:RightHand");
+	sword->SetParent(&boneWorld);
+	weaponCollider = new BoxCollider();
+	weaponCollider->scale = { 10,10,60 };
+	weaponCollider->SetParent(sword->GetWorld());
 }
 
 Vanguard::~Vanguard()
 {
 	delete sword;
+	delete characterCollider;
+	delete weaponCollider;
 }
 
 void Vanguard::Update()
 {
+	////체크용
+	//Ray ray = Camera::Get()->ScreenPointToRay(Mouse::Get()->GetPosition());
+	//if (characterCollider->IsCollision(ray))
+	//{
+	//	characterCollider->SetColor({ 0,0,1,1 });
+	//}
+	//else
+	//{
+	//	characterCollider->SetColor({ 1,0,0,1 });
+	//}
+	//if (weaponCollider->IsCollision(ray))
+	//{
+	//	weaponCollider->SetColor({ 0,0,1,1 });
+	//}
+	//else
+	//{
+	//	weaponCollider->SetColor({ 1,0,0,1 });
+	//}
+
+
 	Move();
 	Rotation();
-	Attack();
 
 	SetWeapon();
+	sword->Update();
 
 	ModelAnimator::Update();
-
-	sword->Update();
+	characterCollider->UpdateWorld();
+	weaponCollider->UpdateWorld();
 }
 
 void Vanguard::Render()
 {
 	ModelAnimator::Render();
+	characterCollider->Render();
+	weaponCollider->Render();
 	sword->Render();
 }
 
 void Vanguard::PostRender()
 {
-	ImGui::SliderFloat3("weapon position", (float*)&sword->position, -40, 40, "%.1f", 1);
-	ImGui::SliderFloat3("weapon scale", (float*)&sword->scale, -2, 2, "%.1f", 1);
-	ImGui::SliderFloat3("weapon rotation", (float*)&sword->rotation, -XM_PI, XM_PI, "%.3f", 1);
-
 }
 
+// 마우스를 이용한 이동
 void Vanguard::Move()
 {
-	if (KEY_PRESS(VK_LSHIFT))
+	// 픽킹처리
+	if (Mouse::Get()->Down(0))
 	{
-		if (KEY_PRESS(VK_UP))
+		Ray ray = Camera::Get()->ScreenPointToRay(Mouse::Get()->GetPosition());
+		if (characterCollider->IsCollision(ray))
 		{
-			moveSpeed += acceleration * Time::Delta();
-			moveSpeed = min(moveSpeed, maxSpeed * 2);
-			position += Forward() * moveSpeed * Time::Delta();
+			isPicked = true;
+			characterCollider->SetColor({ 0,0,1,1 });
 		}
-		else if (KEY_PRESS(VK_DOWN))
+		else
 		{
-			moveSpeed += acceleration * Time::Delta();
-			moveSpeed = min(moveSpeed, maxSpeed * 2);
-			position -= Forward() * moveSpeed * Time::Delta();
+			isPicked = false;
+			characterCollider->SetColor({ 0,1,0,1 });
+		}
+	}	
+
+	if (isPicked)
+	{
+		if (Mouse::Get()->Down(1))
+		{
+			Vector3 targetPos;
+			terrain->ComputePicking(&targetPos);
+			// 현재 코드는 쓸데없이 두번함
+			Ray ray = Camera::Get()->ScreenPointToRay(Mouse::Get()->GetPosition());
+
+
+			if (enemy->GetCollider()->IsCollision(ray) && !enemy->isDead)
+			{
+				isAttack = true;
+				destPos = enemy->GetCollider()->WorldPos();
+				destPos.y = 0;
+			}
+			else
+			{
+				isAttack = false;
+				destPos = targetPos;
+			}
+			canMove = true;
+		}
+	}
+
+	if (canMove)
+	{
+		velocity = destPos - position;
+		if (isAttack)
+		{
+			if (velocity.Length() > 15)
+			{
+				position += velocity.Normal() * moveSpeed * Time::Delta();
+
+				SetAnimation(RUN);
+
+				velocity = XMVectorLerp(velocity.data, XMVectorZero(), deceleration * Time::Delta());
+			}
+			else
+			{
+				canMove = false;
+				SetAnimation(ATTACK);
+			}
+		}
+		else
+		{
+			if (velocity.Length() > 0.1f)
+			{
+				position += velocity.Normal() * moveSpeed * Time::Delta();
+
+				SetAnimation(RUN);
+
+				velocity = XMVectorLerp(velocity.data, XMVectorZero(), deceleration * Time::Delta());
+			}
+			else
+			{
+				canMove = false;
+				SetAnimation(IDLE);
+			}
+		}
+	}
+
+	if (isAttack)
+	{
+		if (weaponCollider->IsSphereCollision((SphereCollider*)enemy->GetCollider()))
+		{
+			enemy->GetCollider()->SetColor({ 1,0,0,1 });
+			// 데미지 10 받는걸 의미
+			enemy->Damaged(10.0f);
+		}
+		else
+		{
+			enemy->GetCollider()->SetColor({ 0,1,0,1 });
 		}
 	}
 	else
 	{
-		if (KEY_PRESS(VK_UP))
-		{
-			moveSpeed += acceleration * Time::Delta();
-			moveSpeed = min(moveSpeed, maxSpeed);
-			position += Forward() * moveSpeed * Time::Delta();
-		}
-		else if (KEY_PRESS(VK_DOWN))
-		{
-			moveSpeed += acceleration * Time::Delta();
-			moveSpeed = min(moveSpeed, maxSpeed);
-			position -= Forward() * moveSpeed * Time::Delta();
-		}
+		enemy->GetCollider()->SetColor({ 0,1,0,1 });
 	}
 
-	if (KEY_UP(VK_UP) || KEY_UP(VK_DOWN))
-	{
-		moveSpeed = 0.0f;
-		SetAnimation(IDLE, 2.0, 0.0f);
-	}
-
-	// 속도에 따라 애니메이션 처리
-	if (moveSpeed <= maxSpeed && moveSpeed > 0)
-	{
-		SetAnimation(WALK, 2.0, 0.0f);
-	}
-	else if (moveSpeed <= maxSpeed*2 && moveSpeed > maxSpeed)
-	{
-		SetAnimation(RUN, 2.0, 0.1f);
-	}
-
-
-	position.y = terrain->GetAltitude(WorldPos());
 }
 
+// 마우스를 이용한 회전
 void Vanguard::Rotation()
 {
-	if (KEY_PRESS(VK_RIGHT))
-	{
-		rotation.y += rotSpeed * Time::Delta();
-	}
-	else if (KEY_PRESS(VK_LEFT))
-	{
-		rotation.y -= rotSpeed * Time::Delta();
-	}
-}
+	if (velocity.Length() < 0.1f)
+		return;
 
-void Vanguard::Attack()
-{
-	if (KEY_DOWN('A'))
-	{
-		SetAnimation(ATTACK, 2.0f, 0.0f);
-	}
+	// 뒷면이 +Z
+	Vector3 start = Forward() * -1;
+	Vector3 end = velocity.Normal();
+
+	// |A|,|B|는 단위 벡터니까 1
+	float cosValue = start.Dot(end);
+	float angle = acos(cosValue);
+
+	// 각차이가 얼마 없으면
+	if (angle < 0.1f)
+		return;
+
+	Vector3 cross = start.Cross(end);
+
+	if (cross.y > 0.0f)
+		rotation.y += rotSpeed * Time::Delta();
+	else
+		rotation.y -= rotSpeed * Time::Delta();
 }
 
 void Vanguard::AttackEnd()
 {
+	isAttack = false;
 	SetAnimation(IDLE);
 }
 
-void Vanguard::SetAnimation(AnimState state, float speed, float takeTime)
+void Vanguard::SetAnimation(AnimState state)
 {
 	if (this->state != state)
 	{
 		this->state = state;
-		PlayClip(state);
+
+		if (state == ATTACK)
+			PlayClip(state, 1, 0);
+		else
+			PlayClip(state);
 	}
 }
 
 void Vanguard::SetCollider(Collider* col)
 {
-	CharacterCollider = col;
-	if (CharacterCollider != nullptr)
+	characterCollider = col;
+	if (characterCollider != nullptr)
 	{
-		CharacterCollider->position.y += 0.6f;
-		CharacterCollider->SetParent(offset.GetWorld());
+		characterCollider->position.y += 60.0f;
+		characterCollider->scale = { 10,10,10 };
+		characterCollider->SetParent(&world);
 	}
 }
 
@@ -179,3 +243,10 @@ void Vanguard::SetWeapon()
 
 	boneWorld = rightHand->transform * boneWorld * world;
 }
+
+void Vanguard::SetEnemy(ModelAnimator* model)
+{
+	Zombie* zombie = dynamic_cast<Zombie*>(model);
+	enemy = zombie;
+}
+

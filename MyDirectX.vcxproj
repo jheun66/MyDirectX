@@ -151,6 +151,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Algorithm\Astar.h" />
+    <ClInclude Include="Algorithm\Node.h" />
     <ClInclude Include="Framework.h" />
     <ClInclude Include="Framework\Assimp\ModelReader.h" />
     <ClInclude Include="Framework\Assimp\ModelTypes.h" />
@@ -161,6 +163,7 @@
     <ClInclude Include="Framework\Buffers\Mesh\VertexBuffer.h" />
     <ClInclude Include="Framework\Buffers\StructuredBuffer.h" />
     <ClInclude Include="Framework\State\DepthStencilState.h" />
+    <ClInclude Include="GameObject\Character\Medea.h" />
     <ClInclude Include="GameObject\Collision\BoxCollider.h" />
     <ClInclude Include="GameObject\Collision\Collider.h" />
     <ClInclude Include="GameObject\Collision\SphereCollider.h" />
@@ -208,6 +211,7 @@
     <ClInclude Include="Framework\Material\Shaders\VertexShader.h" />
     <ClInclude Include="MyDirectX.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="Scenes\AStarScene.h" />
     <ClInclude Include="Scenes\CollisionScene.h" />
     <ClInclude Include="Scenes\GridScene.h" />
     <ClInclude Include="Scenes\ModelAnimationScene.h" />
@@ -222,6 +226,8 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Algorithm\AStar.cpp" />
+    <ClCompile Include="Algorithm\Node.cpp" />
     <ClCompile Include="Framework.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
@@ -232,6 +238,7 @@
     <ClCompile Include="Framework\Buffers\Mesh\VertexBuffer.cpp" />
     <ClCompile Include="Framework\Buffers\StructuredBuffer.cpp" />
     <ClCompile Include="Framework\State\DepthStencilState.cpp" />
+    <ClCompile Include="GameObject\Character\Medea.cpp" />
     <ClCompile Include="GameObject\Collision\BoxCollider.cpp" />
     <ClCompile Include="GameObject\Collision\Collider.cpp" />
     <ClCompile Include="Framework\Device\Device.cpp" />
@@ -277,6 +284,7 @@
     <ClCompile Include="GameObject\Basic\Sphere.cpp" />
     <ClCompile Include="MyDirectX.cpp" />
     <ClCompile Include="MyGame\Program.cpp" />
+    <ClCompile Include="Scenes\AStarScene.cpp" />
     <ClCompile Include="Scenes\CollisionScene.cpp" />
     <ClCompile Include="Scenes\GridScene.cpp" />
     <ClCompile Include="Scenes\ModelAnimationScene.cpp" />

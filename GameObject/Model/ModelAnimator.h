@@ -62,23 +62,6 @@ class ModelAnimator : public Model
 
 	};
 
-public:
-	ModelAnimator(string file);
-	~ModelAnimator();
-
-	void Update();
-	void Render();
-
-	void PlayClip(UINT clip, float speed = 1.0f, float takeTime = 1.0f);
-	void ReadClip(string file);
-
-	void SetEndEvent(UINT clip, function<void()> value) { EndEvent[clip] = value; }
-
-	XMMATRIX GetCurBoneMatrix(UINT boneIndex);
-private:
-	void CreateTexture();
-	void CreateClipTransform(UINT index);
-
 private:
 	FrameBuffer* frameBuffer;
 	ClipTransform* clipTransform;
@@ -89,5 +72,22 @@ private:
 	vector<ModelClip*> clips;
 
 	map<UINT, function<void()>> EndEvent;
-	
+
+
+public:
+	ModelAnimator(string file);
+	~ModelAnimator();
+
+	void Update();
+	void Render();
+
+	void PlayClip(UINT clip, float speed = 1.0f, float takeTime = 0.2f);
+	void ReadClip(string file);
+
+	void SetEndEvent(UINT clip, function<void()> value) { EndEvent[clip] = value; }
+
+	XMMATRIX GetCurBoneMatrix(UINT boneIndex);
+private:
+	void CreateTexture();
+	void CreateClipTransform(UINT index);
 };

@@ -15,5 +15,5 @@ public:
 private:
 	Terrain* terrain;
 	Vanguard* vanguard;
-	vector<Zombie*> zombies;
+	Zombie* zombie;
 };

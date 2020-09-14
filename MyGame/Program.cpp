@@ -8,6 +8,7 @@
 #include "Scenes/MoveModelScene.h"
 #include "Scenes/CollisionScene.h"
 #include "Scenes/MousePickingScene2.h"
+#include "Scenes/AStarScene.h"
 
 Program::Program()
 {
@@ -22,7 +23,7 @@ Program::Program()
 
 	SetCursorPos((int)(WIN_WIDTH / 2), (int)(WIN_HEIGHT / 2));
 
-	scene = new ModelAnimationScene();
+	scene = new MousePickingScene2();
 }
 
 Program::~Program()
