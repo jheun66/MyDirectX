@@ -7,7 +7,6 @@ class Vanguard : public ModelAnimator
 		IDLE,
 		WALK,
 		RUN,
-		JUMP,
 		ATTACK
 	}state;
 public:
@@ -16,17 +15,20 @@ public:
 
 	void Update();
 	void Render();
+	void PostRender();
 
 	void Move();
 	void Rotation();
-	void Jump();
-	void JumpEnd();
+	//void Jump();
+	//void JumpEnd();
 	void Attack();
 	void AttackEnd();
 
 	void SetAnimation(AnimState state, float speed = 1.0f, float takeTime = 1.0f);
 	void SetTerrain(Terrain* terrain) { this->terrain = terrain; }
 
+	void SetCollider(Collider* col);	// 캐릭터의 콜라이더`
+	void SetWeapon();
 private:
 	float moveSpeed;
 	float acceleration;
@@ -41,8 +43,12 @@ private:
 	Transform offset;
 
 	// 총모델
-	ModelRender* mp44;
+	ModelRender* sword;
 
+	ModelBone* rightHand;
+	XMMATRIX boneWorld;
 
+	Collider* CharacterCollider;
+	Collider* WeaponCollider;
 
 };

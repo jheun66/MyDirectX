@@ -21,13 +21,10 @@ public:
 	virtual bool IsBoxCollision(BoxCollider* collider) override;
 	virtual bool IsSphereCollision(SphereCollider* collider) override;
 
-
 	Obb GetObb();
 	Vector3 GetMin();
 	Vector3 GetMax();
 
-	// SphereCollider에서도 접근할 수 있도록 public
-	bool SeperateAxis(Vector3 position, Vector3 axis, Obb box1, float radius);
 private:
 	virtual void CreateMesh() override;
 

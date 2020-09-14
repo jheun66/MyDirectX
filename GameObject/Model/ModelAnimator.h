@@ -73,6 +73,8 @@ public:
 	void ReadClip(string file);
 
 	void SetEndEvent(UINT clip, function<void()> value) { EndEvent[clip] = value; }
+
+	XMMATRIX GetCurBoneMatrix(UINT boneIndex);
 private:
 	void CreateTexture();
 	void CreateClipTransform(UINT index);

@@ -160,6 +160,7 @@
     <ClInclude Include="Framework\Buffers\Mesh\Mesh.h" />
     <ClInclude Include="Framework\Buffers\Mesh\VertexBuffer.h" />
     <ClInclude Include="Framework\Buffers\StructuredBuffer.h" />
+    <ClInclude Include="Framework\State\DepthStencilState.h" />
     <ClInclude Include="GameObject\Collision\BoxCollider.h" />
     <ClInclude Include="GameObject\Collision\Collider.h" />
     <ClInclude Include="GameObject\Collision\SphereCollider.h" />
@@ -178,12 +179,12 @@
     <ClInclude Include="Framework\Utility\Utility.h" />
     <ClInclude Include="GameObject\Camera\FollowCamera.h" />
     <ClInclude Include="GameObject\Camera\FreeCamera.h" />
-    <ClInclude Include="GameObject\Custom\Orb.h" />
     <ClInclude Include="GameObject\Custom\Tree.h" />
     <ClInclude Include="GameObject\Custom\Vanguard.h" />
     <ClInclude Include="GameObject\Custom\WarChief.h" />
     <ClInclude Include="GameObject\Custom\WarHawk.h" />
     <ClInclude Include="GameObject\Character\Zombie.h" />
+    <ClInclude Include="GameObject\LandScape\Skybox.h" />
     <ClInclude Include="GameObject\LandScape\Terrain.h" />
     <ClInclude Include="GameObject\LandScape\TerrainEditor.h" />
     <ClInclude Include="GameObject\Model\Model.h" />
@@ -215,7 +216,6 @@
     <ClInclude Include="Scenes\MousePickingScene2.h" />
     <ClInclude Include="Scenes\MoveModelScene.h" />
     <ClInclude Include="Scenes\Scene.h" />
-    <ClInclude Include="Scenes\SolarSystemScene.h" />
     <ClInclude Include="Scenes\TerrainEditorScene.h" />
     <ClInclude Include="Scenes\TerrainScene.h" />
     <ClInclude Include="Scenes\TextureScene.h" />
@@ -231,6 +231,7 @@
     <ClCompile Include="Framework\Buffers\Mesh\Mesh.cpp" />
     <ClCompile Include="Framework\Buffers\Mesh\VertexBuffer.cpp" />
     <ClCompile Include="Framework\Buffers\StructuredBuffer.cpp" />
+    <ClCompile Include="Framework\State\DepthStencilState.cpp" />
     <ClCompile Include="GameObject\Collision\BoxCollider.cpp" />
     <ClCompile Include="GameObject\Collision\Collider.cpp" />
     <ClCompile Include="Framework\Device\Device.cpp" />
@@ -249,12 +250,12 @@
     <ClCompile Include="GameObject\Camera\FollowCamera.cpp" />
     <ClCompile Include="GameObject\Camera\FreeCamera.cpp" />
     <ClCompile Include="GameObject\Collision\SphereCollider.cpp" />
-    <ClCompile Include="GameObject\Custom\Orb.cpp" />
     <ClCompile Include="GameObject\Custom\Tree.cpp" />
     <ClCompile Include="GameObject\Custom\Vanguard.cpp" />
     <ClCompile Include="GameObject\Custom\WarChief.cpp" />
     <ClCompile Include="GameObject\Custom\WarHawk.cpp" />
     <ClCompile Include="GameObject\Character\Zombie.cpp" />
+    <ClCompile Include="GameObject\LandScape\Skybox.cpp" />
     <ClCompile Include="GameObject\LandScape\Terrain.cpp" />
     <ClCompile Include="GameObject\LandScape\TerrainEditor.cpp" />
     <ClCompile Include="GameObject\Model\Model.cpp" />
@@ -283,7 +284,6 @@
     <ClCompile Include="Scenes\MousePickingScene.cpp" />
     <ClCompile Include="Scenes\MousePickingScene2.cpp" />
     <ClCompile Include="Scenes\MoveModelScene.cpp" />
-    <ClCompile Include="Scenes\SolarSystemScene.cpp" />
     <ClCompile Include="Scenes\TerrainEditorScene.cpp" />
     <ClCompile Include="Scenes\TerrainScene.cpp" />
     <ClCompile Include="Scenes\TextureScene.cpp" />
@@ -350,6 +350,13 @@
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">PS</EntryPointName>
     </FxCompile>
     <FxCompile Include="Shaders\PixelShaders\PixelShader.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">PS</EntryPointName>
+    </FxCompile>
+    <FxCompile Include="Shaders\PixelShaders\PixelSkybox.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
@@ -427,6 +434,12 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
     <FxCompile Include="Shaders\VertexShaders\VertexShader.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shaders\VertexShaders\VertexSkybox.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>

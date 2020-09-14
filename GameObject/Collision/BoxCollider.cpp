@@ -12,34 +12,65 @@ BoxCollider::~BoxCollider()
 
 bool BoxCollider::IsCollision(IN Ray ray, OUT Contact* contact)
 {
-    float minDistance = FLT_MAX;
-    Vector3 hitPoint;
-    for (UINT i = 0; i < indices.size(); i += 3)
+    Contact temp;
+    temp.distance = FLT_MAX;
+
+    UINT face[] = {
+        0,1,2,3,
+        4,5,6,7,
+        0,1,5,4,
+        1,5,6,2,
+        2,3,7,6,
+        0,3,7,4
+    };
+
+    for (UINT i = 0; i < 6; i++)
     {
-        Vector3 p[3];
-        for (UINT j = 0; j < 3; j++)
+        Vector3 p[4];
+
+        p[0] = vertices[face[i * 4 + 0]].position;
+        p[1] = vertices[face[i * 4 + 1]].position;
+        p[2] = vertices[face[i * 4 + 2]].position;
+        p[3] = vertices[face[i * 4 + 3]].position;
+
+        p[0] = XMVector3TransformCoord(p[0].data, world);
+        p[1] = XMVector3TransformCoord(p[1].data, world);
+        p[2] = XMVector3TransformCoord(p[2].data, world);
+        p[3] = XMVector3TransformCoord(p[3].data, world);
+
+        float dist;
+        if (TriangleTests::Intersects(ray.position.data, ray.direction.data,
+            p[0].data, p[1].data, p[2].data, dist))
         {
-            p[j] = XMVector3TransformCoord(Vector3(vertices[indices[i + j]].position), world);
-        }
-        float distance;
-        if (TriangleTests::Intersects(ray.position.data, ray.direction.data, p[0].data, p[1].data, p[2].data, distance))
-        {
-            if (distance < minDistance)
+            if (dist < temp.distance)
             {
-                minDistance = distance;
-                hitPoint = ray.position + ray.direction * distance;
+                temp.distance = dist;
+                temp.hitPoint = ray.position + ray.direction * dist;
+
             }
-             
+        }
+        if (TriangleTests::Intersects(ray.position.data, ray.direction.data,
+            p[0].data, p[2].data, p[3].data, dist))
+        {
+            if (dist < temp.distance)
+            {
+                temp.distance = dist;
+                temp.hitPoint = ray.position + ray.direction * dist;
+
+            }
         }
     }
-    if (minDistance != FLT_MAX)
-    {
-        contact->distance = minDistance;
-        contact->hitPoint = hitPoint;
-        return true;
-    }
-    else
+
+    if (temp.distance == FLT_MAX)
         return false;
+
+    if (contact != nullptr)
+    {
+        contact->distance = temp.distance;
+        contact->hitPoint = temp.hitPoint;
+    }
+
+    return true;
 }
 
 bool BoxCollider::IsBoxCollision(BoxCollider* collider)
@@ -76,29 +107,42 @@ bool BoxCollider::IsBoxCollision(BoxCollider* collider)
 
 bool BoxCollider::IsSphereCollision(SphereCollider* collider)
 {
-    Obb box = GetObb();
+    Obb obb = GetObb();
 
-    Vector3 D = collider->WorldPos() - box.position;
+    float size[3] = { obb.halfSize.x, obb.halfSize.y, obb.halfSize.z };
+    Vector3 pos = obb.position;
 
     for (UINT i = 0; i < 3; i++)
     {
-        if (SeperateAxis(D, box.axis[i], box, collider->GetRadius())) return false;
+        float length = obb.axis[i].Dot(collider->WorldPos() - obb.position);
+
+        float mult = (length < 0.0f) ? -1.0f : 1.0f;
+
+        length = min(abs(length), size[i]);
+        pos += obb.axis[i] * length * mult;
+
     }
 
-    if (SeperateAxis(D, (box.axis[0] + box.axis[1]).Normal(), box, collider->GetRadius())) return false;
-    if (SeperateAxis(D, (box.axis[0] - box.axis[2]).Normal(), box, collider->GetRadius())) return false;
-    if (SeperateAxis(D, (box.axis[1] + box.axis[2]).Normal(), box, collider->GetRadius())) return false;
-    if (SeperateAxis(D, (box.axis[1] - box.axis[2]).Normal(), box, collider->GetRadius())) return false;
-    if (SeperateAxis(D, (box.axis[2] + box.axis[0]).Normal(), box, collider->GetRadius())) return false;
-    if (SeperateAxis(D, (box.axis[2] - box.axis[0]).Normal(), box, collider->GetRadius())) return false;
-
-    if (SeperateAxis(D, (box.axis[0] + box.axis[1] + box.axis[2]).Normal(), box, collider->GetRadius())) return false;
-    if (SeperateAxis(D, (box.axis[1] + box.axis[2] - box.axis[0]).Normal(), box, collider->GetRadius())) return false;
-    if (SeperateAxis(D, (box.axis[0] + box.axis[2] - box.axis[1]).Normal(), box, collider->GetRadius())) return false;
-    if (SeperateAxis(D, (box.axis[0] + box.axis[1] - box.axis[2]).Normal(), box, collider->GetRadius())) return false;
-
-    return true;
+    float distance = (collider->WorldPos() - pos).Length();
+    
+    return distance <= collider->GetRadius();
 }
+
+//bool BoxCollider::IsSphereCollision(SphereCollider* collider)
+//{
+//    Matrix invWorld = XMMatrixInverse(nullptr, world);
+//
+//    Vector3 spherePos = XMVector3TransformCoord(collider->WorldPos().data, invWorld);
+//
+//    Vector3 temp;
+//    temp.x = max(minBox.x, min(spherePos.x, maxBox.x));
+//    temp.y = max(minBox.y, min(spherePos.y, maxBox.y));
+//    temp.z = max(minBox.z, min(spherePos.z, maxBox.z));
+//
+//    temp -= spherePos;
+//
+//    return temp.Length() <= collider->Radius();
+//}
 
 Obb BoxCollider::GetObb()
 {
@@ -138,29 +182,9 @@ void BoxCollider::CreateMesh()
     vertices.emplace_back(maxBox.x, minBox.y, maxBox.z);
 
     indices = {
-        // f
-        0,1,2,
-        0,2,3,
-
-        // u
-        1,5,6,
-        1,6,2,
-
-        // r
-        3,2,6,
-        3,6,7,
-
-        // l
-        0,5,1,
-        0,4,5,
-
-        // d
-        0,7,4,
-        0,3,7,
-
-        // b
-        4,6,5,
-        4,7,6,
+        0,1,1,2,2,3,3,0,
+        4,5,5,6,6,7,7,4,
+        0,4,1,5,2,6,3,7,
     };
 
     mesh = new Mesh(vertices.data(), sizeof(Vertex), vertices.size(),
@@ -183,17 +207,4 @@ bool BoxCollider::SeperateAxis(Vector3 position, Vector3 axis, Obb box1, Obb box
     b += abs((box2.axis[2] * box2.halfSize.z).Dot(axis));
 
     return distance > a + b;
-}
-
-bool BoxCollider::SeperateAxis(Vector3 position, Vector3 axis, Obb box1, float radius)
-{
-    float distance = abs(position.Dot(axis));
-
-    float a = 0.0f;
-
-    a += abs((box1.axis[0] * box1.halfSize.x).Dot(axis));
-    a += abs((box1.axis[1] * box1.halfSize.y).Dot(axis));
-    a += abs((box1.axis[2] * box1.halfSize.z).Dot(axis));
-
-    return distance > a + radius;
 }

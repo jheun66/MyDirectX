@@ -46,5 +46,6 @@ void SamplerState::Changed()
 	if (state != nullptr)
 		state->Release();
 
-	DEVICE->CreateSamplerState(&desc, &state);
+	HRESULT hr = DEVICE->CreateSamplerState(&desc, &state);
+	assert(SUCCEEDED(hr));
 }

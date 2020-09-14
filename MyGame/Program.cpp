@@ -1,6 +1,5 @@
 #include "Framework.h"
 
-#include "Scenes/SolarSystemScene.h"
 #include "Scenes/TerrainScene.h"
 #include "Scenes/MousePickingScene.h"
 #include "Scenes/TerrainEditorScene.h"
@@ -23,7 +22,7 @@ Program::Program()
 
 	SetCursorPos((int)(WIN_WIDTH / 2), (int)(WIN_HEIGHT / 2));
 
-	scene = new CollisionScene();
+	scene = new ModelAnimationScene();
 }
 
 Program::~Program()

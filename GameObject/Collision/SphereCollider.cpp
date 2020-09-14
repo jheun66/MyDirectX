@@ -40,28 +40,7 @@ bool SphereCollider::IsCollision(IN Ray ray, OUT Contact* contact)
 
 bool SphereCollider::IsBoxCollision(BoxCollider* collider)
 {
-    Obb box = collider->GetObb();
-
-    Vector3 D = WorldPos() - box.position;
-
-    for (UINT i = 0; i < 3; i++)
-    {
-        if (collider->SeperateAxis(D, box.axis[i], box, radius)) return false;
-    }
-
-    if (collider->SeperateAxis(D, (box.axis[0] + box.axis[1]).Normal(), box, radius)) return false;
-    if (collider->SeperateAxis(D, (box.axis[0] - box.axis[2]).Normal(), box, radius)) return false;
-    if (collider->SeperateAxis(D, (box.axis[1] + box.axis[2]).Normal(), box, radius)) return false;
-    if (collider->SeperateAxis(D, (box.axis[1] - box.axis[2]).Normal(), box, radius)) return false;
-    if (collider->SeperateAxis(D, (box.axis[2] + box.axis[0]).Normal(), box, radius)) return false;
-    if (collider->SeperateAxis(D, (box.axis[2] - box.axis[0]).Normal(), box, radius)) return false;
-
-    if (collider->SeperateAxis(D, (box.axis[0] + box.axis[1] + box.axis[2]).Normal(), box, radius)) return false;
-    if (collider->SeperateAxis(D, (box.axis[1] + box.axis[2] - box.axis[0]).Normal(), box, radius)) return false;
-    if (collider->SeperateAxis(D, (box.axis[0] + box.axis[2] - box.axis[1]).Normal(), box, radius)) return false;
-    if (collider->SeperateAxis(D, (box.axis[0] + box.axis[1] - box.axis[2]).Normal(), box, radius)) return false;
-
-    return true;
+    return collider->IsSphereCollision(this);
 }
 
 bool SphereCollider::IsSphereCollision(SphereCollider* collider)

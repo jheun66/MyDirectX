@@ -30,21 +30,11 @@ void Collider::Render()
 {
     UpdateWorld();
 
-    RasterizerState fillMode[2];
-    fillMode[1].FillMode(D3D11_FILL_WIREFRAME);
-    if (dynamic_cast<BoxCollider*>(this) != nullptr)
-    {
-        fillMode[1].SetState();
-        mesh->Set(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-    }
-    else
-    {
-        mesh->Set(D3D_PRIMITIVE_TOPOLOGY_LINELIST);
-    }
+    mesh->Set(D3D_PRIMITIVE_TOPOLOGY_LINELIST);
 
     worldBuffer->SetVSBuffer(0);
     material->Set();
 
+
     DC->DrawIndexed(indices.size(), 0, 0);
-    fillMode[0].SetState();
 }

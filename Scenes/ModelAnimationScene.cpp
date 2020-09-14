@@ -16,8 +16,17 @@ ModelAnimationScene::ModelAnimationScene()
 	//reader->ExportMesh(name);
 	//delete reader;
 
+	//string name = "Sword/Sword";
+	//ModelReader* reader = new ModelReader();
+	//reader->ReadFile("ModelData/Models/Sword.fbx");
+	//reader->ExportMaterial(name);
+	//reader->ExportMesh(name);
+	//delete reader;
+
+
 	terrain = new Terrain(200, 200);
 	vanguard = new Vanguard();
+	vanguard->SetCollider(new SphereCollider(1.0f));
 	vanguard->SetTerrain(terrain);
 
 	for (int i = 0; i < 10; i++)
@@ -28,10 +37,13 @@ ModelAnimationScene::ModelAnimationScene()
 		zombie->SetTerrain(terrain);
 		//zombie->SetPlayer(vanguard);
 		zombie->SetSpeed(GameMath::Random(7, 12));
+		zombie->SetCollider(new SphereCollider(1.0f));
 		zombies.push_back(zombie);
 	}
 	Camera::Get()->position = Vector3(0, 10, -30);
 	Camera::Get()->SetTarget(vanguard);
+
+	skybox = new Skybox();
 }
 
 ModelAnimationScene::~ModelAnimationScene()
@@ -42,6 +54,7 @@ ModelAnimationScene::~ModelAnimationScene()
 	}
 	delete terrain;
 	delete vanguard;
+	delete skybox;
 }
 
 void ModelAnimationScene::Update()
@@ -61,6 +74,9 @@ void ModelAnimationScene::PreRender()
 
 void ModelAnimationScene::Render()
 {
+	// 중요 skybox 맨위에
+	skybox->Render();
+
 	terrain->Render();
 	vanguard->Render();
 	for (auto& zombie : zombies)
@@ -75,4 +91,5 @@ void ModelAnimationScene::PostRender()
 	{
 		ImGui::Text("Zombie %d: %f, %f, %f", i, zombies[i]->offset.position.x, zombies[i]->offset.position.y, zombies[i]->offset.position.z);
 	}
+	vanguard->PostRender();
 }

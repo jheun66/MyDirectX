@@ -16,4 +16,6 @@ private:
 	Terrain* terrain;
 	Vanguard* vanguard;
 	vector<Zombie*> zombies;
+
+	Skybox* skybox;
 };

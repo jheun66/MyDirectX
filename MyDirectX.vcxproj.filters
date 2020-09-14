@@ -93,9 +93,6 @@
     <ClInclude Include="GameObject\Camera\Camera.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="GameObject\Custom\Orb.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="GameObject\LandScape\Terrain.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
@@ -103,9 +100,6 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Scenes\Scene.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Scenes\SolarSystemScene.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Scenes\GridScene.h">
@@ -222,6 +216,12 @@
     <ClInclude Include="Scenes\MousePickingScene2.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Framework\State\DepthStencilState.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject\LandScape\Skybox.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MyDirectX.cpp">
@@ -290,16 +290,10 @@
     <ClCompile Include="GameObject\Camera\Camera.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="GameObject\Custom\Orb.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="GameObject\LandScape\Terrain.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Scenes\TerrainScene.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Scenes\SolarSystemScene.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Scenes\GridScene.cpp">
@@ -413,6 +407,12 @@
     <ClCompile Include="GameObject\Collision\BoxCollider.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Framework\State\DepthStencilState.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject\LandScape\Skybox.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MyDirectX.rc">
@@ -452,6 +452,8 @@
     <FxCompile Include="Shaders\PixelShaders\PixelModel.hlsl" />
     <FxCompile Include="Shaders\VertexShaders\VertexModel.hlsl" />
     <FxCompile Include="Shaders\VertexShaders\VertexModelAnimation.hlsl" />
+    <FxCompile Include="Shaders\VertexShaders\VertexSkybox.hlsl" />
+    <FxCompile Include="Shaders\PixelShaders\PixelSkybox.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\PixelShaders\PixelHeader.hlsli" />

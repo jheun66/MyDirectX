@@ -1,0 +1,11 @@
+<Materials>
+    <Material>
+        <Name>Sting</Name>
+        <DiffuseFile>Sting_Base_Color.png</DiffuseFile>
+        <SpecularFile>Sting_Metallic.png</SpecularFile>
+        <NormalFile>Sting_Normal_DirectX.png</NormalFile>
+        <Ambient R="0.2" G="0.2" B="0.2" A="1"/>
+        <Diffuse R="0.80000001" G="0.80000001" B="0.80000001" A="1"/>
+        <Specular R="0.2" G="0.2" B="0.2" A="20"/>
+    </Material>
+</Materials>

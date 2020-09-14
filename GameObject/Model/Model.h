@@ -19,6 +19,7 @@ public:
 	void SetShader(wstring file);
 	void SetShader(wstring vsFile, wstring psFile);
 
+	ModelBone* GetBoneByName(string name);
 
 protected:
 	ModelBone* root;

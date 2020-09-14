@@ -7,33 +7,34 @@ Vanguard::Vanguard()
 	scale = { 0.01f, 0.01f, 0.01f };
 
 	// 모아서 한꺼번에 해주기 한번만
-	//ModelReader* reader = new ModelReader();
-	//reader->ReadFile("ModelData/Animations/Vanguard/Idle2.fbx");
-	//reader->ExportClip(0, "Vanguard/Idle2");
-	//reader->ReadFile("ModelData/Animations/Vanguard/Walk.fbx");
-	//reader->ExportClip(0, "Vanguard/Walk");
-	//reader->ReadFile("ModelData/Animations/Vanguard/Run.fbx");
-	//reader->ExportClip(0, "Vanguard/Run");
-	//reader->ReadFile("ModelData/Animations/Vanguard/Jump.fbx");
-	//reader->ExportClip(0, "Vanguard/Jump");
-	//reader->ReadFile("ModelData/Animations/Vanguard/Attack.fbx");
-	//reader->ExportClip(0, "Vanguard/Attack");
-	//delete reader;
+	ModelReader* reader = new ModelReader();
+	reader->ReadFile("ModelData/Animations/Vanguard/SwordIdle.fbx");
+	reader->ExportClip(0, "Vanguard/Idle");
+	reader->ReadFile("ModelData/Animations/Vanguard/SwordWalk.fbx");
+	reader->ExportClip(0, "Vanguard/Walk");
+	reader->ReadFile("ModelData/Animations/Vanguard/SwordRun.fbx");
+	reader->ExportClip(0, "Vanguard/Run");
+	reader->ReadFile("ModelData/Animations/Vanguard/SwordAttack.fbx");
+	reader->ExportClip(0, "Vanguard/Attack");
+	delete reader;
 
 
 
 	// 미리 모델 읽어주고 나서 사용하기, export material 등
-	mp44 = new ModelRender("MP44/MP44");
-	mp44->scale = { 0.03f, 0.03f, 0.03f };
+	sword = new ModelRender("Sword/Sword");
+	sword->position = { -7.5f,-4.0f,-22.0f };
+	sword->scale = { 1.5f, 1.5f, 1.5f };
+	sword->rotation = {0,XM_PI,0};
+	rightHand = GetBoneByName("mixamorig:RightHand");
+	sword->SetParent(&boneWorld);
 
-	ReadClip("Vanguard/Idle2");
+
+	ReadClip("Vanguard/Idle");
 	ReadClip("Vanguard/Walk");
 	ReadClip("Vanguard/Run");
-	ReadClip("Vanguard/Jump");
 	ReadClip("Vanguard/Attack");
 
-	SetEndEvent(JUMP, bind(&Vanguard::JumpEnd, this));
-	SetEndEvent(ATTACK, bind(&Vanguard::AttackEnd, this));
+	//SetEndEvent(ATTACK, bind(&Vanguard::AttackEnd, this));
 
 	PlayClip(0);
 
@@ -45,24 +46,34 @@ Vanguard::Vanguard()
 
 Vanguard::~Vanguard()
 {
-	delete mp44;
+	delete sword;
 }
 
 void Vanguard::Update()
 {
 	Move();
 	Rotation();
-	Jump();
 	Attack();
+
+	SetWeapon();
+
 	ModelAnimator::Update();
 
-	mp44->Update();
+	sword->Update();
 }
 
 void Vanguard::Render()
 {
 	ModelAnimator::Render();
-	mp44->Render();
+	sword->Render();
+}
+
+void Vanguard::PostRender()
+{
+	ImGui::SliderFloat3("weapon position", (float*)&sword->position, -40, 40, "%.1f", 1);
+	ImGui::SliderFloat3("weapon scale", (float*)&sword->scale, -2, 2, "%.1f", 1);
+	ImGui::SliderFloat3("weapon rotation", (float*)&sword->rotation, -XM_PI, XM_PI, "%.3f", 1);
+
 }
 
 void Vanguard::Move()
@@ -107,7 +118,7 @@ void Vanguard::Move()
 	// 속도에 따라 애니메이션 처리
 	if (moveSpeed <= maxSpeed && moveSpeed > 0)
 	{
-		SetAnimation(WALK, 2.0, 0.1f);
+		SetAnimation(WALK, 2.0, 0.0f);
 	}
 	else if (moveSpeed <= maxSpeed*2 && moveSpeed > maxSpeed)
 	{
@@ -130,24 +141,11 @@ void Vanguard::Rotation()
 	}
 }
 
-void Vanguard::Jump()
-{
-	if (KEY_DOWN(VK_SPACE))
-	{
-		SetAnimation(JUMP, 1.0f, 0.0f);
-	}
-}
-
-void Vanguard::JumpEnd()
-{
-	SetAnimation(IDLE);
-}
-
 void Vanguard::Attack()
 {
 	if (KEY_DOWN('A'))
 	{
-		SetAnimation(ATTACK, 1.0f, 0.0f);
+		SetAnimation(ATTACK, 2.0f, 0.0f);
 	}
 }
 
@@ -163,4 +161,21 @@ void Vanguard::SetAnimation(AnimState state, float speed, float takeTime)
 		this->state = state;
 		PlayClip(state);
 	}
+}
+
+void Vanguard::SetCollider(Collider* col)
+{
+	CharacterCollider = col;
+	if (CharacterCollider != nullptr)
+	{
+		CharacterCollider->position.y += 0.6f;
+		CharacterCollider->SetParent(offset.GetWorld());
+	}
+}
+
+void Vanguard::SetWeapon()
+{
+	boneWorld = GetCurBoneMatrix(rightHand->index);
+
+	boneWorld = rightHand->transform * boneWorld * world;
 }

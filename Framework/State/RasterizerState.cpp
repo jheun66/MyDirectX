@@ -39,7 +39,7 @@ void RasterizerState::Changed()
 	if (state != nullptr)
 		state->Release();
 
-
-	DEVICE->CreateRasterizerState(&desc, &state);
+	HRESULT hr = DEVICE->CreateRasterizerState(&desc, &state);
+	assert(SUCCEEDED(hr));
 }
 

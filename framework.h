@@ -104,6 +104,7 @@ using namespace std;
 // State
 #include "Framework/State/SamplerState.h"
 #include "Framework/State/RasterizerState.h"
+#include "Framework/State/DepthStencilState.h"
 
 // Environment
 #include "Framework/Environment/Environment.h"
@@ -146,6 +147,7 @@ using namespace std;
 // Terrain
 #include "GameObject/LandScape/Terrain.h"
 #include "GameObject/LandScape/TerrainEditor.h"
+#include "GameObject/LandScape/Skybox.h"
 
 // Model
 #include "GameObject/Model/ModelMeshPart.h"
@@ -159,7 +161,6 @@ using namespace std;
 #include "GameObject/Character/Zombie.h"
 
 // Custom Object
-#include "GameObject/Custom/Orb.h"
 #include "GameObject/Custom/WarChief.h"
 #include "GameObject/Custom/Tree.h"
 #include "GameObject/Custom/WarHawk.h"

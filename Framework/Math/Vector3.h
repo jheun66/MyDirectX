@@ -31,14 +31,17 @@ public:
 	void SetX(float value);
 	void SetY(float value);
 	void SetZ(float value);
+	void SetW(float value);
 	float GetX();
 	float GetY();
 	float GetZ();
+	float GetW();
 
 	// 유니티의 프로터티처럼 사용
 	__declspec(property(get = GetX, put = SetX)) float x;
 	__declspec(property(get = GetY, put = SetY)) float y;
 	__declspec(property(get = GetZ, put = SetZ)) float z;
+	__declspec(property(get = GetW, put = SetW)) float w;
 
 	// 벡터 연산들
 	Vector3 operator+(const Vector3& value) const;
