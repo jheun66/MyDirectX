@@ -129,14 +129,15 @@ using namespace std;
 // 모든 Object는 Transform 상속
 #include "GameObject/Transform.h"
 
-// 알고리즘
-#include "Algorithm/Node.h"
-#include "Algorithm/Astar.h"
-
 // 충돌
 #include "GameObject/Collision/Collider.h"
 #include "GameObject/Collision/BoxCollider.h"
 #include "GameObject/Collision/SphereCollider.h"
+
+// 알고리즘
+#include "Algorithm/Node.h"
+#include "Algorithm/Heap.h"
+#include "Algorithm/Astar.h"
 
 // 카메라
 #include "GameObject/Camera/Camera.h"

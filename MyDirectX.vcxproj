@@ -152,6 +152,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Algorithm\Astar.h" />
+    <ClInclude Include="Algorithm\Heap.h" />
     <ClInclude Include="Algorithm\Node.h" />
     <ClInclude Include="Framework.h" />
     <ClInclude Include="Framework\Assimp\ModelReader.h" />
@@ -227,6 +228,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Algorithm\AStar.cpp" />
+    <ClCompile Include="Algorithm\Heap.cpp" />
     <ClCompile Include="Algorithm\Node.cpp" />
     <ClCompile Include="Framework.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

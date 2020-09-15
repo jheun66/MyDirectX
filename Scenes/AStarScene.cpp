@@ -15,8 +15,11 @@ AStarScene::AStarScene()
 	skybox = new Skybox();
 	aStar = new AStar();
 
-	medea->SetTerrain(terrain);
 	aStar->Setup(terrain);
+
+	medea->SetTerrain(terrain);
+	medea->SetAStar(aStar);
+
 
 	Camera::Get()->ChangeCameraMode(true);
 	Camera::Get()->SetTarget(medea);

@@ -23,7 +23,7 @@ Program::Program()
 
 	SetCursorPos((int)(WIN_WIDTH / 2), (int)(WIN_HEIGHT / 2));
 
-	scene = new MousePickingScene2();
+	scene = new AStarScene();
 }
 
 Program::~Program()
