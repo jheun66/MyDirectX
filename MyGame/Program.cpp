@@ -24,7 +24,7 @@ Program::Program()
 
 	SetCursorPos((int)(WIN_WIDTH / 2), (int)(WIN_HEIGHT / 2));
 
-	scene = new MonsterAStarScene();
+	scene = new TerrainEditorScene();
 }
 
 Program::~Program()

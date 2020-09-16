@@ -20,6 +20,8 @@ TerrainEditor::TerrainEditor(UINT width, UINT height)
 	CreateCompute();
 	brushBuffer = new BrushBuffer();
 
+	CreateComputeForY();
+
 	secondMap = Texture::Add(L"Textures/Terrain/brown_mud_leaves_01_diff_1k.png");
 	secondSMap = Texture::Add(L"Textures/Terrain/brown_mud_leaves_01_spec_1k.png");
 	secondNMap = Texture::Add(L"Textures/Terrain/brown_mud_leaves_01_Nor_1k.png");
@@ -40,7 +42,8 @@ TerrainEditor::~TerrainEditor()
 	delete mesh;
 
 	delete rayBuffer;
-	delete structuredBuffer;
+	delete structuredBuffer[0];
+	delete structuredBuffer[1];
 
 	delete[] input;
 	delete[] output;
@@ -49,6 +52,10 @@ TerrainEditor::~TerrainEditor()
 
 	for (auto tree : trees)
 		delete tree;
+
+	delete[] inputVertices;
+	delete[] outputVertices;
+	delete heightBrushBuffer;
 }
 
 void TerrainEditor::Update()
@@ -211,19 +218,19 @@ bool TerrainEditor::ComputePicking(OUT Vector3* position)
 	rayBuffer->data.position = ray.position;
 	rayBuffer->data.direction = ray.direction;
 	rayBuffer->data.size = size;
-	computeShader->Set();
+	computeShader[0]->Set();
 
 	rayBuffer->SetCSBuffer(0);
 
-	DC->CSSetShaderResources(0, 1, &structuredBuffer->GetSRV());
-	DC->CSSetUnorderedAccessViews(0, 1, &structuredBuffer->GetUAV(), nullptr);
+	DC->CSSetShaderResources(0, 1, &structuredBuffer[0]->GetSRV());
+	DC->CSSetUnorderedAccessViews(0, 1, &structuredBuffer[0]->GetUAV(), nullptr);
 
 	// ceil 올림				1024 쓰레드 개수
 	UINT x = ceil((float)size / 1024.0f);
 
 	DC->Dispatch(x, 1, 1);
 
-	structuredBuffer->Copy(output, sizeof(OutputStruct) * size);
+	structuredBuffer[0]->Copy(output, sizeof(OutputStruct) * size);
 
 	float minDistance = FLT_MAX;
 	int minIndex = -1;
@@ -312,33 +319,112 @@ void TerrainEditor::AdjustY(Vector3 position, float value)
 	mesh->UpdateVertex(vertices.data(), vertices.size());
 }
 
-void TerrainEditor::PaintBrush(Vector3 position, float value)
+void TerrainEditor::ComputeAdjustY(Vector3 position, float value)
 {
-	switch (brushBuffer->data.type)
+	heightBrushBuffer->data.location = position;
+	heightBrushBuffer->data.outputSize = height * width;
+	heightBrushBuffer->data.range = brushBuffer->data.range;
+	heightBrushBuffer->data.type = brushBuffer->data.type;
+	
+	computeShader[1]->Set();
+
+	heightBrushBuffer->SetCSBuffer(10);
+
+	DC->CSSetShaderResources(0, 1, &structuredBuffer[1]->GetSRV());
+	DC->CSSetUnorderedAccessViews(0, 1, &structuredBuffer[1]->GetUAV(), nullptr);
+
+	UINT size = height * width;
+
+	// ceil 올림				1024 쓰레드 개수
+	UINT x = ceil((float)size / 1024.0f);
+
+	DC->Dispatch(x, 1, 1);
+
+	structuredBuffer[1]->Copy(outputVertices, sizeof(OutputVertices) * size);
+
+
+	for (UINT i = 0; i < size; i++)
 	{
-	case 1:
-	{
-		for (VertexType& vertex : vertices)
+		OutputVertices temp = outputVertices[i];
+		if (temp.inside)
 		{
-			Vector3 p1 = Vector3(vertex.position.x, 0, vertex.position.z);
-			Vector3 p2 = Vector3(position.x, 0, position.z);
-
-			float dist = (p2 - p1).Length();
-
-			float temp = value * max(0, cos(XM_PIDIV2 * dist / brushBuffer->data.range));
-
-			if (dist <= brushBuffer->data.range)
+			if (brushBuffer->data.type == 1)
 			{
-				vertex.alpha[selectMap] += temp * Time::Delta();
-				vertex.alpha[selectMap] = GameMath::Saturate(vertex.alpha[selectMap]);
+				float goodValue = value * max(0, cos(XM_PIDIV2 * temp.distance / brushBuffer->data.range));
+				vertices[i].position.y += goodValue * Time::Delta();
+
+				if (vertices[i].position.y < 0)
+					vertices[i].position.y = 0.0f;
+
+				float maxHeight = 60;
+
+				if (vertices[i].position.y > maxHeight)
+					vertices[i].position.y = maxHeight;
+			}
+			else if (brushBuffer->data.type == 2)
+			{
+				vertices[i].position.y += value * Time::Delta();
+
+				if (vertices[i].position.y < 0)
+					vertices[i].position.y = 0.0f;
+
+				float maxHeight = 60;
+
+				if (vertices[i].position.y > maxHeight)
+					vertices[i].position.y = maxHeight;
 			}
 		}
 	}
-	default:
-		break;
+
+	mesh->UpdateVertex(vertices.data(), vertices.size());
+	return;
+}
+
+void TerrainEditor::ComputePaintBrush(Vector3 position, float value)
+{
+	heightBrushBuffer->data.location = position;
+	heightBrushBuffer->data.outputSize = height * width;
+	heightBrushBuffer->data.range = brushBuffer->data.range;
+	heightBrushBuffer->data.type = brushBuffer->data.type;
+
+	computeShader[1]->Set();
+
+	heightBrushBuffer->SetCSBuffer(10);
+
+	DC->CSSetShaderResources(0, 1, &structuredBuffer[1]->GetSRV());
+	DC->CSSetUnorderedAccessViews(0, 1, &structuredBuffer[1]->GetUAV(), nullptr);
+
+	UINT size = height * width;
+
+	// ceil 올림				1024 쓰레드 개수
+	UINT x = ceil((float)size / 1024.0f);
+
+	DC->Dispatch(x, 1, 1);
+
+	structuredBuffer[1]->Copy(outputVertices, sizeof(OutputVertices) * size);
+
+
+	for (UINT i = 0; i < size; i++)
+	{
+		OutputVertices temp = outputVertices[i];
+		if (temp.inside)
+		{
+			if (brushBuffer->data.type == 1)
+			{
+				float goodValue = value * max(0, cos(XM_PIDIV2 * temp.distance / brushBuffer->data.range));
+				vertices[i].alpha[selectMap] += goodValue * Time::Delta();
+				vertices[i].alpha[selectMap] = GameMath::Saturate(vertices[i].alpha[selectMap]);
+			}
+			else if (brushBuffer->data.type == 2)
+			{
+				vertices[i].alpha[selectMap] += value * Time::Delta();
+				vertices[i].alpha[selectMap] = GameMath::Saturate(vertices[i].alpha[selectMap]);
+			}
+		}
 	}
 
 	mesh->UpdateVertex(vertices.data(), vertices.size());
+	return;
 }
 
 void TerrainEditor::SaveTree()
@@ -569,17 +655,17 @@ void TerrainEditor::Brushing()
 			if (mode == 0)
 			{
 				if (isRaise)
-					AdjustY(temp, adjustValue);
+					ComputeAdjustY(temp, adjustValue);
 				else
-					AdjustY(temp, -adjustValue);
+					ComputeAdjustY(temp, -adjustValue);
 			}
 			// painting
 			else if (mode == 1)
 			{
 				if (isRaise)
-					PaintBrush(brushBuffer->data.location, paintValue);
+					ComputePaintBrush(brushBuffer->data.location, paintValue);
 				else
-					PaintBrush(brushBuffer->data.location, -paintValue);
+					ComputePaintBrush(brushBuffer->data.location, -paintValue);
 			}
 		}
 
@@ -721,22 +807,46 @@ void TerrainEditor::CreateCompute()
 		input[i].index = i;
 	}
 
-	computeShader = Shader::AddCS(L"Intersection");
+	computeShader[0] = Shader::AddCS(L"Intersection");
 
 	// 폴리곤 개수
 	size = indices.size() / 3;
 
-	if (structuredBuffer)
+	if (structuredBuffer[0])
 	{
-		delete structuredBuffer;
-		structuredBuffer = nullptr;
+		delete structuredBuffer[0];
+		structuredBuffer[0] = nullptr;
 	}
 
-	structuredBuffer = new StructuredBuffer(input, sizeof(InputStruct), size,
+	structuredBuffer[0] = new StructuredBuffer(input, sizeof(InputStruct), size,
 		sizeof(OutputStruct), size);
 
 	rayBuffer = new RayBuffer();
 	output = new OutputStruct[size];
+}
+
+void TerrainEditor::CreateComputeForY()
+{
+	inputVertices = new InputVertices[height * width];
+	for (UINT i = 0; i < height * width; i++)
+	{
+		inputVertices[i].index = i;
+		inputVertices[i].pos = vertices[i].position;
+	}
+
+	computeShader[1] = Shader::AddCS(L"Inside");
+
+	if (structuredBuffer[1])
+	{
+		delete structuredBuffer[1];
+		structuredBuffer[1] = nullptr;
+	}
+
+	structuredBuffer[1] = new StructuredBuffer(inputVertices, sizeof(InputVertices), height * width,
+		sizeof(OutputVertices), height * width);
+
+	heightBrushBuffer = new HeightBrushBuffer();
+	outputVertices = new OutputVertices[height * width];
 }
 
 void TerrainEditor::CreateTree(Vector3 position, Vector3 rotation, Vector3 scale)
