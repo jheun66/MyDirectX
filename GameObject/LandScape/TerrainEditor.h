@@ -1,11 +1,10 @@
 #pragma once
 
 class Tree;
-class Zombie;
-class WarChief;
 
 class TerrainEditor : public Transform
 {
+private:
 	typedef VertexUVNormalTangentAlpha VertexType;
 
 	struct InputStruct
@@ -42,37 +41,42 @@ class TerrainEditor : public Transform
 
 	};
 
-public:
-	TerrainEditor(UINT width, UINT height);
-	~TerrainEditor();
+	/// <summary>
+	/// ComputeAdjustY 용
+	struct InputVertices
+	{
+		UINT index;
+		XMFLOAT3 pos;
+	};
 
-	void Update();
-	void Render();
-	void PostRender();
+	struct OutputVertices
+	{
+		UINT inside;
+		float distance;
+	};
 
-	bool ComputePicking(OUT Vector3* position);
+	class HeightBrushBuffer : public ConstBuffer
+	{
+	public:
+		struct Data
+		{
+			int type;
+			XMFLOAT3 location;
 
-	void AdjustY(Vector3 position, float value);
-	void PaintBrush(Vector3 position, float value);
-	void CreateTree(Vector3 position, Vector3 rotation, Vector3 scale);
+			float range;
+			UINT outputSize;
+			XMFLOAT2 dummy;
+		}data;
+		HeightBrushBuffer() : ConstBuffer(&data, sizeof(Data))
+		{
+			data.type = 1;
+			data.location = XMFLOAT3(0, 0, 0);
 
-	void SaveTree();
-	void LoadTree();
-
-	void SaveHeightMap(wstring path);
-	void SaveAlphaMap(wstring path);
-
-	void LoadHeightMap(wstring path);
-	void LoadAlphaMap(wstring path);
-
-	void Brushing();
-
-private:
-	void CreateData();
-	void CreateNormal();
-	void CreateTangent();
-	void CreateCompute();
-	
+			data.range = 10.0f;
+			data.outputSize = 0;
+		}
+	};
+	/// </summary>
 
 private:
 	Material* material;
@@ -83,10 +87,10 @@ private:
 
 	UINT width, height;
 
-	ComputeShader* computeShader;
+	ComputeShader* computeShader[2];
 	RayBuffer* rayBuffer;
 
-	StructuredBuffer* structuredBuffer;
+	StructuredBuffer* structuredBuffer[2];
 
 	InputStruct* input;
 	OutputStruct* output;
@@ -124,5 +128,46 @@ private:
 
 	XMFLOAT3 objectRotation;
 	XMFLOAT3 objectScale;
+
+	InputVertices* inputVertices;
+	OutputVertices* outputVertices;
+	HeightBrushBuffer* heightBrushBuffer;
+
+public:
+	TerrainEditor(UINT width, UINT height);
+	~TerrainEditor();
+
+	void Update();
+	void Render();
+	void PostRender();
+
+	bool ComputePicking(OUT Vector3* position);
+
+	void AdjustY(Vector3 position, float value);
+	void ComputeAdjustY(Vector3 position, float value);
+
+	void ComputePaintBrush(Vector3 position, float value);
+	void CreateTree(Vector3 position, Vector3 rotation, Vector3 scale);
+
+	void SaveTree();
+	void LoadTree();
+
+	void SaveHeightMap(wstring path);
+	void SaveAlphaMap(wstring path);
+
+	void LoadHeightMap(wstring path);
+	void LoadAlphaMap(wstring path);
+
+	void Brushing();
+
+private:
+	void CreateData();
+	void CreateNormal();
+	void CreateTangent();
+	void CreateCompute();
+	
+	// AdjustY에서 사용할 input, output   한번만 호출하면 됨
+	void CreateComputeForY();
+
 
 };

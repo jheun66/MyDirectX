@@ -504,6 +504,7 @@
     <FxCompile Include="Shaders\PixelShaders\PixelSkybox.hlsl" />
     <FxCompile Include="Shaders\GeometryShaders\GeometryBillboard.hlsl" />
     <FxCompile Include="Shaders\VertexShaders\VertexBillboard.hlsl" />
+    <FxCompile Include="Shaders\ComputeShaders\Inside.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\PixelShaders\PixelHeader.hlsli" />
