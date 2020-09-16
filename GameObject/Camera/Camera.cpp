@@ -25,7 +25,8 @@ Camera::~Camera()
 
 void Camera::Create()
 {
-    instance = new FollowCamera();
+    // 기본 카메라를 FreeCamera로
+    instance = new FreeCamera();
 }
 
 void Camera::Update()

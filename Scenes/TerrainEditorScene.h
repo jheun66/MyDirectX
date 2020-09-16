@@ -13,6 +13,4 @@ public:
 
 private:
 	TerrainEditor* terrainEditor;
-
-	MSBuffer* settingBuffer;
 };

@@ -171,6 +171,7 @@ using namespace std;
 #include "GameObject/Custom/Tree.h"
 #include "GameObject/Custom/WarHawk.h"
 #include "GameObject/Custom/Vanguard.h"
+#include "GameObject/Custom/Maria.h"
 
 // 게임 씬과 게임 프로세스
 #include "Scenes/Scene.h"

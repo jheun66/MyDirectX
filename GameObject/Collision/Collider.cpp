@@ -26,10 +26,13 @@ bool Collider::IsCollision(Collider* collider)
     return IsSphereCollision(static_cast<SphereCollider*>(collider));
 }
 
-void Collider::Render()
+void Collider::Update()
 {
     UpdateWorld();
+}
 
+void Collider::Render()
+{
     mesh->Set(D3D_PRIMITIVE_TOPOLOGY_LINELIST);
 
     worldBuffer->SetVSBuffer(0);

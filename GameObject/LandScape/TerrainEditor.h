@@ -55,11 +55,9 @@ public:
 	void AdjustY(Vector3 position, float value);
 	void PaintBrush(Vector3 position, float value);
 	void CreateTree(Vector3 position, Vector3 rotation, Vector3 scale);
-	void CreateZombie(Vector3 position, Vector3 rotation, Vector3 scale);
-	void CreateWarChief(Vector3 position, Vector3 rotation, Vector3 scale);
 
-	void Save();
-	void Load();
+	void SaveTree();
+	void LoadTree();
 
 	void SaveHeightMap(wstring path);
 	void SaveAlphaMap(wstring path);
@@ -123,8 +121,7 @@ private:
 	Texture* fifthNMap;
 
 	vector<Tree*> trees;
-	vector<Zombie*> zombies;
-	vector<WarChief*> warChiefs;
+
 	XMFLOAT3 objectRotation;
 	XMFLOAT3 objectScale;
 

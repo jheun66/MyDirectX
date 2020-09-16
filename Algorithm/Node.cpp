@@ -17,6 +17,11 @@ Node::~Node()
 		delete edge;
 }
 
+void Node::Update()
+{
+	collider->Update();
+}
+
 void Node::Render()
 {
 	switch (state)

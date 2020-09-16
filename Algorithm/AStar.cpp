@@ -65,20 +65,24 @@ void AStar::Setup(Terrain* terrain)
 }
 void AStar::Update()
 {
-	if (KEY_DOWN(VK_RBUTTON))
-	{
-		Ray ray = Camera::Get()->ScreenPointToRay(Mouse::Get()->GetPosition());
+	//if (KEY_DOWN(VK_RBUTTON))
+	//{
+	//	Ray ray = Camera::Get()->ScreenPointToRay(Mouse::Get()->GetPosition());
 
-		for (Node* node : nodes)
-		{
-			if (node->collider->IsCollision(ray))
-			{
-				//node->state = Node::OBSTACLE;
-				obstacles.emplace_back(node->SetObstacle());
-				break;
-			}
-		}
-	}
+	//	for (Node* node : nodes)
+	//	{
+	//		if (node->collider->IsCollision(ray))
+	//		{
+	//			obstacles.emplace_back(node->SetObstacle());
+	//			break;
+	//		}
+	//	}
+	//}
+
+	for (Node* node : nodes)
+		node->Update();
+	for (BoxCollider* obstacle : obstacles)
+		obstacle->Update();
 }
 
 void AStar::Render()
@@ -155,6 +159,52 @@ vector<Vector3> AStar::FindPath(int start, int end)
 	return path;
 }
 
+void AStar::MakeDirectPath(IN Vector3 start, IN Vector3 end, OUT vector<Vector3>& path)
+{
+	int cutNodeNum = 0;
+	Ray ray;
+	ray.position = start;
+
+	for (size_t i = 0; i < path.size(); i++)
+	{
+		ray.direction = path[i] - ray.position;
+		float distance = ray.direction.Length();
+
+		ray.direction.Normalize();
+
+		if (!isCollisionObstacle(ray, distance))
+		{
+			cutNodeNum = path.size() - i - 1;
+			break;
+		}
+	}
+
+	for (int i = 0; i < cutNodeNum; i++)
+		path.pop_back();
+
+	cutNodeNum = 0;
+	ray.position = end;
+
+	for (size_t i = 0; i < path.size(); i++)
+	{
+		ray.direction = path[path.size() - i - 1] - ray.position;
+		float distance = ray.direction.Length();
+
+		ray.direction.Normalize();
+
+		if (!isCollisionObstacle(ray, distance))
+		{
+			cutNodeNum = path.size() - i - 1;
+			break;
+		}
+	}
+
+	for (int i = 0; i < cutNodeNum; i++)
+	{
+		path.erase(path.begin());
+	}
+}
+
 void AStar::Reset()
 {
 	for (Node* node : nodes)
@@ -176,6 +226,37 @@ bool AStar::isCollisionObstacle(Ray ray, float destDistance)
 		}
 	}
 	return false;
+}
+
+void AStar::isObstacle(Collider* collider)
+{
+	BoxCollider* box = dynamic_cast<BoxCollider*>(collider);
+	if (box != nullptr)
+	{
+		for (Node* node : nodes)
+		{
+			if (node->collider->IsBoxCollision(box))
+			{
+				obstacles.emplace_back(node->SetObstacle());
+				break;
+			}
+		}
+	}
+
+	SphereCollider* sphere = dynamic_cast<SphereCollider*>(collider);
+	if (sphere != nullptr)
+	{
+		for (Node* node : nodes)
+		{
+			if (node->collider->IsSphereCollision(sphere))
+			{
+				obstacles.emplace_back(node->SetObstacle());
+				break;
+			}
+		}
+	}
+	
+	return;
 }
 
 float AStar::GetDistance(int curIndex, int end)

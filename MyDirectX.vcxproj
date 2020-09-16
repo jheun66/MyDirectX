@@ -183,11 +183,13 @@
     <ClInclude Include="Framework\Utility\Utility.h" />
     <ClInclude Include="GameObject\Camera\FollowCamera.h" />
     <ClInclude Include="GameObject\Camera\FreeCamera.h" />
+    <ClInclude Include="GameObject\Custom\Maria.h" />
     <ClInclude Include="GameObject\Custom\Tree.h" />
     <ClInclude Include="GameObject\Custom\Vanguard.h" />
     <ClInclude Include="GameObject\Custom\WarChief.h" />
     <ClInclude Include="GameObject\Custom\WarHawk.h" />
     <ClInclude Include="GameObject\Character\Zombie.h" />
+    <ClInclude Include="GameObject\LandScape\Billboard.h" />
     <ClInclude Include="GameObject\LandScape\Skybox.h" />
     <ClInclude Include="GameObject\LandScape\Terrain.h" />
     <ClInclude Include="GameObject\LandScape\TerrainEditor.h" />
@@ -213,12 +215,13 @@
     <ClInclude Include="MyDirectX.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Scenes\AStarScene.h" />
+    <ClInclude Include="Scenes\BillboardScene.h" />
     <ClInclude Include="Scenes\CollisionScene.h" />
     <ClInclude Include="Scenes\GridScene.h" />
     <ClInclude Include="Scenes\ModelAnimationScene.h" />
     <ClInclude Include="Scenes\ModelScene.h" />
+    <ClInclude Include="Scenes\MonsterAStarScene.h" />
     <ClInclude Include="Scenes\MousePickingScene.h" />
-    <ClInclude Include="Scenes\MousePickingScene2.h" />
     <ClInclude Include="Scenes\MoveModelScene.h" />
     <ClInclude Include="Scenes\Scene.h" />
     <ClInclude Include="Scenes\TerrainEditorScene.h" />
@@ -259,11 +262,13 @@
     <ClCompile Include="GameObject\Camera\FollowCamera.cpp" />
     <ClCompile Include="GameObject\Camera\FreeCamera.cpp" />
     <ClCompile Include="GameObject\Collision\SphereCollider.cpp" />
+    <ClCompile Include="GameObject\Custom\Maria.cpp" />
     <ClCompile Include="GameObject\Custom\Tree.cpp" />
     <ClCompile Include="GameObject\Custom\Vanguard.cpp" />
     <ClCompile Include="GameObject\Custom\WarChief.cpp" />
     <ClCompile Include="GameObject\Custom\WarHawk.cpp" />
     <ClCompile Include="GameObject\Character\Zombie.cpp" />
+    <ClCompile Include="GameObject\LandScape\Billboard.cpp" />
     <ClCompile Include="GameObject\LandScape\Skybox.cpp" />
     <ClCompile Include="GameObject\LandScape\Terrain.cpp" />
     <ClCompile Include="GameObject\LandScape\TerrainEditor.cpp" />
@@ -287,12 +292,13 @@
     <ClCompile Include="MyDirectX.cpp" />
     <ClCompile Include="MyGame\Program.cpp" />
     <ClCompile Include="Scenes\AStarScene.cpp" />
+    <ClCompile Include="Scenes\BillboardScene.cpp" />
     <ClCompile Include="Scenes\CollisionScene.cpp" />
     <ClCompile Include="Scenes\GridScene.cpp" />
     <ClCompile Include="Scenes\ModelAnimationScene.cpp" />
     <ClCompile Include="Scenes\ModelScene.cpp" />
+    <ClCompile Include="Scenes\MonsterAStarScene.cpp" />
     <ClCompile Include="Scenes\MousePickingScene.cpp" />
-    <ClCompile Include="Scenes\MousePickingScene2.cpp" />
     <ClCompile Include="Scenes\MoveModelScene.cpp" />
     <ClCompile Include="Scenes\TerrainEditorScene.cpp" />
     <ClCompile Include="Scenes\TerrainScene.cpp" />
@@ -316,6 +322,17 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Compute</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.0</ShaderModel>
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CS</EntryPointName>
+    </FxCompile>
+    <FxCompile Include="Shaders\GeometryShaders\GeometryBillboard.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Geometry</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Geometry</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Geometry</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">4.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Geometry</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.0</ShaderModel>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">GS</EntryPointName>
     </FxCompile>
     <FxCompile Include="Shaders\PixelShaders\PixelBrush.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
@@ -400,6 +417,12 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">PS</EntryPointName>
+    </FxCompile>
+    <FxCompile Include="Shaders\VertexShaders\VertexBillboard.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
     <FxCompile Include="Shaders\VertexShaders\VertexBrush.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>

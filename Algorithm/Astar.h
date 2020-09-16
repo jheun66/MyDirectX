@@ -24,10 +24,13 @@ public:
 
 	int FindCloseNode(Vector3 pos);
 	vector<Vector3> FindPath(int start, int end);
+	void MakeDirectPath(IN Vector3 start, IN Vector3 end, OUT vector<Vector3>& path);
 
 	void Reset();
 
 	bool isCollisionObstacle(Ray ray, float destDistance);
+
+	void isObstacle(Collider* collider);
 private:
 	float GetDistance(int curIndex, int end);
 

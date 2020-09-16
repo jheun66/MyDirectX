@@ -36,7 +36,7 @@ void FreeCamera::Move()
             position += Up() * moveSpeed * Time::Delta();
     }
 
-    position += Forward() * XMVectorGetZ(Mouse::Get()->GetMoveValue());
+    position -= 0.1f * Forward() * XMVectorGetZ(Mouse::Get()->GetMoveValue());
 }
 
 void FreeCamera::Rotation()

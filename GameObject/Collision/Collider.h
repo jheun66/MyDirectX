@@ -28,6 +28,7 @@ public:
 
 	virtual void CreateMesh() = 0;
 
+	void Update();
 	void Render();
 
 	void SetColor(XMFLOAT4 color) { material->GetBuffer()->data.diffuse = color; }

@@ -5,9 +5,9 @@ Terrain::Terrain(UINT width, UINT height)
 	:width(width), height(height)
 {
 	material = new Material(L"NormalMapping");
-	material->SetDiffuseMap(L"Textures/Terrain/brown_mud_leaves_01_diff_1k.png");
-	material->SetSpecularMap(L"Textures/Terrain/brown_mud_leaves_01_spec_1k.png");
-	material->SetNormalMap(L"Textures/Terrain/brown_mud_leaves_01_Nor_1k.png");
+	material->SetDiffuseMap(L"Textures/Terrain/brown_mud_dry_diff_1k.png");
+	material->SetSpecularMap(L"Textures/Terrain/brown_mud_dry_spec_1k.png");
+	material->SetNormalMap(L"Textures/Terrain/brown_mud_dry_nor_1k.png");
 
 	CreateData();
 	CreateNormal();
@@ -18,6 +18,7 @@ Terrain::Terrain(UINT width, UINT height)
 
 	CreateCompute();
 	
+	LoadTree();
 	//LoadHeightMap(L"Textures/HeightMaps/TestHeightMap.png");
 	//LoadAlphaMap(L"Textures/HeightMaps/TestAlphaMap.png");
 }
@@ -37,6 +38,9 @@ Terrain::~Terrain()
 void Terrain::Update()
 {
 	UpdateWorld();
+
+	for (Tree* tree : trees)
+		tree->Update();
 }
 
 void Terrain::Render()
@@ -48,6 +52,9 @@ void Terrain::Render()
 	material->Set();
 
 	DC->DrawIndexed(indices.size(), 0, 0);
+
+	for (Tree* tree : trees)
+		tree->Render();
 }
 
 void Terrain::PostRender()
@@ -390,4 +397,28 @@ void Terrain::CreateCompute()
 	rayBuffer = new RayBuffer();
 	output = new OutputStruct[size];
 
+}
+
+void Terrain::LoadTree()
+{
+	BinaryReader* reader = new BinaryReader(L"TextData/Tree.object");
+
+	UINT size = reader->UInt();
+	if (size)
+	{
+		trees.resize(size);
+		for (int i = 0; i < size; i++)
+		{
+			Tree* tmp = new Tree();
+			void* data = &tmp->position;
+			reader->Byte(&data, sizeof(Vector3));
+			void* data2 = &tmp->rotation;
+			reader->Byte(&data2, sizeof(Vector3));
+			void* data3 = &tmp->scale;
+			reader->Byte(&data3, sizeof(Vector3));
+			trees[i] = tmp;
+			trees[i]->UpdateWorld();
+		}
+	}
+	delete reader;
 }

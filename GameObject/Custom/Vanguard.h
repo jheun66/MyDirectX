@@ -7,36 +7,38 @@ class Vanguard : public ModelAnimator
 		IDLE,
 		WALK,
 		RUN,
-		ATTACK
+		ATTACK,
+		HIT,
+		DIE
 	}state;
 
 private:
-	// 마우스 이용에 사용
-	float moveSpeed;
-	float rotSpeed;
-	float acceleration;
-	float deceleration;
-	Vector3 velocity;
-	Vector3 destPos;
+	float moveSpeed = 30.0f;
+	float rotSpeed = 10.0f;
 
-	// Terrain에서 높이 값 받아 오는 용도
-	Terrain* terrain;
+	float accelation = 10.0f;
+	float deceleration = 3.0f;
 
-	// 플레이어가 캐릭터를 선택할 수 있도록
-	Collider* characterCollider;
-	bool isPicked = false;
-	bool canMove = false;
+	Vector3 velocity = { 0, 0, 0 };
+
+	Vector3 destPos = { 0, 0, 0 };
+
+	Collider* damagedCollider = nullptr;
+
+	Terrain* terrain = nullptr;
+
+	ModelAnimator* enemy = nullptr;
 
 	// 칼모델
-	ModelRender* sword;
-	ModelBone* rightHand;
+	ModelRender* sword = nullptr;
+	ModelBone* rightHand = nullptr;
 	XMMATRIX boneWorld;
-	Collider* weaponCollider;
-	bool isAttack =false;
+	Collider* weaponCollider = nullptr;
 
-	// 상대콜라이더(별로임)
-	Zombie* enemy;
+	float hp = 30.0f;
+	bool isDead = false;
 
+	Transform offsetTransform;
 public:
 	Vanguard();
 	~Vanguard();
@@ -46,14 +48,20 @@ public:
 	void PostRender();
 
 	void Move();
-	void Rotation();
+
+	//void Move();
+	//void Rotation();
 
 	void AttackEnd();
-
 	void SetAnimation(AnimState state);
+
+	void SetCollider();
+	void SetWeapon();
+
 	void SetTerrain(Terrain* terrain) { this->terrain = terrain; }
 
-	void SetCollider(Collider* col);	// 캐릭터의 콜라이더
-	void SetWeapon();
-	void SetEnemy(ModelAnimator* model);
+	void Damaged(float damage);
+
+	Collider* GetDamagedCollider() { return damagedCollider; }
+	function<ModelAnimator* ()> Check = nullptr;
 };

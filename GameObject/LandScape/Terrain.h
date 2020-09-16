@@ -43,20 +43,21 @@ private:
 	// Æú¸®°ï ¼ö
 	UINT size;
 
-	//Texture* secondMap;
-	//Texture* secondSMap;
-	//Texture* secondNMap;
-	//Texture* thirdMap;
-	//Texture* thirdSMap;
-	//Texture* thirdNMap;
-	//Texture* fourthMap;
-	//Texture* fourthSMap;
-	//Texture* fourthNMap;
-	//Texture* fifthMap;
-	//Texture* fifthSMap;
-	//Texture* fifthNMap;
+	Texture* secondMap;
+	Texture* secondSMap;
+	Texture* secondNMap;
+	Texture* thirdMap;
+	Texture* thirdSMap;
+	Texture* thirdNMap;
+	Texture* fourthMap;
+	Texture* fourthSMap;
+	Texture* fourthNMap;
+	Texture* fifthMap;
+	Texture* fifthSMap;
+	Texture* fifthNMap;
 
-	//vector<Tree*> trees;
+	
+	vector<Tree*> trees;
 
 public:
 	Terrain(UINT width, UINT height);
@@ -80,6 +81,8 @@ public:
 	void LoadHeightMap(wstring path);
 	void LoadAlphaMap(wstring path);
 
+	void LoadTree();
+	vector<Tree*> GetTrees() { return trees; };
 private:
 	void CreateData();
 	void CreateNormal();

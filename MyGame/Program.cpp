@@ -7,8 +7,9 @@
 #include "Scenes/ModelAnimationScene.h"
 #include "Scenes/MoveModelScene.h"
 #include "Scenes/CollisionScene.h"
-#include "Scenes/MousePickingScene2.h"
 #include "Scenes/AStarScene.h"
+#include "Scenes/MonsterAStarScene.h"
+#include "Scenes/BillboardScene.h"
 
 Program::Program()
 {
@@ -23,7 +24,7 @@ Program::Program()
 
 	SetCursorPos((int)(WIN_WIDTH / 2), (int)(WIN_HEIGHT / 2));
 
-	scene = new AStarScene();
+	scene = new MonsterAStarScene();
 }
 
 Program::~Program()

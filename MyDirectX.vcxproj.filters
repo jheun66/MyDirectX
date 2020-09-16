@@ -213,9 +213,6 @@
     <ClInclude Include="GameObject\Collision\SphereCollider.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Scenes\MousePickingScene2.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="Framework\State\DepthStencilState.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
@@ -235,6 +232,18 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Algorithm\Heap.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\MonsterAStarScene.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject\Custom\Maria.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject\LandScape\Billboard.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\BillboardScene.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
@@ -416,9 +425,6 @@
     <ClCompile Include="GameObject\Collision\SphereCollider.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Scenes\MousePickingScene2.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="GameObject\Collision\BoxCollider.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
@@ -441,6 +447,18 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Algorithm\Heap.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenes\MonsterAStarScene.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject\Custom\Maria.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject\LandScape\Billboard.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenes\BillboardScene.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -484,6 +502,8 @@
     <FxCompile Include="Shaders\VertexShaders\VertexModelAnimation.hlsl" />
     <FxCompile Include="Shaders\VertexShaders\VertexSkybox.hlsl" />
     <FxCompile Include="Shaders\PixelShaders\PixelSkybox.hlsl" />
+    <FxCompile Include="Shaders\GeometryShaders\GeometryBillboard.hlsl" />
+    <FxCompile Include="Shaders\VertexShaders\VertexBillboard.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\PixelShaders\PixelHeader.hlsli" />

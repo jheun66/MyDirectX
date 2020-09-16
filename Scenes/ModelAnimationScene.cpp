@@ -26,7 +26,7 @@ ModelAnimationScene::ModelAnimationScene()
 
 	terrain = new Terrain(200, 200);
 	vanguard = new Vanguard();
-	vanguard->SetCollider(new SphereCollider(1.0f));
+
 	vanguard->SetTerrain(terrain);
 
 	for (int i = 0; i < 10; i++)

@@ -3,17 +3,27 @@
 
 ModelScene::ModelScene()
 {
-	string name = "Medea/Medea";
+	string name = "Maria/Maria";
 	modelReader = new ModelReader();
-	modelReader->ReadFile("ModelData/Models/Medea.fbx");
+	modelReader->ReadFile("ModelData/Models/maria.fbx");
 	modelReader->ExportMaterial(name);
 	modelReader->ExportMesh(name);
+
+	//애니메이션
+	modelReader->ReadFile("ModelData/Animations/Maria/Idle.fbx");
+	modelReader->ExportClip(0, "Maria/Idle");
+	modelReader->ReadFile("ModelData/Animations/Maria/Run.fbx");
+	modelReader->ExportClip(0, "Maria/Run");
+	modelReader->ReadFile("ModelData/Animations/Maria/Slash.fbx");
+	modelReader->ExportClip(0, "Maria/Slash");
 
 	model = new ModelRender(name);
 	model->SetShader(L"VertexModel", L"PixelNormalMapping");
 
 
 	settingBuffer = new MSBuffer();
+
+	Camera::Get()->ChangeCameraMode(false);
 }
 
 ModelScene::~ModelScene()
