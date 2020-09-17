@@ -24,7 +24,8 @@ DepthStencilState::DepthStencilState()
 
 DepthStencilState::~DepthStencilState()
 {
-	state->Release();
+	if (state != nullptr)
+		state->Release();
 }
 
 void DepthStencilState::SetState(UINT stencilRef)
@@ -35,6 +36,12 @@ void DepthStencilState::SetState(UINT stencilRef)
 void DepthStencilState::DepthEnable(bool value)
 {
 	desc.DepthEnable = value;
+	Changed();
+}
+
+void DepthStencilState::DepthWriteMask(D3D11_DEPTH_WRITE_MASK value)
+{
+	desc.DepthWriteMask = value;
 	Changed();
 }
 

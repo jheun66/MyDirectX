@@ -18,8 +18,8 @@ Terrain::Terrain(UINT width, UINT height)
 
 	CreateCompute();
 	
-	LoadTree();
-	//LoadHeightMap(L"Textures/HeightMaps/TestHeightMap.png");
+	//LoadTree();
+	LoadHeightMap(L"Textures/Custom/heightmap.png");
 	//LoadAlphaMap(L"Textures/HeightMaps/TestAlphaMap.png");
 }
 
@@ -110,6 +110,52 @@ bool Terrain::ComputePicking(OUT Vector3* position)
 {
 	Ray ray = Camera::Get()->ScreenPointToRay(Mouse::Get()->GetPosition());
 
+	rayBuffer->data.position = ray.position;
+	rayBuffer->data.direction = ray.direction;
+	rayBuffer->data.size = size;
+	computeShader->Set();
+
+	rayBuffer->SetCSBuffer(0);
+
+	DC->CSSetShaderResources(0, 1, &structuredBuffer->GetSRV());
+	DC->CSSetUnorderedAccessViews(0, 1, &structuredBuffer->GetUAV(), nullptr);
+
+	// ceil 올림				1024 쓰레드 개수
+	UINT x = ceil((float)size / 1024.0f);
+
+	DC->Dispatch(x, 1, 1);
+
+	structuredBuffer->Copy(output, sizeof(OutputStruct) * size);
+
+	float minDistance = FLT_MAX;
+	int minIndex = -1;
+
+	for (UINT i = 0; i < size; i++)
+	{
+		OutputStruct temp = output[i];
+		if (temp.picked)
+		{
+			if (minDistance > temp.distance)
+			{
+				minDistance = temp.distance;
+				minIndex = i;
+			}
+		}
+	}
+
+	if (minIndex >= 0)
+	{
+
+		*position = ray.position + ray.direction * minDistance;
+		return true;
+	}
+
+
+	return false;
+}
+
+bool Terrain::ComputePicking(OUT Vector3* position, IN Ray ray)
+{
 	rayBuffer->data.position = ray.position;
 	rayBuffer->data.direction = ray.direction;
 	rayBuffer->data.size = size;

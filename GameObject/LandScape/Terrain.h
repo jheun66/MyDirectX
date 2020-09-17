@@ -72,6 +72,8 @@ public:
 
 	// CS 이용해서 Picking
 	bool ComputePicking(OUT Vector3* position);
+	bool ComputePicking(OUT Vector3* position, IN Ray ray);
+
 
 	XMFLOAT2 GetSize() { return XMFLOAT2(width, height); }
 

@@ -3,7 +3,7 @@
 
 TerrainEditorScene::TerrainEditorScene()
 {
-	terrainEditor = new TerrainEditor(200, 200);
+	terrainEditor = new TerrainEditor(256, 256);
 }
 
 TerrainEditorScene::~TerrainEditorScene()

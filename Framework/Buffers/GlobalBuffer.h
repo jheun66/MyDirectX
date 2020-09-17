@@ -144,3 +144,45 @@ public:
 	}
 
 };
+
+class SparkBuffer : public ConstBuffer
+{
+public:
+	struct Data
+	{
+		float duration;
+		float time;
+		float gravity;
+
+		float padding;
+	}data;
+
+	SparkBuffer() : ConstBuffer(&data, sizeof(Data))
+	{
+		data.duration = 0.0f;
+		data.time = 0.0f;
+		data.gravity = 0.0f;
+	}
+
+};
+
+// 위에와 동일하지만 이름 때문에
+class FallBuffer : public ConstBuffer
+{
+public:
+	struct Data
+	{
+		float duration;
+		float time;
+		float gravity;
+
+		float padding;
+	}data;
+
+	FallBuffer() : ConstBuffer(&data, sizeof(Data))
+	{
+		data.duration = 0.0f;
+		data.time = 0.0f;
+		data.gravity = 0.0f;
+	}
+};

@@ -2,6 +2,12 @@
 
 class ConstBuffer
 {
+private:
+	ID3D11Buffer* buffer;
+
+	void* data;
+	UINT dataSize;
+
 protected:
 	ConstBuffer(void* data, UINT dataSize);
 	virtual ~ConstBuffer();
@@ -13,11 +19,5 @@ public:
 	void SetVSBuffer(UINT slot);
 	void SetPSBuffer(UINT slot);
 	void SetCSBuffer(UINT slot);
-
-private:
-	ID3D11Buffer* buffer;
-
-	void* data;
-	UINT dataSize;
-
+	void SetGSBuffer(UINT slot);
 };

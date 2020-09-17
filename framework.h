@@ -90,6 +90,7 @@ using namespace std;
 #include "Framework/Material/Shaders/VertexShader.h"
 #include "Framework/Material/Shaders/PixelShader.h"
 #include "Framework/Material/Shaders/ComputeShader.h"
+#include "Framework/Material/Shaders/GeometryShader.h"
 #include "Framework/Material/Material.h"
 
 
@@ -105,6 +106,7 @@ using namespace std;
 #include "Framework/State/SamplerState.h"
 #include "Framework/State/RasterizerState.h"
 #include "Framework/State/DepthStencilState.h"
+#include "Framework/State/BlendState.h"
 
 // Environment
 #include "Framework/Environment/Environment.h"
@@ -172,6 +174,15 @@ using namespace std;
 #include "GameObject/Custom/WarHawk.h"
 #include "GameObject/Custom/Vanguard.h"
 #include "GameObject/Custom/Maria.h"
+
+// Particle Object
+#include "GameObject/Particle/Particle.h"
+#include "GameObject/Particle/Spark.h"
+
+// Custom Particle Object
+#include "GameObject/Particle/Rain/RainMist.h"
+#include "GameObject/Particle/Rain/RainFall.h"
+#include "GameObject/Particle/Rain/RainExplosion.h"
 
 // 게임 씬과 게임 프로세스
 #include "Scenes/Scene.h"

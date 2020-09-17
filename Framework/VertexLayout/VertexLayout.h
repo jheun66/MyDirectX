@@ -39,6 +39,17 @@ struct VertexUV
 	}
 };
 
+struct VertexSize
+{
+	XMFLOAT3 position;
+	XMFLOAT2 size;
+
+	VertexSize() :position(0, 0, 0), size(0, 0)
+	{
+
+	}
+};
+
 struct VertexUVNormal
 {
 	XMFLOAT3 position;
@@ -102,6 +113,18 @@ struct VertexUVNormalTangentAlpha
 	float alpha[4];
 
 	VertexUVNormalTangentAlpha() : position(0, 0, 0), uv(0, 0), normal(0, 0, 0), tangent(0, 0, 0), alpha{}
+	{
+
+	}
+};
+
+struct VertexParticle
+{
+	XMFLOAT3 position;
+	XMFLOAT2 size;
+	XMFLOAT3 velocity;
+
+	VertexParticle() : position(0, 0, 0), size(0, 0), velocity(0, 0, 0)
 	{
 
 	}

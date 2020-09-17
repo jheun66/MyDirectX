@@ -1,25 +1,19 @@
 #pragma once
 #include "GameObject/LandScape/Billboard.h"
 
-class BillboardScene : public Scene
+class RainScene : public Scene
 {
 private:
 	Terrain* terrain;
-
-	//vector<Billboard*> trees;
-	Material* material;
-	GeometryShader* geometryShader;
-
-	VertexBuffer* vertexBuffer;
-	UINT count;
-
-	BlendState* blendState[2];
-
-	Spark* spark;
+	Vanguard* player;
+	
+	RainMist* rainMist;
+	vector<RainExplosion*> explosions;
+	RainFall* rainFall;
 
 public:
-	BillboardScene();
-	~BillboardScene();
+	RainScene();
+	~RainScene();
 
 	// Scene을(를) 통해 상속됨
 	virtual void Update() override;
@@ -27,4 +21,5 @@ public:
 	virtual void Render() override;
 	virtual void PostRender() override;
 
+	void ExplosionFunc(Vector3 pos);
 };

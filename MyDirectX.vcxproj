@@ -163,6 +163,8 @@
     <ClInclude Include="Framework\Buffers\Mesh\Mesh.h" />
     <ClInclude Include="Framework\Buffers\Mesh\VertexBuffer.h" />
     <ClInclude Include="Framework\Buffers\StructuredBuffer.h" />
+    <ClInclude Include="Framework\Material\Shaders\GeometryShader.h" />
+    <ClInclude Include="Framework\State\BlendState.h" />
     <ClInclude Include="Framework\State\DepthStencilState.h" />
     <ClInclude Include="GameObject\Character\Medea.h" />
     <ClInclude Include="GameObject\Collision\BoxCollider.h" />
@@ -199,6 +201,11 @@
     <ClInclude Include="GameObject\Model\ModelMesh.h" />
     <ClInclude Include="GameObject\Model\ModelMeshPart.h" />
     <ClInclude Include="GameObject\Model\ModelRender.h" />
+    <ClInclude Include="GameObject\Particle\Particle.h" />
+    <ClInclude Include="GameObject\Particle\Rain\RainExplosion.h" />
+    <ClInclude Include="GameObject\Particle\Rain\RainFall.h" />
+    <ClInclude Include="GameObject\Particle\Rain\RainMist.h" />
+    <ClInclude Include="GameObject\Particle\Spark.h" />
     <ClInclude Include="GameObject\Transform.h" />
     <ClInclude Include="Framework\State\RasterizerState.h" />
     <ClInclude Include="Framework\State\SamplerState.h" />
@@ -223,6 +230,7 @@
     <ClInclude Include="Scenes\MonsterAStarScene.h" />
     <ClInclude Include="Scenes\MousePickingScene.h" />
     <ClInclude Include="Scenes\MoveModelScene.h" />
+    <ClInclude Include="Scenes\RainScene.h" />
     <ClInclude Include="Scenes\Scene.h" />
     <ClInclude Include="Scenes\TerrainEditorScene.h" />
     <ClInclude Include="Scenes\TerrainScene.h" />
@@ -242,6 +250,8 @@
     <ClCompile Include="Framework\Buffers\Mesh\Mesh.cpp" />
     <ClCompile Include="Framework\Buffers\Mesh\VertexBuffer.cpp" />
     <ClCompile Include="Framework\Buffers\StructuredBuffer.cpp" />
+    <ClCompile Include="Framework\Material\Shaders\GeometryShader.cpp" />
+    <ClCompile Include="Framework\State\BlendState.cpp" />
     <ClCompile Include="Framework\State\DepthStencilState.cpp" />
     <ClCompile Include="GameObject\Character\Medea.cpp" />
     <ClCompile Include="GameObject\Collision\BoxCollider.cpp" />
@@ -278,6 +288,11 @@
     <ClCompile Include="GameObject\Model\ModelMesh.cpp" />
     <ClCompile Include="GameObject\Model\ModelMeshPart.cpp" />
     <ClCompile Include="GameObject\Model\ModelRender.cpp" />
+    <ClCompile Include="GameObject\Particle\Particle.cpp" />
+    <ClCompile Include="GameObject\Particle\Rain\RainExplosion.cpp" />
+    <ClCompile Include="GameObject\Particle\Rain\RainFall.cpp" />
+    <ClCompile Include="GameObject\Particle\Rain\RainMist.cpp" />
+    <ClCompile Include="GameObject\Particle\Spark.cpp" />
     <ClCompile Include="GameObject\Transform.cpp" />
     <ClCompile Include="Framework\Material\Shaders\PixelShader.cpp" />
     <ClCompile Include="Framework\Material\Shaders\VertexShader.cpp" />
@@ -300,6 +315,7 @@
     <ClCompile Include="Scenes\MonsterAStarScene.cpp" />
     <ClCompile Include="Scenes\MousePickingScene.cpp" />
     <ClCompile Include="Scenes\MoveModelScene.cpp" />
+    <ClCompile Include="Scenes\RainScene.cpp" />
     <ClCompile Include="Scenes\TerrainEditorScene.cpp" />
     <ClCompile Include="Scenes\TerrainScene.cpp" />
     <ClCompile Include="Scenes\TextureScene.cpp" />
@@ -335,6 +351,17 @@
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CS</EntryPointName>
     </FxCompile>
     <FxCompile Include="Shaders\GeometryShaders\GeometryBillboard.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Geometry</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Geometry</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Geometry</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">4.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Geometry</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.0</ShaderModel>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">GS</EntryPointName>
+    </FxCompile>
+    <FxCompile Include="Shaders\GeometryShaders\GeometrySpark.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Geometry</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Geometry</ShaderType>
@@ -484,6 +511,12 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
     <FxCompile Include="Shaders\VertexShaders\VertexSkybox.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shaders\VertexShaders\VertexSpark.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
