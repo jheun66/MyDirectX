@@ -178,6 +178,7 @@ using namespace std;
 // Particle Object
 #include "GameObject/Particle/Particle.h"
 #include "GameObject/Particle/Spark.h"
+#include "GameObject/Particle/Rain.h"
 
 // Custom Particle Object
 #include "GameObject/Particle/Rain/RainMist.h"

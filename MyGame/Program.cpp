@@ -25,7 +25,7 @@ Program::Program()
 
 	SetCursorPos((int)(WIN_WIDTH / 2), (int)(WIN_HEIGHT / 2));
 
-	scene = new RainScene();
+	scene = new BillboardScene();
 }
 
 Program::~Program()

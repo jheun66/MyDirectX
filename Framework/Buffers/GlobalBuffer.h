@@ -145,23 +145,24 @@ public:
 
 };
 
-class SparkBuffer : public ConstBuffer
+class SparkBuffer :public ConstBuffer
 {
 public:
 	struct Data
 	{
+		XMFLOAT3 direction;
 		float duration;
-		float time;
-		float gravity;
 
-		float padding;
+		float time;
+		float padding[3];
+
 	}data;
 
 	SparkBuffer() : ConstBuffer(&data, sizeof(Data))
 	{
+		data.direction = { 0,0,0 };
 		data.duration = 0.0f;
 		data.time = 0.0f;
-		data.gravity = 0.0f;
 	}
 
 };

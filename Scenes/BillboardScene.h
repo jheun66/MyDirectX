@@ -16,7 +16,7 @@ private:
 	BlendState* blendState[2];
 
 	Spark* spark;
-
+	Rain* rain;
 public:
 	BillboardScene();
 	~BillboardScene();

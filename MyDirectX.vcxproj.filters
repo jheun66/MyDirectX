@@ -270,6 +270,9 @@
     <ClInclude Include="Scenes\RainScene.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="GameObject\Particle\Rain.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MyDirectX.cpp">
@@ -509,6 +512,9 @@
     <ClCompile Include="GameObject\Particle\Rain\RainFall.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="GameObject\Particle\Rain.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MyDirectX.rc">
@@ -555,6 +561,10 @@
     <FxCompile Include="Shaders\ComputeShaders\Inside.hlsl" />
     <FxCompile Include="Shaders\GeometryShaders\GeometrySpark.hlsl" />
     <FxCompile Include="Shaders\VertexShaders\VertexSpark.hlsl" />
+    <FxCompile Include="Shaders\PixelShaders\PixelSpark.hlsl" />
+    <FxCompile Include="Shaders\GeometryShaders\GeometryRain.hlsl" />
+    <FxCompile Include="Shaders\VertexShaders\VertexRain.hlsl" />
+    <FxCompile Include="Shaders\PixelShaders\PixelRain.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\PixelShaders\PixelHeader.hlsli" />

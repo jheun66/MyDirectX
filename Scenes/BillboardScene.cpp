@@ -4,7 +4,7 @@
 BillboardScene::BillboardScene()
 	:count(1000)
 {
-	terrain = new Terrain(100, 100);
+	terrain = new Terrain(256, 256);
 
 	//for (UINT i = 0; i < 1000; i++)
 	//{
@@ -62,6 +62,7 @@ BillboardScene::BillboardScene()
 	//blendState[1]->Additvie();
 
 	spark = new Spark();
+	rain = new Rain();
 }
 
 BillboardScene::~BillboardScene()
@@ -72,6 +73,7 @@ BillboardScene::~BillboardScene()
 	delete material;
 
 	delete spark;
+	delete rain;
 	//for (Billboard* tree : trees)
 	//	delete tree;
 }
@@ -89,7 +91,7 @@ void BillboardScene::Update()
 	terrain->Update();
 
 	spark->Update();
-
+	rain->Update();
 	//for (Billboard* tree : trees)
 	//	tree->Update();
 }
@@ -123,8 +125,11 @@ void BillboardScene::Render()
 	blendState[0]->SetState();
 
 	spark->Render();
+	rain->Render();
 }
 
 void BillboardScene::PostRender()
 {
+	spark->PostRender();
+	rain->PostRender();
 }

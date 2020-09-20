@@ -45,7 +45,6 @@ void RainExplosion::Create()
 	vertexBuffer = new VertexBuffer(vertices, sizeof(VertexParticle), particleCount);
 
 	sparkBuffer->data.duration = 0.1f;
-	sparkBuffer->data.gravity = 5.0f;
 }
 
 void RainExplosion::Update()
@@ -69,6 +68,10 @@ void RainExplosion::Render()
 	sparkBuffer->SetVSBuffer(10);
 
 	Particle::Render();
+}
+
+void RainExplosion::PostRender()
+{
 }
 
 void RainExplosion::Play(Vector3 position)

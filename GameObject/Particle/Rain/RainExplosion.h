@@ -13,6 +13,7 @@ public:
 	virtual void Create() override;
 	virtual void Update() override;
 	virtual void Render() override;
+	virtual void PostRender() override;
 
 	virtual void Play(Vector3 position) override;
 };

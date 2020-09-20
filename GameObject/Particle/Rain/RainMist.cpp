@@ -42,3 +42,7 @@ void RainMist::Render()
 {
 	Particle::Render();
 }
+
+void RainMist::PostRender()
+{
+}
