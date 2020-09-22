@@ -14,5 +14,6 @@ namespace Utility
 	string GetFileNameWithoutExtension(string path);
 
 	void CreateFolders(string path);
+	bool ExistFile(string path);
 	bool ExistDirectory(string path);
 };

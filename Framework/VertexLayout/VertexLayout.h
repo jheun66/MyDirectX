@@ -124,7 +124,10 @@ struct VertexParticle
 	XMFLOAT2 size;
 	XMFLOAT3 velocity;
 
-	VertexParticle() : position(0, 0, 0), size(0, 0), velocity(0, 0, 0)
+	UINT isActive;
+	float lifeTime;
+
+	VertexParticle() : position(0, 0, 0), size(0, 0), velocity(0, 0, 0), isActive(0), lifeTime(5.0f)
 	{
 
 	}

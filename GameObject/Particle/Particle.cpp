@@ -41,7 +41,7 @@ void Particle::Render()
 	material->Set();
 	geometryShader->Set();
 
-	DC->Draw(particleCount, 0);
+	DC->Draw(MAX_COUNT, 0);
 
 	DC->GSSetShader(nullptr, nullptr, 0);
 
@@ -53,6 +53,13 @@ void Particle::Play(Vector3 position)
 {
 	isPlay = true;
 	this->position = position;
+}
+
+void Particle::Play(Vector3 position, Vector3 rotation)
+{
+	isPlay = true;
+	this->position = position;
+	this->rotation = rotation;
 }
 
 void Particle::Stop()

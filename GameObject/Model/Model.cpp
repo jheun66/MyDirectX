@@ -64,7 +64,8 @@ void Model::ReadMaterial(string file)
 		if (node->GetText())
 		{
 			wstring file = Utility::ToWString(node->GetText());
-			material->SetDiffuseMap(folder + file);
+			if (Utility::ExistFile(Utility::ToString(folder + file)))
+				material->SetDiffuseMap(folder + file);
 		}
 
 		node = node->NextSiblingElement();
@@ -72,7 +73,8 @@ void Model::ReadMaterial(string file)
 		if (node->GetText())
 		{
 			wstring file = Utility::ToWString(node->GetText());
-			material->SetSpecularMap(folder + file);
+			if (Utility::ExistFile(Utility::ToString(folder + file)))
+				material->SetSpecularMap(folder + file);
 		}
 
 		node = node->NextSiblingElement();
@@ -80,7 +82,8 @@ void Model::ReadMaterial(string file)
 		if (node->GetText())
 		{
 			wstring file = Utility::ToWString(node->GetText());
-			material->SetNormalMap(folder + file);
+			if (Utility::ExistFile(Utility::ToString(folder + file)))
+				material->SetNormalMap(folder + file);
 		}
 
 		XMFLOAT4 color;

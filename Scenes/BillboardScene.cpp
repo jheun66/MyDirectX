@@ -61,8 +61,9 @@ BillboardScene::BillboardScene()
 	blendState[1]->AlphaToCoverage(true);
 	//blendState[1]->Additvie();
 
-	spark = new Spark();
-	rain = new Rain();
+	snow = new Snow();
+
+	ParticleManager::Create();
 }
 
 BillboardScene::~BillboardScene()
@@ -72,26 +73,32 @@ BillboardScene::~BillboardScene()
 	delete vertexBuffer;
 	delete material;
 
-	delete spark;
-	delete rain;
-	//for (Billboard* tree : trees)
-	//	delete tree;
+	delete snow;
+
+	ParticleManager::Delete();
 }
 
 void BillboardScene::Update()
 {
-	if (KEY_DOWN(VK_LBUTTON))
+	if (KEY_DOWN(VK_LBUTTON) && !ImGui::GetIO().WantCaptureMouse)
 	{
 		Vector3 pickPos;
 		terrain->ComputePicking(&pickPos);
 
-		spark->Play(pickPos);
+		ParticleManager::Get()->Play("spark", pickPos);
+	}
+	if (KEY_DOWN(VK_RBUTTON) && !ImGui::GetIO().WantCaptureMouse)
+	{
+		Vector3 pickPos;
+		terrain->ComputePicking(&pickPos);
+
+		ParticleManager::Get()->Play("breath", pickPos, Vector3(XM_PI, 0, 0));
 	}
 
 	terrain->Update();
 
-	spark->Update();
-	rain->Update();
+	ParticleManager::Get()->Update();
+	snow->Update();
 	//for (Billboard* tree : trees)
 	//	tree->Update();
 }
@@ -124,12 +131,12 @@ void BillboardScene::Render()
 
 	blendState[0]->SetState();
 
-	spark->Render();
-	rain->Render();
+	ParticleManager::Get()->Render();
+
+	snow->Render();
 }
 
 void BillboardScene::PostRender()
 {
-	spark->PostRender();
-	rain->PostRender();
+	snow->PostRender();
 }

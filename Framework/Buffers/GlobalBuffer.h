@@ -69,13 +69,16 @@ public:
 		float specularExp;
 		// ¡÷∫Ø±§ ∫Ò¿≤
 		XMFLOAT4 ambient;
+		XMFLOAT4 ambientCeil;
 	}data;
 
 	DirLightBuffer() : ConstBuffer(&data, sizeof(Data))
 	{
 		data.direction = { 0, -1, 0 };
 		data.specularExp = 8;
-		data.ambient = { 0.8f, 0.8f, 0.8f, 0.0f };
+		data.ambient = { 0.1f, 0.1f, 0.1f, 1.0f };
+		data.ambientCeil = { 0.1f, 0.1f, 0.1f, 1.0f };
+
 	}
 
 };

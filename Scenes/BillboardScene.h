@@ -14,9 +14,9 @@ private:
 	UINT count;
 
 	BlendState* blendState[2];
+	DepthStencilState* depthState[2];
 
-	Spark* spark;
-	Rain* rain;
+	Snow* snow;
 public:
 	BillboardScene();
 	~BillboardScene();

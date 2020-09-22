@@ -11,6 +11,8 @@
 #include "Scenes/MonsterAStarScene.h"
 #include "Scenes/BillboardScene.h"
 #include "Scenes/RainScene.h"
+#include "Scenes/ParticleSystemScene.h"
+#include "Scenes/LightScene.h"
 
 Program::Program()
 {
@@ -25,7 +27,7 @@ Program::Program()
 
 	SetCursorPos((int)(WIN_WIDTH / 2), (int)(WIN_HEIGHT / 2));
 
-	scene = new BillboardScene();
+	scene = new LightScene();
 }
 
 Program::~Program()

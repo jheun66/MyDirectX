@@ -102,3 +102,10 @@ void Utility::CreateFolders(string path)
             CreateDirectoryA(temp.c_str(), 0);
     }
 }
+
+bool Utility::ExistFile(string path)
+{
+    DWORD fileValue = GetFileAttributesA(path.c_str());
+
+    return fileValue < 0xffffffff;
+}

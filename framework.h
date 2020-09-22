@@ -179,11 +179,17 @@ using namespace std;
 #include "GameObject/Particle/Particle.h"
 #include "GameObject/Particle/Spark.h"
 #include "GameObject/Particle/Rain.h"
+#include "GameObject/Particle/Snow.h"
+#include "GameObject/Particle/Breath.h"
 
 // Custom Particle Object
 #include "GameObject/Particle/Rain/RainMist.h"
 #include "GameObject/Particle/Rain/RainFall.h"
 #include "GameObject/Particle/Rain/RainExplosion.h"
+
+#include "GameObject/Particle/ParticleSystem/ParticleSystem.h"
+#include "GameObject/Particle/ParticleManager/ParticleManager.h"
+
 
 // 게임 씬과 게임 프로세스
 #include "Scenes/Scene.h"
