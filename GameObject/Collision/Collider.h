@@ -17,6 +17,20 @@ class SphereCollider;
 
 class Collider : public Transform
 {
+protected:
+	enum Type
+	{
+		BOX,
+		SPHERE,
+		CAPSULE
+	}type;
+
+	Material* material;
+	Mesh* mesh;
+
+	vector<Vertex> vertices;
+	vector<UINT> indices;
+
 public:
 	Collider();
 	virtual ~Collider();
@@ -33,11 +47,5 @@ public:
 
 	void SetColor(XMFLOAT4 color) { material->GetBuffer()->data.diffuse = color; }
 
-protected:
 
-	Material* material;
-	Mesh* mesh;
-
-	vector<Vertex> vertices;
-	vector<UINT> indices;
 };

@@ -83,6 +83,73 @@ public:
 
 };
 
+// 통합 light 버퍼
+#define MAX_LIGHT 10
+struct LightInfo
+{
+	enum Type
+	{
+		DIRECTION,
+		POINT,
+		SPOT,
+		CAPSULE
+	};
+
+	XMFLOAT4 color;
+
+	XMFLOAT3 position;
+	float range;
+
+	XMFLOAT3 direction;
+	float outer;
+
+	float inner;
+	float length;
+	Type type;
+	int active;
+
+	LightInfo()
+	{
+		color = XMFLOAT4(1, 1, 1, 1);
+		position = XMFLOAT3(0, 0, 0);
+		range = 80.0f;
+		direction = XMFLOAT3(0, -1, 0);
+		outer = 65.0f;
+		inner = 55.0f;
+		length = 50;
+		type = POINT;
+		active = 1;
+	}
+
+};
+
+class LightInfoBuffer : public ConstBuffer
+{
+public:
+	struct Data
+	{
+		LightInfo lights[MAX_LIGHT];
+
+		UINT lightCount;
+		float padding[3];
+	}data;
+
+	LightInfoBuffer() : ConstBuffer(&data, sizeof(Data))
+	{
+		data.lightCount = 0;
+	}
+
+	void Add(LightInfo light)
+	{
+		data.lights[data.lightCount++] = light;
+	}
+	void Add()
+	{
+		data.lightCount++;
+	}
+
+};
+
 
 class ViewBuffer : public ConstBuffer
 {

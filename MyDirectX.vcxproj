@@ -211,6 +211,7 @@
     <ClInclude Include="GameObject\Particle\Rain\RainMist.h" />
     <ClInclude Include="GameObject\Particle\Snow.h" />
     <ClInclude Include="GameObject\Particle\Spark.h" />
+    <ClInclude Include="GameObject\SpriteEffect.h" />
     <ClInclude Include="GameObject\Transform.h" />
     <ClInclude Include="Framework\State\RasterizerState.h" />
     <ClInclude Include="Framework\State\SamplerState.h" />
@@ -305,6 +306,7 @@
     <ClCompile Include="GameObject\Particle\Rain\RainMist.cpp" />
     <ClCompile Include="GameObject\Particle\Snow.cpp" />
     <ClCompile Include="GameObject\Particle\Spark.cpp" />
+    <ClCompile Include="GameObject\SpriteEffect.cpp" />
     <ClCompile Include="GameObject\Transform.cpp" />
     <ClCompile Include="Framework\Material\Shaders\PixelShader.cpp" />
     <ClCompile Include="Framework\Material\Shaders\VertexShader.cpp" />
@@ -555,6 +557,13 @@
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">PS</EntryPointName>
     </FxCompile>
     <FxCompile Include="Shaders\PixelShaders\PixelSplattingAdvanced.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">PS</EntryPointName>
+    </FxCompile>
+    <FxCompile Include="Shaders\PixelShaders\PixelSprite.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>

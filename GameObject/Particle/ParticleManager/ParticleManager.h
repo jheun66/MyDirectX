@@ -23,5 +23,6 @@ public:
 
 	void CreateSpark();
 	void CreateBreath();
+	void CreateSpriteEffect(string key, wstring diffuseFile, XMFLOAT2 maxFrame, UINT poolCount);
 
 };

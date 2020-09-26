@@ -187,6 +187,8 @@ using namespace std;
 #include "GameObject/Particle/Rain/RainFall.h"
 #include "GameObject/Particle/Rain/RainExplosion.h"
 
+// sprite effect
+#include "GameObject/SpriteEffect.h"
 #include "GameObject/Particle/ParticleSystem/ParticleSystem.h"
 #include "GameObject/Particle/ParticleManager/ParticleManager.h"
 

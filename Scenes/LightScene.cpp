@@ -17,7 +17,27 @@ LightScene::LightScene()
 	plane = new ModelRender("Basic/" + name);
 	plane->SetShader(L"Lighting");
 
-	pointBuffer = new PointBuffer();
+	lightBuffer = new LightInfoBuffer();
+	//pointBuffer = new PointBuffer();
+
+	LightInfo info;
+	info.type = LightInfo::CAPSULE;
+	info.color = XMFLOAT4(1, 0, 0, 1);
+	info.position = XMFLOAT3(-5, 5, 0);
+
+	lightBuffer->Add(info);
+
+	info.type = LightInfo::CAPSULE;
+	info.color = XMFLOAT4(0, 1, 0, 1);
+	info.position = XMFLOAT3(0, 5, 0);
+
+	lightBuffer->Add(info);
+
+	info.type = LightInfo::CAPSULE;
+	info.color = XMFLOAT4(0, 0, 1, 1);
+	info.position = XMFLOAT3(5, 5, 0);
+
+	lightBuffer->Add(info);
 }
 
 LightScene::~LightScene()
@@ -25,7 +45,7 @@ LightScene::~LightScene()
 	delete bunny;
 	delete plane;
 
-	delete pointBuffer;
+	delete lightBuffer;
 }
 
 void LightScene::Update()
@@ -40,7 +60,7 @@ void LightScene::PreRender()
 
 void LightScene::Render()
 {
-	pointBuffer->SetPSBuffer(10);
+	lightBuffer->SetPSBuffer(2);
 
 	bunny->Render();
 	plane->Render();
@@ -48,9 +68,32 @@ void LightScene::Render()
 
 void LightScene::PostRender()
 {
-	ImGui::SliderFloat3("PointPosition", (float*)&pointBuffer->data.position, -100, 100);
-	ImGui::SliderFloat("PointRange", &pointBuffer->data.range, 0, 50);
-	ImGui::ColorEdit4("PointColor", (float*)&pointBuffer->data.color);
+	ImGui::Text("LightInfo");
+
+	if (ImGui::Button("AddLight"))
+	{
+		lightBuffer->Add();
+	}
+
+	for (UINT i = 0; i < lightBuffer->data.lightCount; i++)
+	{
+		string menuName = "Light" + to_string(i);
+		if (ImGui::BeginMenu(menuName.c_str()))
+		{
+			ImGui::SliderInt("Type", (int*)&lightBuffer->data.lights[i].type, 0, 3);
+			ImGui::SliderFloat3("Position", (float*)&lightBuffer->data.lights[i].position, -100, 100);
+			ImGui::SliderFloat("Range", &lightBuffer->data.lights[i].range, 0, 100);
+			ImGui::ColorEdit4("Color", (float*)&lightBuffer->data.lights[i].color);
+			ImGui::SliderFloat3("Direction", (float*)&lightBuffer->data.lights[i].direction, -1, 1);
+			ImGui::SliderFloat("Outer", &lightBuffer->data.lights[i].outer, 0, 180);
+			// 90 넘으면 반전
+			ImGui::SliderFloat("Inner", &lightBuffer->data.lights[i].inner, 0, 90);
+			ImGui::SliderFloat("Length", &lightBuffer->data.lights[i].length, 0, 100);
+			ImGui::Checkbox("Active", (bool*)&lightBuffer->data.lights[i].active);
+
+			ImGui::EndMenu();
+		}
+	}
 }
 
 void LightScene::Export(string name)

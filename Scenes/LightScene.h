@@ -3,28 +3,56 @@
 class LightScene : public Scene
 {
 private:
-	class PointBuffer : public ConstBuffer
-	{
-	public:
-		struct Data
-		{
-			XMFLOAT3 position;
-			float range;
-			XMFLOAT4 color;
-		}data;
+	//class PointBuffer : public ConstBuffer
+	//{
+	//public:
+	//	struct Data
+	//	{
+	//		XMFLOAT3 position;
+	//		float range;
+	//		XMFLOAT4 color;
+	//	}data;
 
-		PointBuffer() : ConstBuffer(&data, sizeof(Data))
-		{
-			data.position = { 0,0,0 };
-			data.range = 20.0f;
-			data.color = { 1,1,1,1 };
-		}
-	};
+	//	PointBuffer() : ConstBuffer(&data, sizeof(Data))
+	//	{
+	//		data.position = { 0,0,0 };
+	//		data.range = 20.0f;
+	//		data.color = { 1,1,1,1 };
+	//	}
+	//};
+
+	//class SpotBuffer : public ConstBuffer
+	//{
+	//public:
+	//	struct Data
+	//	{
+	//		XMFLOAT3 position;
+	//		float range;
+	//		XMFLOAT4 color;
+	//		XMFLOAT3 direction;
+	//		float outer;
+	//		float inner;
+
+	//		float padding[3];
+	//	}data;
+
+	//	SpotBuffer() : ConstBuffer(&data, sizeof(Data))
+	//	{
+	//		data.position = { 0,0,0 };
+	//		data.range = 20.0f;
+	//		data.color = { 1,1,1,1 };
+	//		data.direction = { 0,-1,0 };
+	//		data.outer = 65;
+	//		data.inner = 55;
+	//	}
+	//};
 
 	ModelRender* bunny;
 	ModelRender* plane;
 
-	PointBuffer* pointBuffer;
+	//PointBuffer* pointBuffer;
+
+	LightInfoBuffer* lightBuffer;
 public:
 	LightScene();
 	~LightScene();

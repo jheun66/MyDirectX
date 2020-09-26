@@ -3,6 +3,7 @@
 BoxCollider::BoxCollider(Vector3 minBox, Vector3 maxBox)
     :minBox(minBox), maxBox(maxBox)
 {
+    type = BOX;
     CreateMesh();
 }
 
@@ -170,6 +171,23 @@ Vector3 BoxCollider::GetMax()
 {
     return XMVector2TransformCoord(maxBox.data, world);
 }
+
+bool BoxCollider::IsSphereCollision(Vector3 center, float radius)
+{
+    XMMATRIX invWorld = XMMatrixInverse(nullptr, world);
+
+    Vector3 spherePos = XMVector3TransformCoord(center.data, invWorld);
+
+    Vector3 temp;
+    temp.x = max(minBox.x, min(spherePos.x, maxBox.x));
+    temp.y = max(minBox.y, min(spherePos.y, maxBox.y));
+    temp.z = max(minBox.z, min(spherePos.z, maxBox.z));
+
+    temp -= spherePos;
+
+    return temp.Length() <= radius;
+}
+
 
 void BoxCollider::CreateMesh()
 {

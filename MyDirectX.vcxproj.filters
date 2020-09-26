@@ -291,6 +291,9 @@
     <ClInclude Include="Scenes\LightScene.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="GameObject\SpriteEffect.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MyDirectX.cpp">
@@ -551,6 +554,9 @@
     <ClCompile Include="Scenes\LightScene.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="GameObject\SpriteEffect.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MyDirectX.rc">
@@ -613,6 +619,7 @@
     <FxCompile Include="Shaders\PixelShaders\PixelLighting.hlsl" />
     <FxCompile Include="Shaders\VertexShaders\VertexBreath.hlsl" />
     <FxCompile Include="Shaders\VertexShaders\VertexLighting.hlsl" />
+    <FxCompile Include="Shaders\PixelShaders\PixelSprite.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\PixelShaders\PixelHeader.hlsli" />
