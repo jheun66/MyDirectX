@@ -65,7 +65,8 @@ BoxCollider* Node::SetObstacle()
 {
 	state = OBSTACLE;
 
-	Vector3 min = { -interval.x * 0.5f, -10.0f, -interval.y * 0.5f };
+	// TODO: 요기 지금 임의로 크기 잡음 나중에 수정하기
+	Vector3 min = { -interval.x * 0.5f, -60.0f, -interval.y * 0.5f };
 	Vector3 max = min * -1.0f;
 
 	BoxCollider* box = new BoxCollider(min, max);

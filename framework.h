@@ -96,7 +96,9 @@ using namespace std;
 
 #include "Framework/VertexLayout/VertexLayout.h"
 
-
+// Views
+#include "Framework/Views/DepthStencil.h"
+#include "Framework/Views/RenderTarget.h"
 
 // Math
 #include "Framework/Math/Vector3.h"
@@ -135,6 +137,7 @@ using namespace std;
 #include "GameObject/Collision/Collider.h"
 #include "GameObject/Collision/BoxCollider.h"
 #include "GameObject/Collision/SphereCollider.h"
+#include "GameObject/Collision/CapsuleCollider.h"
 
 // 알고리즘
 #include "Algorithm/Node.h"
@@ -192,6 +195,8 @@ using namespace std;
 #include "GameObject/Particle/ParticleSystem/ParticleSystem.h"
 #include "GameObject/Particle/ParticleManager/ParticleManager.h"
 
+// Render2D
+#include "GameObject/UI/Render2D.h"
 
 // 게임 씬과 게임 프로세스
 #include "Scenes/Scene.h"

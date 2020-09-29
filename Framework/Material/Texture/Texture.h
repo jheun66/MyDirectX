@@ -3,6 +3,11 @@
 class Texture
 {
 private:
+	ScratchImage image;
+	ID3D11ShaderResourceView* srv;
+	static map<wstring, Texture*> totalTexture;
+
+private:
 	Texture(ID3D11ShaderResourceView* srv, ScratchImage& image);
 	~Texture();
 
@@ -17,8 +22,5 @@ public:
 	UINT GetWidth() { return image.GetMetadata().width; }
 	UINT GetHeight() { return image.GetMetadata().height; }
 
-private:
-	ScratchImage image;
-	ID3D11ShaderResourceView* srv;
-	static map<wstring, Texture*> totalTexture;
+	ID3D11ShaderResourceView* GetSRV() { return srv; }
 };

@@ -8,6 +8,10 @@ struct PixelInput
     float3 tangent : TANGENT;
     float3 binormal : BINORMAL;
     float3 viewDir : VIEWDIR;
+    
+    // lighting 추가
+    float3 worldPos : Position0;
+    float3 camPos : Position1;
 };
 //                          반환값의 시멘틱 네임(SV : system value)
 float4 PS(PixelInput input) : SV_Target
@@ -16,48 +20,34 @@ float4 PS(PixelInput input) : SV_Target
     if (hasMap[0])
         albedo = diffuseMap.Sample(samp, input.uv);
     
-    float3 light = normalize(lightDir);
+    float3 normal = normalize(input.normal);
     
-                                            // polygon의 
-    float3 T = normalize(input.tangent); // x
-    float3 B = normalize(input.binormal); // y
-    float3 N = normalize(input.normal); // z
+    float4 result = CalcAmbient(normal, albedo);
     
-    float3 normal = N;
     
-    if (hasMap[2])
+    for (uint i = 0; i < lightCount; i++)
     {
-        float4 normalMapping = normalMap.Sample(samp, input.uv);
-    
-        float3x3 TBN = float3x3(T, B, N);
-    
-        // color 범위 0 ~ 1 을 벡터의 -1 ~ 1 로 바꿔주기 위해
-        normal = normalMapping.xyz * 2.0f - 1.0f;
-        normal = normalize(mul(normal, TBN));
+        if (!lights[i].active)
+            continue;
+        
+        [flatten]
+        if (lights[i].type == 0)
+        {
+            result += CalcDirection(normal, albedo, input.worldPos, input.camPos, lights[i]);
+        }
+        else if (lights[i].type == 1)
+        {
+            result += CalcPoint(normal, albedo, input.worldPos, input.camPos, lights[i]);
+        }
+        else if (lights[i].type == 2)
+        {
+            result += CalcSpot(normal, albedo, input.worldPos, input.camPos, lights[i]);
+        }
+        else if (lights[i].type == 3)
+        {
+            result += CalcCapsule(normal, albedo, input.worldPos, input.camPos, lights[i]);
+        }
     }
     
-    float diffuse = saturate(dot(normal, -light));
-    
-    float4 specular = 0;
-    if (diffuse > 0)
-    {
-        float3 viewDir = normalize(input.viewDir);
-        
-        // PhongShading
-        //float3 reflection = normalize(reflect(light, normal));
-        //specular = saturate(dot(reflection, -viewDir));
-        
-        // Blinn Phong Shading
-        float3 halfWay = normalize(input.viewDir + light);
-        specular = saturate(dot(-halfWay, normal));
-        
-        float4 specualrIntensity = 1;
-        if (hasMap[1])
-            specualrIntensity = specularMap.Sample(samp, input.uv);
-        
-        specular = pow(specular, specExp) * specualrIntensity;
-    }
-   
-    
-    return albedo * (diffuse + ambient) + specular;
+    return result;
 }

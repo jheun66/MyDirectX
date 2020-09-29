@@ -106,6 +106,12 @@ bool BoxCollider::IsBoxCollision(BoxCollider* collider)
     return true;
 }
 
+bool BoxCollider::IsCapsuleCollision(CapsuleCollider* collider)
+{
+    return collider->IsBoxCollision(this);
+}
+
+
 bool BoxCollider::IsSphereCollision(SphereCollider* collider)
 {
     Obb obb = GetObb();

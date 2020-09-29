@@ -182,16 +182,33 @@ class MSBuffer : public ConstBuffer
 public:
 	struct Data
 	{
-		int option[16];
+		int option[4];
 
-		// 현재까지 들어간 맵은 specular, normal, 초기값을 1로 함
-		Data() :option{1,1}
+		Data() :option{}
 		{}
 	}data;
 
 	MSBuffer() : ConstBuffer(&data, sizeof(Data))
 	{
 	}
+
+};
+
+class SizeBuffer : public ConstBuffer
+{
+public:
+	struct Data
+	{
+		XMFLOAT2 size;
+		XMFLOAT2 padding;
+
+	}data;
+
+	SizeBuffer() : ConstBuffer(&data, sizeof(Data))
+	{
+		data.size = { 0, 0 };
+	}
+
 };
 
 

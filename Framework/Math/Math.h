@@ -9,6 +9,8 @@ namespace GameMath
 
 	float Distance(const Vector3& v1, const Vector3& v2);
 
+	Vector3 ClosestPointOnLineSegment(const Vector3& A, const Vector3& B, const Vector3& point);
+
 	float Lerp(float start, float end, float deltaTime);
 
 	const XMVECTORF32 kRight = { 1, 0, 0 };

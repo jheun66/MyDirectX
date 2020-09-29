@@ -76,7 +76,7 @@ private:
 
 public:
 	ModelAnimator(string file);
-	~ModelAnimator();
+	virtual ~ModelAnimator();
 
 	void Update();
 	void Render();

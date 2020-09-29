@@ -5,6 +5,7 @@ Terrain::Terrain(UINT width, UINT height)
 	:width(width), height(height)
 {
 	material = new Material(L"NormalMapping");
+	
 	material->SetDiffuseMap(L"Textures/Terrain/brown_mud_dry_diff_1k.png");
 	material->SetSpecularMap(L"Textures/Terrain/brown_mud_dry_spec_1k.png");
 	material->SetNormalMap(L"Textures/Terrain/brown_mud_dry_nor_1k.png");
@@ -18,8 +19,11 @@ Terrain::Terrain(UINT width, UINT height)
 
 	CreateCompute();
 	
+	// TODO:
+	// UpdateWorld() «ÿ¡‡æﬂ«“ µÌ
+
 	//LoadTree();
-	LoadHeightMap(L"Textures/Custom/heightmap.png");
+	//LoadHeightMap(L"Textures/Custom/heightmap.png");
 	//LoadAlphaMap(L"Textures/HeightMaps/TestAlphaMap.png");
 }
 

@@ -9,5 +9,5 @@ struct PixelInput
 
 float4 PS(PixelInput input) : SV_Target
 {
-    return diffuseMap.Sample(samp, input.uv) * mDiffuse;
+    return diffuseMap.Sample(samp, input.uv);
 }

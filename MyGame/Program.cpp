@@ -13,6 +13,8 @@
 #include "Scenes/RainScene.h"
 #include "Scenes/ParticleSystemScene.h"
 #include "Scenes/LightScene.h"
+#include "Scenes/DungeonScene.h"
+#include "Scenes/RenderTargetScene.h"
 
 Program::Program()
 {
@@ -27,7 +29,7 @@ Program::Program()
 
 	SetCursorPos((int)(WIN_WIDTH / 2), (int)(WIN_HEIGHT / 2));
 
-	scene = new LightScene();
+	scene = new RenderTargetScene();
 }
 
 Program::~Program()
@@ -59,14 +61,18 @@ void Program::Update()
 
 void Program::PreRender()
 {
+	Camera::Get()->GetViewBuffer()->SetVSBuffer(1);
+	Camera::Get()->GetProjection()->SetVSBuffer(2);
+	Environment::Get()->GetLight()->SetPSBuffer(0);
+
+
 	scene->PreRender();
 }
 
 void Program::Render()
 {
-	Camera::Get()->GetViewBuffer()->SetVSBuffer(1);
-	Camera::Get()->GetProjection()->SetVSBuffer(2);
-	Environment::Get()->GetLight()->SetPSBuffer(0);
+	Device::Get()->SetRenderTarget();
+
 
 	scene->Render();
 }

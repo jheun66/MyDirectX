@@ -58,7 +58,8 @@ void Vanguard::Update()
 	//{
 	//	damagedCollider->SetColor({ 1,0,0,1 });
 	//}
-
+	
+	Vector3 origin = position;
 	if (state != HIT && state != DIE)
 	{
 		Move();
@@ -71,6 +72,9 @@ void Vanguard::Update()
 	ModelAnimator::Update();
 	damagedCollider->UpdateWorld();
 	weaponCollider->UpdateWorld();
+
+	if (position.y > 5.0f)
+		position = origin;
 }
 
 void Vanguard::Render()

@@ -48,6 +48,8 @@ public:
 	void SetSpecularMap(wstring file) { specularMap = Texture::Add(file); }
 	void SetNormalMap(wstring file) { normalMap = Texture::Add(file); }
 
+	Texture* GetDiffuseMap() { return diffuseMap; }
+
 	MaterialBuffer* GetBuffer() { return buffer; }
 private:
 	VertexShader* vertexShader;

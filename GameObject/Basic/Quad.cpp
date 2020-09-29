@@ -3,9 +3,9 @@
 Quad::Quad()
 {
 	material = new Material(L"UV");
-	material->SetDiffuseMap(L"sana.jpeg");
-
+	
 	CreateData();
+
 	mesh = new Mesh(vertices.data(), sizeof(VertexType), vertices.size(),
 		indices.data(), indices.size());
 }
@@ -50,4 +50,10 @@ void Quad::CreateData()
 		2,1,3
 	};
 
+}
+
+void Quad::SetTexure(wstring file)
+{
+	material->SetDiffuseMap(file);
+	srv = material->GetDiffuseMap()->GetSRV();
 }

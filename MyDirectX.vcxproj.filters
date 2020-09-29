@@ -294,6 +294,24 @@
     <ClInclude Include="GameObject\SpriteEffect.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Scenes\DungeonScene.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject\Collision\CapsuleCollider.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Views\DepthStencil.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Views\RenderTarget.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject\UI\Render2D.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\RenderTargetScene.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MyDirectX.cpp">
@@ -557,6 +575,24 @@
     <ClCompile Include="GameObject\SpriteEffect.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Scenes\DungeonScene.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject\Collision\CapsuleCollider.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Views\DepthStencil.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Views\RenderTarget.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject\UI\Render2D.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenes\RenderTargetScene.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MyDirectX.rc">
@@ -620,6 +656,9 @@
     <FxCompile Include="Shaders\VertexShaders\VertexBreath.hlsl" />
     <FxCompile Include="Shaders\VertexShaders\VertexLighting.hlsl" />
     <FxCompile Include="Shaders\PixelShaders\PixelSprite.hlsl" />
+    <FxCompile Include="Shaders\PixelShaders\PixelFilter.hlsl" />
+    <FxCompile Include="Shaders\PixelShaders\PixelGrayscale.hlsl" />
+    <FxCompile Include="Shaders\PixelShaders\PixelSepia.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\PixelShaders\PixelHeader.hlsli" />

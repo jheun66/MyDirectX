@@ -1,6 +1,6 @@
 #pragma once
 
-class SphereCollider : public Collider
+class CapsuleCollider : public Collider
 {
 private:
 	float radius;
@@ -8,19 +8,19 @@ private:
 	UINT stackCount;
 	UINT sliceCount;
 
+	float height;
+
 public:
-	SphereCollider(float radius = 1.0f, UINT stackCount = 15, UINT sliceCount = 30);
-	~SphereCollider();
+	CapsuleCollider(float radius = 1.0f, UINT stackCount = 15,
+		UINT sliceCount = 30, float height = 2.0f);
+	~CapsuleCollider();
 
-	// Collider을(를) 통해 상속됨
 	virtual bool IsCollision(IN Ray ray, OUT Contact* contact = nullptr) override;
-
 	virtual bool IsBoxCollision(BoxCollider* collider) override;
 	virtual bool IsSphereCollision(SphereCollider* collider) override;
 	virtual bool IsCapsuleCollision(CapsuleCollider* collider) override;
 
-	float GetRadius() { return radius * max(scale.x, max(scale.y, scale.z));
-	}
 private:
 	virtual void CreateMesh() override;
+
 };

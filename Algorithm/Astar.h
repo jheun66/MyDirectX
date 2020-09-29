@@ -31,6 +31,10 @@ public:
 	bool isCollisionObstacle(Ray ray, float destDistance);
 
 	void isObstacle(Collider* collider);
+
+	// y가 일정 높이 이상이면 못가게함
+	void isDungeon();
+
 private:
 	float GetDistance(int curIndex, int end);
 

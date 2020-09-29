@@ -259,6 +259,17 @@ void AStar::isObstacle(Collider* collider)
 	return;
 }
 
+void AStar::isDungeon()
+{
+	for (Node* node : nodes)
+	{
+		if (node->pos.y >= 5.0f)
+		{
+			obstacles.emplace_back(node->SetObstacle());
+		}
+	}
+}
+
 float AStar::GetDistance(int curIndex, int end)
 {
 	//// Manhattan Distance
