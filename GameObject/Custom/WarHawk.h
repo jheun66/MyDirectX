@@ -13,7 +13,7 @@ public:
 	void Move(float altitude);
 	void Rotate();
 private:
-	MSBuffer* settingBuffer;
+	SettingBuffer* settingBuffer;
 
 	// 회전을 위해
 	POINT mCurPos;

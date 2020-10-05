@@ -4,7 +4,7 @@ WarChief::WarChief()
 	:Model("WarChief/WarChief")
 {
 	SetShader(L"Model");
-	settingBuffer = new MSBuffer();
+	settingBuffer = new SettingBuffer();
 }
 
 WarChief::~WarChief()

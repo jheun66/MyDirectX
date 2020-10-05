@@ -14,7 +14,7 @@ public:
 private:
 	Terrain* terrain;
 
-	MSBuffer* settingBuffer;
+	SettingBuffer* settingBuffer;
 
 	//Vector3 pickingPos;
 	//float height;

@@ -18,10 +18,26 @@ Maria::Maria()
 	PlayClip(0);
 
 	SetColliders();
+
+	renderTarget = new RenderTarget();
+	depthStencil = new DepthStencil();
+
+	sizeBuffer = new SizeBuffer();
+	sizeBuffer->data.size = { WIN_WIDTH * 0.5f, WIN_HEIGHT};
+
+	render2D = new Render2D(L"VertexUV", L"PixelOutline");
+	render2D->SetSRV(renderTarget->GetSRV());
+	render2D->position = { WIN_WIDTH * 0.25f, WIN_HEIGHT * 0.5f, 0.0f };
+	render2D->scale = { WIN_WIDTH * 0.5f, WIN_HEIGHT, 1.0f };
+
 }
 
 Maria::~Maria()
 {
+	delete renderTarget;
+	delete depthStencil;
+	delete render2D;
+
 	if(damagedCollider != nullptr)
 		delete damagedCollider;
 	if (attackCollider != nullptr)
@@ -57,23 +73,42 @@ void Maria::Update()
 		attackCollider->UpdateWorld();
 	if (detectCollider != nullptr)
 		detectCollider->UpdateWorld();
+
+	render2D->Update();
+}
+
+void Maria::PreRender()
+{
+	if (detectCollider->IsBoxCollision((BoxCollider*)player->GetDamagedCollider()))
+	{
+		renderTarget->Set(depthStencil);
+		ModelAnimator::Render();
+	}
 }
 
 void Maria::Render()
 {
-	ModelAnimator::Render();
-
 	if (damagedCollider != nullptr)
 		damagedCollider->Render();
 	if (attackCollider != nullptr)
 		attackCollider->Render();
 	if (detectCollider != nullptr)
 		detectCollider->Render();
+	ModelAnimator::Render();
 }
 
 void Maria::PostRender()
 {
 
+}
+
+void Maria::OutlineRender()
+{
+	if (detectCollider->IsBoxCollision((BoxCollider*)player->GetDamagedCollider()))
+	{
+		sizeBuffer->SetPSBuffer(11);
+		render2D->Render();
+	}
 }
 
 void Maria::Damaged(float damage)
@@ -201,7 +236,7 @@ void Maria::SlashEnd()
 	// 끝날때 있으면 데미지 주기
 	if (attackCollider->IsBoxCollision((BoxCollider*)player->GetDamagedCollider()))
 	{
-		player->Damaged(10.0f);
+		//player->Damaged(10.0f);
 	}
 
 	SetAnimation(IDLE);
@@ -232,7 +267,7 @@ void Maria::SetColliders()
 	attackCollider->SetParent(&world);
 
 	// radius 값으로 판단, 크기값은 Scale로 맞춰주기 (부모에서 줄인만큼 늘리면 기본 값)
-	detectCollider = new SphereCollider(40);
+	detectCollider = new SphereCollider(50);
 	detectCollider->position.y += 120.0f;
 	detectCollider->scale = { 20,20,20 };
 	detectCollider->SetColor({ 0,0,1,1 });

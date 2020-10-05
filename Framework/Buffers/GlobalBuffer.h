@@ -76,7 +76,7 @@ public:
 	{
 		data.direction = { 0, -1, 0 };
 		data.specularExp = 8;
-		data.ambient = { 0.1f, 0.1f, 0.1f, 1.0f };
+		data.ambient = { 0.3f, 0.3f, 0.3f, 1.0f };
 		data.ambientCeil = { 0.1f, 0.1f, 0.1f, 1.0f };
 
 	}
@@ -177,7 +177,7 @@ public:
 };
 
 // 여러(specular, normal) 맵 설정 적용
-class MSBuffer : public ConstBuffer
+class SettingBuffer : public ConstBuffer
 {
 public:
 	struct Data
@@ -188,7 +188,7 @@ public:
 		{}
 	}data;
 
-	MSBuffer() : ConstBuffer(&data, sizeof(Data))
+	SettingBuffer() : ConstBuffer(&data, sizeof(Data))
 	{
 	}
 

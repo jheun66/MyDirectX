@@ -12,7 +12,14 @@ private:
 	AStar* aStar = nullptr;
 	Skybox* skybox = nullptr;
 
+	vector<Render2D*> render2Ds;
 
+	vector<RenderTarget*> renderTargets;
+	DepthStencil* depthStencil = nullptr;
+	BlendState* blendState[2];
+
+	// ¡¢√À ø©∫Œ
+	FollowCamera* enemyCamera = nullptr;
 
 public:
 	DungeonScene();

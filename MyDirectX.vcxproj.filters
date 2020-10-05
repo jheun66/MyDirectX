@@ -659,6 +659,7 @@
     <FxCompile Include="Shaders\PixelShaders\PixelFilter.hlsl" />
     <FxCompile Include="Shaders\PixelShaders\PixelGrayscale.hlsl" />
     <FxCompile Include="Shaders\PixelShaders\PixelSepia.hlsl" />
+    <FxCompile Include="Shaders\PixelShaders\PixelOutline.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\PixelShaders\PixelHeader.hlsli" />

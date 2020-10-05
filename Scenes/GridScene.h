@@ -19,5 +19,5 @@ private:
 
 	DirLightBuffer* dirLBuffer;
 
-	MSBuffer* useMapBuffer;
+	SettingBuffer* useMapBuffer;
 };

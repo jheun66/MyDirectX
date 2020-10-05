@@ -9,7 +9,7 @@ GridScene::GridScene()
 	planet->position = Vector3(32, 39, 0);
 
 	dirLBuffer = new DirLightBuffer();
-	useMapBuffer = new MSBuffer();
+	useMapBuffer = new SettingBuffer();
 }
 
 GridScene::~GridScene()

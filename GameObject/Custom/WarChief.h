@@ -9,5 +9,5 @@ public:
 	void Render() override;
 
 private:
-	MSBuffer* settingBuffer;
+	SettingBuffer* settingBuffer;
 };

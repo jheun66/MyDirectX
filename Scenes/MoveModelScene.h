@@ -18,6 +18,6 @@ private:
 	Terrain* terrain;
 	WarHawk* warHawk;
 
-	MSBuffer* settingBuffer;
+	SettingBuffer* settingBuffer;
 
 };

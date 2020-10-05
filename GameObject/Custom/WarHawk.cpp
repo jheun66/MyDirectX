@@ -4,7 +4,7 @@ WarHawk::WarHawk()
 	:Model("WarHawk/WarHawk"), moveSpeed(20.0f), forward(0, 0, 1), right(1, 0, 0), up(0, 1, 0)
 {
 	SetShader(L"Model");
-	settingBuffer = new MSBuffer();
+	settingBuffer = new SettingBuffer();
 	settingBuffer->data.option[0] = 0;
 	settingBuffer->data.option[1] = 0;
 

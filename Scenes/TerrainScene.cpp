@@ -4,7 +4,7 @@
 TerrainScene::TerrainScene()
 {
 	terrain = new Terrain(100, 100);
-	settingBuffer = new MSBuffer();
+	settingBuffer = new SettingBuffer();
 }
 
 TerrainScene::~TerrainScene()

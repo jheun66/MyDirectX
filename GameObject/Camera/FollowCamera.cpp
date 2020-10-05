@@ -1,8 +1,8 @@
 #include "Framework.h"
 
 FollowCamera::FollowCamera()
-	:Camera(), distance(60), height(60), offset(0, 0, 20),
-	moveDamping(5), rotDamping(0), destPos(0, 0, 0), destRot(0),
+	:Camera(), distance(24), height(24), offset(0, 0, 20),
+	moveDamping(5), rotDamping(10), destPos(0, 0, 0), destRot(0),
 	rotY(0), rotSpeed(0.001f), zoomSpeed(0.1f),
 	target(nullptr), isFP(false)
 {
@@ -113,7 +113,7 @@ void FollowCamera::MouseControl()
 void FollowCamera::PostRender()
 {
 	Camera::PostRender();
-	ImGui::Begin("FollowCamera", 0, ImGuiWindowFlags_AlwaysAutoResize);
+	ImGui::Begin((tag + "FollowCamera").c_str(), 0, ImGuiWindowFlags_AlwaysAutoResize);
 	{
 		ImGui::SliderFloat("CamDistance", &distance, -10, 100);
 		ImGui::SliderFloat("CamHeight", &height, 1, 100);

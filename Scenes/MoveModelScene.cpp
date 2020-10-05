@@ -6,7 +6,7 @@ MoveModelScene::MoveModelScene()
 	terrain = new Terrain(200, 200);
 	warHawk = new WarHawk();
 
-	settingBuffer = new MSBuffer();
+	settingBuffer = new SettingBuffer();
 }
 
 MoveModelScene::~MoveModelScene()

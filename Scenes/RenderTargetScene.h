@@ -13,7 +13,7 @@ private:
 	RenderTarget* renderTarget;
 	DepthStencil* depthStencil;
 
-	MSBuffer* settingBuffer;
+	SettingBuffer* settingBuffer;
 	SizeBuffer* sizeBuffer;
 public:
 	RenderTargetScene();

@@ -12,7 +12,7 @@ RenderTargetScene::RenderTargetScene()
 	renderTarget = new RenderTarget();
 	depthStencil = new DepthStencil();
 
-	settingBuffer = new MSBuffer();
+	settingBuffer = new SettingBuffer();
 	sizeBuffer = new SizeBuffer();
 	sizeBuffer->data.size = { WIN_WIDTH * 0.5f, WIN_HEIGHT * 0.5f };
 	//quad->SetSRV(renderTarget->GetSRV());

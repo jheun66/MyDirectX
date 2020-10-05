@@ -23,7 +23,7 @@ private:
 	float altitude;
 	Vector3 curPos;
 
-	MSBuffer* settingBuffer;
+	SettingBuffer* settingBuffer;
 
 	// 회전을 위해
 	POINT mCurPos;

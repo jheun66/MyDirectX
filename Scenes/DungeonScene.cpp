@@ -35,8 +35,49 @@ DungeonScene::DungeonScene()
 	info.color = XMFLOAT4(1, 1, 1, 1);
 	info.direction = { 0,0,1 };
 	info.position = vanguard->WorldPos();
-
+	info.position.y = 30.0f;
+	info.outer = 80.0f;
+	info.inner = 60.0f;
+	info.range = 100.0f;
 	lightBuffer->Add(info);
+
+
+	RenderTarget* playerRenderTarget = new RenderTarget();
+	RenderTarget* enemyRenderTarget = new RenderTarget();
+	renderTargets.push_back(playerRenderTarget);
+	renderTargets.push_back(enemyRenderTarget);
+
+	depthStencil = new DepthStencil();
+
+	{
+		Render2D* render2D = new Render2D(L"UV");
+		render2D->SetSRV(playerRenderTarget->GetSRV());
+
+		render2D->position = { WIN_WIDTH * 0.25f, WIN_HEIGHT * 0.5f, 0.0f };
+		render2D->scale = { WIN_WIDTH * 0.5f, WIN_HEIGHT, 1.0f };
+
+		render2Ds.emplace_back(render2D);
+	}
+
+	{
+		Render2D* render2D = new Render2D(L"UV");
+		render2D->SetSRV(enemyRenderTarget->GetSRV());
+
+		render2D->position = { WIN_WIDTH * 0.75f, WIN_HEIGHT * 0.5f, 0.0f };
+		render2D->scale = { WIN_WIDTH * 0.5f, WIN_HEIGHT, 1.0f };
+
+		render2Ds.emplace_back(render2D);
+	}
+
+	enemyCamera = new FollowCamera();
+	enemyCamera->tag = "enemy";
+	enemyCamera->SetTarget(maria);
+
+
+	blendState[0] = new BlendState();
+	blendState[1] = new BlendState();
+	blendState[1]->Alpha(true);
+
 }
 
 DungeonScene::~DungeonScene()
@@ -48,6 +89,18 @@ DungeonScene::~DungeonScene()
 	delete maria;
 
 	delete lightBuffer;
+
+	for (RenderTarget* renderTarget : renderTargets)
+		delete renderTarget;
+
+	delete depthStencil;
+	delete blendState[0];
+	delete blendState[1];
+
+	for (Render2D* render2D : render2Ds)
+		delete render2D;
+
+	delete enemyCamera;
 }
 
 void DungeonScene::Update()
@@ -59,30 +112,56 @@ void DungeonScene::Update()
 	maria->Update();
 	aStar->Update();
 
+	for (Render2D* render2D : render2Ds)
+		render2D->Update();
+
+	enemyCamera->Update();
 }
 
 void DungeonScene::PreRender()
 {
-
-}
-
-void DungeonScene::Render()
-{
 	lightBuffer->SetPSBuffer(2);
 
+	// player
+	renderTargets[0]->Set(depthStencil);
 	// 항상 먼저 렌더링하기
 	skybox->Render();
+	vanguard->Render();
+	terrain->Render();
+	maria->Render();
 
+	// 아웃라인 그려줌
+	maria->PreRender();
+
+	// enemy(카메라 다른거 세팅해서)
+	enemyCamera->GetViewBuffer()->SetVSBuffer(1);
+	enemyCamera->GetProjection()->SetVSBuffer(2);
+
+	renderTargets[1]->Set(depthStencil);
+	// 항상 먼저 렌더링하기
+	skybox->Render();
 	vanguard->Render();
 	maria->Render();
 	terrain->Render();
 	aStar->Render();
+
+	
+}
+
+void DungeonScene::Render()
+{
+	for (Render2D* render2D : render2Ds)
+		render2D->Render();
+
+	blendState[1]->SetState();
+	maria->OutlineRender();
+	blendState[0]->SetState();
 }
 
 void DungeonScene::PostRender()
 {
 	terrain->PostRender();
-	maria->PostRender();
+	
 
 	ImGui::Text("LightInfo");
 
@@ -111,6 +190,7 @@ void DungeonScene::PostRender()
 		}
 	}
 
+	enemyCamera->PostRender();
 }
 
 ModelAnimator* DungeonScene::CheckEnemy()

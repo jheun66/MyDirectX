@@ -37,13 +37,22 @@ private:
 
 	float hp = 30.0f;;
 	bool isDead = false;
+
+
+	RenderTarget* renderTarget = nullptr;
+	DepthStencil* depthStencil = nullptr;
+	class Render2D* render2D = nullptr;
+	SizeBuffer* sizeBuffer = nullptr;
 public:
 	Maria();
 	~Maria();
 
+	void PreRender();
 	void Update();
 	void Render();
 	void PostRender();
+
+	void OutlineRender();
 
 	void SetTerrain(Terrain* value) { terrain = value; };
 	void SetAStar(AStar* value) { aStar = value; }

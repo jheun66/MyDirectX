@@ -21,7 +21,7 @@ ModelScene::ModelScene()
 	model->SetShader(L"VertexModel", L"PixelNormalMapping");
 
 
-	settingBuffer = new MSBuffer();
+	settingBuffer = new SettingBuffer();
 
 	Camera::Get()->ChangeCameraMode(false);
 }

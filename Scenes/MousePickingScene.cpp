@@ -14,7 +14,7 @@ MousePickingScene::MousePickingScene()
 	sphere->position = { 0,1,0 };
 
 
-	settingBuffer = new MSBuffer();
+	settingBuffer = new SettingBuffer();
 
 	GetCursorPos(&mOldPos);
 }
