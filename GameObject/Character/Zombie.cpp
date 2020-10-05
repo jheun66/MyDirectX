@@ -5,12 +5,12 @@ Zombie::Zombie()
 {
 	scale = { 0.1f, 0.1f, 0.1f };
 
-	ModelReader* modelReader = new ModelReader();
-	modelReader->ReadFile("ModelData/Animations/Zombie/Agony.fbx");
-	modelReader->ExportClip(0, "Zombie/Agony");
-	modelReader->ReadFile("ModelData/Animations/Zombie/Dying.fbx");
-	modelReader->ExportClip(0, "Zombie/Dying");
-	delete modelReader;
+	//ModelReader* modelReader = new ModelReader();
+	//modelReader->ReadFile("ModelData/Animations/Zombie/Agony.fbx");
+	//modelReader->ExportClip(0, "Zombie/Agony");
+	//modelReader->ReadFile("ModelData/Animations/Zombie/Dying.fbx");
+	//modelReader->ExportClip(0, "Zombie/Dying");
+	//delete modelReader;
 
 	ReadClip("Zombie/Idle");
 	ReadClip("Zombie/Run");

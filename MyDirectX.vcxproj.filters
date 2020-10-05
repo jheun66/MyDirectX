@@ -312,6 +312,12 @@
     <ClInclude Include="Scenes\RenderTargetScene.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Scenes\OutlineScene.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject\UI\Outline.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MyDirectX.cpp">
@@ -593,6 +599,12 @@
     <ClCompile Include="Scenes\RenderTargetScene.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Scenes\OutlineScene.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject\UI\Outline.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MyDirectX.rc">
@@ -608,57 +620,36 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Shaders\PixelShaders\PixelShader.hlsl" />
-    <FxCompile Include="Shaders\PixelShaders\PixelColorShader.hlsl" />
     <FxCompile Include="Shaders\VertexShaders\VertexShader.hlsl" />
     <FxCompile Include="Shaders\VertexShaders\VertexColorShader.hlsl" />
-    <FxCompile Include="Shaders\PixelShaders\PixelUV.hlsl" />
     <FxCompile Include="Shaders\VertexShaders\VertexUV.hlsl" />
-    <FxCompile Include="Shaders\PixelShaders\PixelDiffuse.hlsl" />
     <FxCompile Include="Shaders\VertexShaders\VertexDiffuse.hlsl" />
-    <FxCompile Include="Shaders\PixelShaders\PixelSpecular.hlsl" />
     <FxCompile Include="Shaders\VertexShaders\VertexSpecular.hlsl" />
     <FxCompile Include="Shaders\PixelShaders\PixelNormalMapping.hlsl" />
     <FxCompile Include="Shaders\VertexShaders\VertexNormalMapping.hlsl" />
     <FxCompile Include="Shaders\VertexShaders\VertexBrush.hlsl" />
-    <FxCompile Include="Shaders\PixelShaders\PixelBrush.hlsl" />
     <FxCompile Include="Shaders\ComputeShaders\Intersection.hlsl" />
-    <FxCompile Include="Shaders\PixelShaders\PixelBrushWithMapping.hlsl" />
     <FxCompile Include="Shaders\VertexShaders\VertexBrushWithMapping.hlsl" />
-    <FxCompile Include="Shaders\PixelShaders\PixelSplatting.hlsl" />
     <FxCompile Include="Shaders\VertexShaders\VertexSplatting.hlsl" />
-    <FxCompile Include="Shaders\PixelShaders\PixelSplattingAdvanced.hlsl" />
     <FxCompile Include="Shaders\VertexShaders\VertexSplattingAdvanced.hlsl" />
-    <FxCompile Include="Shaders\PixelShaders\PixelModel.hlsl" />
     <FxCompile Include="Shaders\VertexShaders\VertexModel.hlsl" />
     <FxCompile Include="Shaders\VertexShaders\VertexModelAnimation.hlsl" />
     <FxCompile Include="Shaders\VertexShaders\VertexSkybox.hlsl" />
-    <FxCompile Include="Shaders\PixelShaders\PixelSkybox.hlsl" />
     <FxCompile Include="Shaders\GeometryShaders\GeometryBillboard.hlsl" />
     <FxCompile Include="Shaders\VertexShaders\VertexBillboard.hlsl" />
     <FxCompile Include="Shaders\ComputeShaders\Inside.hlsl" />
     <FxCompile Include="Shaders\GeometryShaders\GeometrySpark.hlsl" />
     <FxCompile Include="Shaders\VertexShaders\VertexSpark.hlsl" />
-    <FxCompile Include="Shaders\PixelShaders\PixelSpark.hlsl" />
     <FxCompile Include="Shaders\GeometryShaders\GeometryRain.hlsl" />
     <FxCompile Include="Shaders\VertexShaders\VertexRain.hlsl" />
-    <FxCompile Include="Shaders\PixelShaders\PixelRain.hlsl" />
     <FxCompile Include="Shaders\ComputeShaders\Particle.hlsl" />
     <FxCompile Include="Shaders\VertexShaders\VertexParticle.hlsl" />
     <FxCompile Include="Shaders\GeometryShaders\GeometryParticle.hlsl" />
-    <FxCompile Include="Shaders\PixelShaders\PixelParticle.hlsl" />
     <FxCompile Include="Shaders\GeometryShaders\GeometrySnow.hlsl" />
-    <FxCompile Include="Shaders\PixelShaders\PixelSnow.hlsl" />
     <FxCompile Include="Shaders\VertexShaders\VertexSnow.hlsl" />
     <FxCompile Include="Shaders\GeometryShaders\GeometryBreath.hlsl" />
-    <FxCompile Include="Shaders\PixelShaders\PixelBreath.hlsl" />
-    <FxCompile Include="Shaders\PixelShaders\PixelLighting.hlsl" />
     <FxCompile Include="Shaders\VertexShaders\VertexBreath.hlsl" />
     <FxCompile Include="Shaders\VertexShaders\VertexLighting.hlsl" />
-    <FxCompile Include="Shaders\PixelShaders\PixelSprite.hlsl" />
-    <FxCompile Include="Shaders\PixelShaders\PixelFilter.hlsl" />
-    <FxCompile Include="Shaders\PixelShaders\PixelGrayscale.hlsl" />
-    <FxCompile Include="Shaders\PixelShaders\PixelSepia.hlsl" />
     <FxCompile Include="Shaders\PixelShaders\PixelOutline.hlsl" />
   </ItemGroup>
   <ItemGroup>

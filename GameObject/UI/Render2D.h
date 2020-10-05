@@ -16,6 +16,7 @@ protected:
 	MatrixBuffer* projectionBuffer;
 
 	DepthStencilState* depthState[2];
+	BlendState* blendState[2];
 
 public:
 	Render2D(wstring shaderFile);
@@ -26,6 +27,7 @@ public:
 	virtual void Render();
 
 	void SetSRV(ID3D11ShaderResourceView* srv) { this->srv = srv; }
+	Material* GetMaterial() { return material; }
 
 private:
 	void Create();

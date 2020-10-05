@@ -49,9 +49,6 @@ struct PixelInput
     float3 normal : NORMAL;
     float3 tangent : TANGENT;
     float3 binormal : BINORMAL;
-    float3 viewDir : VIEWDIR;
-    
-    // lighting 추가
     float3 worldPos : Position0;
     float3 camPos : Position1;
 };
@@ -130,12 +127,10 @@ PixelInput VS(VertexInput input)
     boneWorld = mul(boneWorld, world);
     
     output.pos = mul(input.pos, boneWorld);
-    // lighting 수정
+    
     output.worldPos = output.pos.xyz;
     output.camPos = invView._41_42_43;
-    
-    output.viewDir = normalize(output.pos.xyz - output.camPos);
-    
+        
     output.pos = mul(output.pos, view);
     output.pos = mul(output.pos, projection);
 

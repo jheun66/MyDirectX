@@ -1,20 +1,21 @@
 #include "Framework.h"
 
-#include "Scenes/TerrainScene.h"
-#include "Scenes/MousePickingScene.h"
-#include "Scenes/TerrainEditorScene.h"
-#include "Scenes/ModelScene.h"
-#include "Scenes/ModelAnimationScene.h"
-#include "Scenes/MoveModelScene.h"
-#include "Scenes/CollisionScene.h"
-#include "Scenes/AStarScene.h"
-#include "Scenes/MonsterAStarScene.h"
-#include "Scenes/BillboardScene.h"
-#include "Scenes/RainScene.h"
-#include "Scenes/ParticleSystemScene.h"
-#include "Scenes/LightScene.h"
-#include "Scenes/DungeonScene.h"
-#include "Scenes/RenderTargetScene.h"
+//#include "Scenes/TerrainScene.h"
+//#include "Scenes/MousePickingScene.h"
+//#include "Scenes/TerrainEditorScene.h"
+//#include "Scenes/ModelScene.h"
+//#include "Scenes/ModelAnimationScene.h"
+//#include "Scenes/MoveModelScene.h"
+//#include "Scenes/CollisionScene.h"
+//#include "Scenes/AStarScene.h"
+//#include "Scenes/MonsterAStarScene.h"
+//#include "Scenes/BillboardScene.h"
+//#include "Scenes/RainScene.h"
+//#include "Scenes/ParticleSystemScene.h"
+//#include "Scenes/LightScene.h"
+//#include "Scenes/DungeonScene.h"
+//#include "Scenes/RenderTargetScene.h"
+#include "Scenes/OutlineScene.h"
 
 Program::Program()
 {
@@ -29,7 +30,7 @@ Program::Program()
 
 	SetCursorPos((int)(WIN_WIDTH / 2), (int)(WIN_HEIGHT / 2));
 
-	scene = new DungeonScene();
+	scene = new OutlineScene();
 }
 
 Program::~Program()

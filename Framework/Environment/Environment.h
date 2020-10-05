@@ -17,12 +17,12 @@ public:
 	// ImGui로 정보 출력
 	void PostRender();
 
-	DirLightBuffer* GetLight() { return lightBuffer; }
+	LightBuffer* GetLight() { return lightBuffer; }
 
 private:
 	SamplerState* samplerState;
 
-	DirLightBuffer* lightBuffer;
+	LightBuffer* lightBuffer;
 
 
 	static Environment* instance;
