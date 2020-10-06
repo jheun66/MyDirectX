@@ -318,6 +318,12 @@
     <ClInclude Include="GameObject\UI\Outline.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Scenes\MultiRenderTargetScene.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\ShadowScene.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MyDirectX.cpp">
@@ -605,6 +611,12 @@
     <ClCompile Include="GameObject\UI\Outline.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Scenes\MultiRenderTargetScene.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenes\ShadowScene.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MyDirectX.rc">
@@ -651,6 +663,10 @@
     <FxCompile Include="Shaders\VertexShaders\VertexBreath.hlsl" />
     <FxCompile Include="Shaders\VertexShaders\VertexLighting.hlsl" />
     <FxCompile Include="Shaders\PixelShaders\PixelOutline.hlsl" />
+    <FxCompile Include="Shaders\PixelShaders\PixelUV.hlsl" />
+    <FxCompile Include="Shaders\PixelShaders\PixelMRT.hlsl" />
+    <FxCompile Include="Shaders\PixelShaders\PixelDepthMap.hlsl" />
+    <FxCompile Include="Shaders\VertexShaders\VertexDepthMap.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\PixelShaders\PixelHeader.hlsli" />

@@ -16,6 +16,8 @@
 //#include "Scenes/DungeonScene.h"
 //#include "Scenes/RenderTargetScene.h"
 #include "Scenes/OutlineScene.h"
+#include "Scenes/MultiRenderTargetScene.h"
+#include "Scenes/ShadowScene.h"
 
 Program::Program()
 {
@@ -30,7 +32,10 @@ Program::Program()
 
 	SetCursorPos((int)(WIN_WIDTH / 2), (int)(WIN_HEIGHT / 2));
 
-	scene = new OutlineScene();
+	
+	//scene = new MultiRenderTargetScene();
+	scene = new ShadowScene();
+
 }
 
 Program::~Program()
@@ -74,6 +79,9 @@ void Program::Render()
 {
 	Device::Get()->SetRenderTarget();
 
+	Camera::Get()->GetViewBuffer()->SetVSBuffer(1);
+	Camera::Get()->GetProjection()->SetVSBuffer(2);
+	Environment::Get()->GetLight()->SetPSBuffer(0);
 
 	scene->Render();
 }
