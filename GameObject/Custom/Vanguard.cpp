@@ -73,8 +73,9 @@ void Vanguard::Update()
 	damagedCollider->UpdateWorld();
 	weaponCollider->UpdateWorld();
 
-	if (position.y > 5.0f)
-		position = origin;
+	// 이 이상 못올라가게
+	//if (position.y > 5.0f)
+	//	position = origin;
 }
 
 void Vanguard::Render()

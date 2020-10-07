@@ -3,8 +3,9 @@
 class ShadowScene : public Scene
 {
 private:
-	ModelRender* plane;
-	ModelAnimator* medea;
+	//ModelRender* plane;
+	Terrain* terrain;
+	Vanguard* vanguard;
 
 	SettingBuffer* settingBuffer;
 

@@ -5,10 +5,10 @@ Terrain::Terrain(UINT width, UINT height)
 	:width(width), height(height)
 {
 	material = new Material(L"NormalMapping");
-	
-	material->SetDiffuseMap(L"Textures/Terrain/brown_mud_dry_diff_1k.png");
-	material->SetSpecularMap(L"Textures/Terrain/brown_mud_dry_spec_1k.png");
-	material->SetNormalMap(L"Textures/Terrain/brown_mud_dry_nor_1k.png");
+
+	material->SetDiffuseMap(L"Textures/Terrain/snow_02_diff_1k.png");
+	material->SetSpecularMap(L"Textures/Terrain/snow_02_spec_1k.png");
+	material->SetNormalMap(L"Textures/Terrain/snow_02_nor_1k.png");
 
 	CreateData();
 	CreateNormal();
@@ -202,6 +202,16 @@ bool Terrain::ComputePicking(OUT Vector3* position, IN Ray ray)
 
 
 	return false;
+}
+
+void Terrain::SetShader(wstring vsFile, wstring psFile)
+{
+	material->SetShader(vsFile, psFile);
+}
+
+void Terrain::SetShader(wstring file)
+{
+	material->SetShader(file);
 }
 
 void Terrain::LoadHeightMap(wstring path)

@@ -34,11 +34,11 @@ Shadow::~Shadow()
 	delete sizeBuffer;
 }
 
-void Shadow::PreRender()
+void Shadow::PreRender(Vector3 offset)
 {
 	renderTarget->Set(depthStencil);
 
-	SetViewProjection();
+	SetViewProjection(offset);
 }
 
 void Shadow::Render()
@@ -61,13 +61,15 @@ void Shadow::PostRender()
 	ImGui::Checkbox("Quality", (bool*)&qualityBuffer->data.option[0]);
 }
 
-void Shadow::SetViewProjection()
+void Shadow::SetViewProjection(Vector3 offset)
 {
-	//Vector3 lightDir = Environment::Get()->GetLight()->data.lights[0].direction;
-	//lightDir.Normalize();
-	//Vector3 lightPos = lightDir * -radius;
+	// Dir
+	Vector3 lightDir = Environment::Get()->GetLight()->data.lights[0].direction;
+	lightDir.Normalize();
+	Vector3 lightPos = lightDir * -radius + offset;
 
-	Vector3 lightPos = Environment::Get()->GetLight()->data.lights[0].position;
+	// Point
+	//Vector3 lightPos = Environment::Get()->GetLight()->data.lights[0].position;
 
 	/*
 	float rotX = atan2(lightDir.x, lightDir.y);
@@ -78,8 +80,8 @@ void Shadow::SetViewProjection()
 	Vector4 up = XMVector3TransformNormal(kUp, rotMat);
 	*/
 
-	// 지금 lightPos가 000이면 터짐
-	XMMATRIX view = XMMatrixLookAtLH(lightPos.data, XMVectorZero(), GameMath::kUp);
+	// 지금 lightDir가 000이면 터짐
+	XMMATRIX view = XMMatrixLookAtLH(lightPos.data, offset.data, GameMath::kUp);
 	//Matrix projection = XMMatrixPerspectiveFovLH(XM_PIDIV4, 1, 0.1f, 1000.0f);
 
 	XMMATRIX projection = XMMatrixOrthographicLH(radius * 2, radius * 2, 0.0f, 1000.0f);

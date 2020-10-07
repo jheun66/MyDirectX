@@ -96,7 +96,8 @@ float4 PS(PixelInput input) : SV_Target
             for (float x = -0.5f; x <= 0.5f; x += 1.0f)
             {
                 float2 offset = float2(x / mapSize.x, y / mapSize.y);
-                sum += depthMap.Sample(samp, uv + offset).r;
+                if (currentDepth > depthMap.Sample(samp, uv + offset).r + 0.0001f)
+                    sum += 0.5f;
                 avg++;
             }
         }
@@ -106,7 +107,7 @@ float4 PS(PixelInput input) : SV_Target
     
     factor = saturate(factor);
     
-    if (factor < 1)
+    if (factor <= 1)
         factor = 1.0f - factor;
     
     return result * factor;

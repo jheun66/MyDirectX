@@ -80,6 +80,9 @@ public:
 
 	Material* GetMaterial() { return material; }
 
+	void SetShader(wstring vsFile, wstring psFile);
+	void SetShader(wstring file);
+
 	void LoadHeightMap(wstring path);
 	void LoadAlphaMap(wstring path);
 
