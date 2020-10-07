@@ -112,6 +112,7 @@ using namespace std;
 
 // Environment
 #include "Framework/Environment/Environment.h"
+#include "Framework/Environment/Shadow.h"
 
 // Assimp
 #include "Framework/Assimp/ModelTypes.h"

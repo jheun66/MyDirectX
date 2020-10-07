@@ -1,6 +1,7 @@
 #include "Framework.h"
 
 RenderTarget::RenderTarget(UINT width, UINT height)
+	:width(width), height(height)
 {
 	{
 		D3D11_TEXTURE2D_DESC desc = {};
@@ -50,6 +51,9 @@ void RenderTarget::Set(DepthStencil* depthStencil)
 {
 	Device::Get()->SetRenderTarget(rtv, depthStencil->GetDSV());
 	Device::Get()->Clear(XMFLOAT4(0, 0, 0, 0), rtv, depthStencil->GetDSV());
+
+	// Sets에는 아직 안되있음. 유의하기
+	Environment::Get()->SetViewport(width, height);
 }
 
 void RenderTarget::Sets(RenderTarget** targets, UINT count, DepthStencil* depthStencil)

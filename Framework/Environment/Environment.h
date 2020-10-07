@@ -3,11 +3,13 @@
 class Environment
 {
 private:
-	Environment();
-	~Environment();
+	SamplerState* samplerState;
+	D3D11_VIEWPORT viewport;
 
-	void CreateViewort();
-	void CreateSamplerState();
+	LightBuffer* lightBuffer;
+
+
+	static Environment* instance;
 
 public:
 	static Environment* Get() { return instance; }
@@ -19,11 +21,13 @@ public:
 
 	LightBuffer* GetLight() { return lightBuffer; }
 
+	void SetViewport(UINT width = WIN_WIDTH, UINT height = WIN_HEIGHT);
+
 private:
-	SamplerState* samplerState;
+	Environment();
+	~Environment();
 
-	LightBuffer* lightBuffer;
+	void CreateViewort();
+	void CreateSamplerState();
 
-
-	static Environment* instance;
 };

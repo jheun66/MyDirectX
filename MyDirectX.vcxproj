@@ -163,6 +163,7 @@
     <ClInclude Include="Framework\Buffers\Mesh\Mesh.h" />
     <ClInclude Include="Framework\Buffers\Mesh\VertexBuffer.h" />
     <ClInclude Include="Framework\Buffers\StructuredBuffer.h" />
+    <ClInclude Include="Framework\Environment\Shadow.h" />
     <ClInclude Include="Framework\Material\Shaders\GeometryShader.h" />
     <ClInclude Include="Framework\State\BlendState.h" />
     <ClInclude Include="Framework\State\DepthStencilState.h" />
@@ -304,6 +305,7 @@
     <ClCompile Include="Framework\Buffers\Mesh\Mesh.cpp" />
     <ClCompile Include="Framework\Buffers\Mesh\VertexBuffer.cpp" />
     <ClCompile Include="Framework\Buffers\StructuredBuffer.cpp" />
+    <ClCompile Include="Framework\Environment\Shadow.cpp" />
     <ClCompile Include="Framework\Material\Shaders\GeometryShader.cpp" />
     <ClCompile Include="Framework\State\BlendState.cpp" />
     <ClCompile Include="Framework\State\DepthStencilState.cpp" />
@@ -561,6 +563,13 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">PS</EntryPointName>
     </FxCompile>
+    <FxCompile Include="Shaders\PixelShaders\PixelShadow.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">PS</EntryPointName>
+    </FxCompile>
     <FxCompile Include="Shaders\PixelShaders\PixelUV.hlsl">
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">PS</EntryPointName>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
@@ -644,6 +653,12 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
     <FxCompile Include="Shaders\VertexShaders\VertexShader.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shaders\VertexShaders\VertexShadow.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>

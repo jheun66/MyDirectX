@@ -324,6 +324,9 @@
     <ClInclude Include="Scenes\ShadowScene.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Framework\Environment\Shadow.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MyDirectX.cpp">
@@ -617,6 +620,9 @@
     <ClCompile Include="Scenes\ShadowScene.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Framework\Environment\Shadow.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MyDirectX.rc">
@@ -667,6 +673,8 @@
     <FxCompile Include="Shaders\PixelShaders\PixelMRT.hlsl" />
     <FxCompile Include="Shaders\PixelShaders\PixelDepthMap.hlsl" />
     <FxCompile Include="Shaders\VertexShaders\VertexDepthMap.hlsl" />
+    <FxCompile Include="Shaders\VertexShaders\VertexShadow.hlsl" />
+    <FxCompile Include="Shaders\PixelShaders\PixelShadow.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\PixelShaders\PixelHeader.hlsli" />

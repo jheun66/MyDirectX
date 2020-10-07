@@ -70,7 +70,7 @@ void Program::PreRender()
 	Camera::Get()->GetViewBuffer()->SetVSBuffer(1);
 	Camera::Get()->GetProjection()->SetVSBuffer(2);
 	Environment::Get()->GetLight()->SetPSBuffer(0);
-
+	Environment::Get()->SetViewport();
 
 	scene->PreRender();
 }
@@ -82,6 +82,7 @@ void Program::Render()
 	Camera::Get()->GetViewBuffer()->SetVSBuffer(1);
 	Camera::Get()->GetProjection()->SetVSBuffer(2);
 	Environment::Get()->GetLight()->SetPSBuffer(0);
+	Environment::Get()->SetViewport();
 
 	scene->Render();
 }
