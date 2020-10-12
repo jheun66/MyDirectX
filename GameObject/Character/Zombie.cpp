@@ -6,6 +6,12 @@ Zombie::Zombie()
 	scale = { 0.1f, 0.1f, 0.1f };
 
 	//ModelReader* modelReader = new ModelReader();
+	//modelReader->ReadFile("ModelData/Animations/Zombie/Idle.fbx");
+	//modelReader->ExportClip(0, "Zombie/Idle");
+	//modelReader->ReadFile("ModelData/Animations/Zombie/Run.fbx");
+	//modelReader->ExportClip(0, "Zombie/Run");
+	//modelReader->ReadFile("ModelData/Animations/Zombie/Attack.fbx");
+	//modelReader->ExportClip(0, "Zombie/Attack");
 	//modelReader->ReadFile("ModelData/Animations/Zombie/Agony.fbx");
 	//modelReader->ExportClip(0, "Zombie/Agony");
 	//modelReader->ReadFile("ModelData/Animations/Zombie/Dying.fbx");
@@ -14,13 +20,15 @@ Zombie::Zombie()
 
 	ReadClip("Zombie/Idle");
 	ReadClip("Zombie/Run");
+	ReadClip("Zombie/Attack");
+	ReadClip("Zombie/Dance");
 	ReadClip("Zombie/Agony");
 	ReadClip("Zombie/Dying");
 
 	SetEndEvent(AGONY, bind(&Zombie::DamagedEnd, this));
 	SetEndEvent(DIE, bind(&Zombie::DieEnd, this));
 
-	PlayClip(0);
+	PlayClip(0, 0);
 
 	// offset을 부모 행렬로, 마치 빈 오브젝트에 담는거 처럼 
 	offset.UpdateWorld();
@@ -140,7 +148,7 @@ void Zombie::SetAnimation(AnimState state)
 	if (this->state != state)
 	{
 		this->state = state;
-		PlayClip(state);
+		PlayClip(0, state, 1.0f, 0.1f);
 	}
 }
 

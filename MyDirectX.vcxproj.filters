@@ -177,9 +177,6 @@
     <ClInclude Include="Scenes\ModelAnimationScene.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="GameObject\Model\ModelMeshPart.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="GameObject\Custom\WarHawk.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
@@ -327,6 +324,15 @@
     <ClInclude Include="Framework\Environment\Shadow.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Scenes\InstancingScene.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\ModelInstancingScene.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject\Model\ModelBone.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MyDirectX.cpp">
@@ -468,9 +474,6 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Scenes\ModelAnimationScene.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObject\Model\ModelMeshPart.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="GameObject\Custom\WarHawk.cpp">
@@ -623,6 +626,12 @@
     <ClCompile Include="Framework\Environment\Shadow.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Scenes\InstancingScene.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenes\ModelInstancingScene.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MyDirectX.rc">
@@ -675,6 +684,10 @@
     <FxCompile Include="Shaders\VertexShaders\VertexDepthMap.hlsl" />
     <FxCompile Include="Shaders\VertexShaders\VertexShadow.hlsl" />
     <FxCompile Include="Shaders\PixelShaders\PixelShadow.hlsl" />
+    <FxCompile Include="Shaders\VertexShaders\VertexInstancing.hlsl" />
+    <FxCompile Include="Shaders\PixelShaders\PixelInstancing.hlsl" />
+    <FxCompile Include="Shaders\VertexShaders\VertexModelInstancing.hlsl" />
+    <FxCompile Include="Shaders\VertexShaders\VertexModelAnimationInstancing.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\PixelShaders\PixelHeader.hlsli" />

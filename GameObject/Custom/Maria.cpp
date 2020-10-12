@@ -15,7 +15,7 @@ Maria::Maria()
 	SetEndEvent(SLASH, bind(&Maria::SlashEnd, this));
 
 	// IDLE
-	PlayClip(0);
+	PlayClip(0, 0);
 
 	SetColliders();
 
@@ -247,7 +247,7 @@ void Maria::SetAnimation(AnimState value)
 	if (state != value)
 	{
 		state = value;
-		PlayClip(value);
+		PlayClip(0, value);
 	}
 }
 

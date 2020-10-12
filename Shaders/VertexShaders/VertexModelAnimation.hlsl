@@ -26,8 +26,9 @@ PixelInput VS(VertexInput input)
 {
     PixelInput output;
     
-    matrix boneWorld = SkinWorld(input.indices, input.weights);
-    
+    matrix boneWorld = SkinWorld(0, input.indices, input.weights);
+    boneWorld = mul(boneWorld, world);
+
     output.pos = mul(input.pos, boneWorld);
     
     output.worldPos = output.pos.xyz;

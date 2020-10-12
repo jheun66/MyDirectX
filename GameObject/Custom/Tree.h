@@ -4,7 +4,8 @@ class Tree : public ModelRender
 {
 private:
 	Collider* collider;
-
+	VertexBuffer* instanceBuffer = nullptr;
+	UINT count;
 public:
 	Tree();
 	~Tree();
@@ -13,4 +14,6 @@ public:
 	void Render() override;
 
 	Collider* GetCollider() { return collider; }
+
+	void SetInstanceBuffer(VertexBuffer* instanceBuffer, UINT count) { this->instanceBuffer = instanceBuffer; this->count = count; }
 };

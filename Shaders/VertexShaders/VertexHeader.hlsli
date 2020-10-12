@@ -16,7 +16,7 @@ cbuffer P : register(b2)
 cbuffer ModelBone : register(b3)
 {
     // MAX_MODEL_BONE 개수 맞추기
-    matrix bones[256];
+    matrix bones[500];
     
     int index;
 }
@@ -47,9 +47,11 @@ struct TweenFrame
     KeyFrame next;
 };
 
+#define MAX_MODEL_INSTANCE 500
+
 cbuffer Frame : register(b4)
 {
-    TweenFrame tweenFrame;
+    TweenFrame tweenFrame[MAX_MODEL_INSTANCE];
 }
 
 Texture2DArray transformMap : register(t0);
@@ -100,7 +102,7 @@ struct VertexUVNormalTangentBlend
     float4 weights : BlendWeight;
 };
 
-matrix SkinWorld(float4 indices, float4 weights)
+matrix SkinWorld(int instanceID, float4 indices, float4 weights)
 {
     matrix boneWorld = 0;
     matrix cur = 0, curAnim = 0;
@@ -119,15 +121,15 @@ matrix SkinWorld(float4 indices, float4 weights)
     uint nextFrame[2];
     float time[2];
     
-    clip[0] = tweenFrame.cur.clip;
-    curFrame[0] = tweenFrame.cur.curFrame;
-    nextFrame[0] = tweenFrame.cur.nextFrame;
-    time[0] = tweenFrame.cur.time;
+    clip[0] = tweenFrame[instanceID].cur.clip;
+    curFrame[0] = tweenFrame[instanceID].cur.curFrame;
+    nextFrame[0] = tweenFrame[instanceID].cur.nextFrame;
+    time[0] = tweenFrame[instanceID].cur.time;
     
-    clip[1] = tweenFrame.next.clip;
-    curFrame[1] = tweenFrame.next.curFrame;
-    nextFrame[1] = tweenFrame.next.nextFrame;
-    time[1] = tweenFrame.next.time;
+    clip[1] = tweenFrame[instanceID].next.clip;
+    curFrame[1] = tweenFrame[instanceID].next.curFrame;
+    nextFrame[1] = tweenFrame[instanceID].next.nextFrame;
+    time[1] = tweenFrame[instanceID].next.time;
     
     float4 c0, c1, c2, c3;
     float4 n0, n1, n2, n3;
@@ -168,11 +170,11 @@ matrix SkinWorld(float4 indices, float4 weights)
             // 보간
             nextAnim = lerp(cur, next, time[1]);
             
-            curAnim = lerp(curAnim, nextAnim, tweenFrame.tweenTime);
+            curAnim = lerp(curAnim, nextAnim, tweenFrame[instanceID].tweenTime);
         }
         
         boneWorld += mul(weights[i], curAnim);
     }
     
-    return mul(boneWorld, world);
+    return boneWorld;
 }

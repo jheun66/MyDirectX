@@ -20,7 +20,7 @@ Vanguard::Vanguard()
 
 	SetEndEvent(ATTACK, bind(&Vanguard::AttackEnd, this));
 
-	PlayClip(0);
+	PlayClip(0, 0);
 
 	SetCollider();
 
@@ -82,8 +82,8 @@ void Vanguard::Render()
 {
 	ModelAnimator::Render();
 	damagedCollider->Render();
-	weaponCollider->Render();
-	sword->Render();
+	//weaponCollider->Render();
+	//sword->Render();
 }
 
 void Vanguard::PostRender()
@@ -230,9 +230,9 @@ void Vanguard::SetAnimation(AnimState state)
 		this->state = state;
 
 		if (state == ATTACK)
-			PlayClip(state, 1, 0);
+			PlayClip(0, state, 1, 0);
 		else
-			PlayClip(state);
+			PlayClip(0, state);
 	}
 }
 

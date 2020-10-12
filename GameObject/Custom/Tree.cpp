@@ -3,7 +3,9 @@
 Tree::Tree()
 	:ModelRender("Tree/Tree")
 {
-	SetShader(L"Model");
+	SetShader(L"VertexModelInstancing", L"PixelNormalMapping");
+
+	scale = { 0.1f,0.1f,0.1f };
 
 	collider = new BoxCollider();
 	collider->position = { -1,5,-5 };
@@ -17,22 +19,11 @@ Tree::~Tree()
 
 void Tree::Update()
 {
-	////Ã¼Å©¿ë
-	//Ray ray = Camera::Get()->ScreenPointToRay(Mouse::Get()->GetPosition());
-	//if (collider->IsCollision(ray))
-	//{
-	//	collider->SetColor({ 0,0,1,1 });
-	//}
-	//else
-	//{
-	//	collider->SetColor({ 1,0,0,1 });
-	//}
-	collider->UpdateWorld();
+	//collider->UpdateWorld();
 	__super::Update();
 }
 
 void Tree::Render()
 {
-	collider->Render();
 	__super::Render();
 }

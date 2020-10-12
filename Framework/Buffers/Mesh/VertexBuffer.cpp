@@ -20,9 +20,10 @@ VertexBuffer::~VertexBuffer()
     buffer->Release();
 }
 
-void VertexBuffer::Set()
+void VertexBuffer::Set(UINT slot)
 {
-    DC->IASetVertexBuffers(0, 1, &buffer, &stride, &offset);
+    // 인스턴싱을 위해 이제 slot 번호도 같이 넘겨줌
+    DC->IASetVertexBuffers(slot, 1, &buffer, &stride, &offset);
 }
 
 void VertexBuffer::Update(void* data, UINT count)

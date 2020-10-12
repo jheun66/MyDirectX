@@ -4,7 +4,7 @@
 //#include "Scenes/MousePickingScene.h"
 //#include "Scenes/TerrainEditorScene.h"
 //#include "Scenes/ModelScene.h"
-//#include "Scenes/ModelAnimationScene.h"
+#include "Scenes/ModelAnimationScene.h"
 //#include "Scenes/MoveModelScene.h"
 //#include "Scenes/CollisionScene.h"
 //#include "Scenes/AStarScene.h"
@@ -18,6 +18,8 @@
 #include "Scenes/OutlineScene.h"
 #include "Scenes/MultiRenderTargetScene.h"
 #include "Scenes/ShadowScene.h"
+#include "Scenes/InstancingScene.h"
+#include "Scenes/ModelInstancingScene.h"
 
 Program::Program()
 {
@@ -33,8 +35,7 @@ Program::Program()
 	SetCursorPos((int)(WIN_WIDTH / 2), (int)(WIN_HEIGHT / 2));
 
 	
-	//scene = new MultiRenderTargetScene();
-	scene = new ShadowScene();
+	scene = new ModelInstancingScene();
 
 }
 

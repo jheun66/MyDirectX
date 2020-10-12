@@ -4,7 +4,10 @@
 class ModelRender : public Model
 {
 private:
-	XMMATRIX transforms[MAX_MODEL_BONE];
+	vector<Transform*> transforms;
+	XMMATRIX worlds[MAX_MODEL_INSTANCE];
+
+	VertexBuffer* instanceBuffer;
 
 public:
 	ModelRender(string file);
@@ -13,5 +16,7 @@ public:
 	void Update();
 	void Render();
 
-	void UpdateTransform();
+	void UpdateTransforms();
+
+	Transform* AddTransform();
 };

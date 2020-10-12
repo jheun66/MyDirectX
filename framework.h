@@ -16,9 +16,11 @@
 #define WIN_START_Y 100
 
 // 본 개수 제한
-#define MAX_MODEL_BONE 256
+#define MAX_MODEL_BONE 500
 // 애미메이션 키프레임 제한
 #define MAX_ANIM_KEY 500
+// 모델 인스턴스 제한
+#define MAX_MODEL_INSTANCE 500
 
 #define DEVICE Device::Get()->GetDevice()
 #define DC Device::Get()->GetDeviceContext()
@@ -161,7 +163,7 @@ using namespace std;
 #include "GameObject/LandScape/Skybox.h"
 
 // Model
-#include "GameObject/Model/ModelMeshPart.h"
+#include "GameObject/Model/ModelBone.h"
 #include "GameObject/Model/ModelMesh.h"
 #include "GameObject/Model/ModelClip.h"
 #include "GameObject/Model/Model.h"
